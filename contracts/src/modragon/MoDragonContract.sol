@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-import "./storage/MoDragonContractStorage.sol";
-
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
@@ -13,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 error Expired(uint256 deadline);
 error InvalidSignature();
 
-contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burnable, MoDragonContractStorage {
+contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burnable {
     bytes32 private constant WHITELIST_MINT= keccak256("whitelistMint(address user,uint256 deadline)"); 
     address private immutable _signers;
 
