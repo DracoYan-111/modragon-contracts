@@ -5,16 +5,17 @@ import {MoDragonContract} from "../../src/modragon/MoDragonContract.sol";
 import {Test} from "forge-std/Test.sol";
 
 contract MoDragonContractTest is Test {
-    MoDragonContractTest moDragonContractTest;
+    MoDragonContract public moDragonContractTest;
 
     /**
      * @dev Sets up the test.
      */
     function setUp() public {
-        moDragonContractTest = new MoDragonContractTest(
-            "123123123",
-            msg.sender,
+        moDragonContractTest = new MoDragonContract(
+            "tokenUri=============",
+            msg.sender, 
             msg.sender
         );
+    
     }
 }

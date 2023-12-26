@@ -39,12 +39,12 @@ contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burn
         _unpause();
     }
 
-    function safeMint(address to) public onlyOwner whenPaused{
+    function safeMint(address to) public onlyOwner{
         _mint(to);
     }
 
     function whitelistMint(uint256 deadline, bytes memory signature) public whenNotPaused{
-        if (deadline > block.timestamp) revert Expired(block.timestamp);
+        if (deadline < block.timestamp) revert Expired(block.timestamp);
 
         bytes32 digest = _hashTypedDataV4(
             keccak256(
@@ -53,6 +53,7 @@ contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burn
                     )
                 )
             );
+
         if(ECDSA.recover(digest, signature) != _signers) revert InvalidSignature();
         _mint(msg.sender);
     }
@@ -74,6 +75,4 @@ contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burn
         )internal override(ERC721, ERC721Pausable)returns (address){
         return super._update(to, tokenId, auth);
     }
-
-
 }
