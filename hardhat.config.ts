@@ -59,8 +59,8 @@ task(
     for (const account of accounts) {
       console.log(
         account.address +
-          " " +
-          (await hre.ethers.provider.getBalance(account.address)),
+        " " +
+        (await hre.ethers.provider.getBalance(account.address)),
       );
     }
   },
@@ -105,7 +105,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       initialBaseFeePerGas: 0,
-      chainId: 31337,
+      chainId: 1,
       hardfork: "shanghai",
       forking: {
         url: vars.get("ETH_MAINNET_URL", ethMainnetUrl),
