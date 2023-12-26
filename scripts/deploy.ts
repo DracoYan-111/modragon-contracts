@@ -1,4 +1,5 @@
 import hre from "hardhat";
+import { ethers } from "hardhat";
 
 // Colour codes for terminal prints
 const RESET = "\x1b[0m";
@@ -9,14 +10,17 @@ function delay(ms: number) {
 }
 
 async function main() {
-  const constructorArgs = ["Hello, Hardhat!"];
-  const contract = await hre.ethers.deployContract("Greeter", constructorArgs);
+  const [owner, account] = await ethers.getSigners();
 
-  // await contract.waitForDeployment();
-  // const contractAddress = await contract.getAddress();
+  const constructorArgs = ["tokenUri", owner.address, account.address];
+  const contract = await hre.ethers.deployContract("/contracts/src/modragon/MoDragonContract.sol:MoDragonContract", constructorArgs);
 
-  // console.log("Greeter deployed to: " + `${GREEN}${contractAddress}${RESET}\n`);
+  await contract.waitForDeployment();
+  const contractAddress = await contract.getAddress();
 
+  console.log("Greeter deployed to: " + `${GREEN}${contractAddress}${RESET}\n`);
+
+  // TODO Uncomment if you want to enable the `verify`
   // console.log(
   //   "Waiting 30 seconds before beginning the contract verification to allow the block explorer to index the contract...\n",
   // );
@@ -27,7 +31,7 @@ async function main() {
   //   constructorArguments: constructorArgs,
   // });
 
-  // Uncomment if you want to enable the `tenderly` extension
+  // TODO Uncomment if you want to enable the `tenderly` extension
   // await hre.tenderly.verify({
   //   name: "Greeter",
   //   address: contractAddress,

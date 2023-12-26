@@ -122,6 +122,7 @@ const config: HardhatUserConfig = {
     localhost: {
       url: "http://127.0.0.1:8545",
       ledgerAccounts,
+      chainId: 1
     },
     tenderly: {
       // Add your own Tenderly fork ID
