@@ -9,8 +9,8 @@ function delay(ms: number) {
 }
 
 async function main() {
-  // const constructorArgs = ["Hello, Hardhat!"];
-  // const contract = await hre.ethers.deployContract("Greeter", constructorArgs);
+  const constructorArgs = ["Hello, Hardhat!"];
+  const contract = await hre.ethers.deployContract("Greeter", constructorArgs);
 
   // await contract.waitForDeployment();
   // const contractAddress = await contract.getAddress();
