@@ -8,27 +8,35 @@ import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 
-error Expired(uint256 deadline);
-error InvalidSignature();
+error  MintExpired();
+error  AlreadyReceived();
+error  InvalidSignature();
 
-contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burnable {
+contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burnable {
     bytes32 private constant WHITELIST_MINT= keccak256("whitelistMint(address user,uint256 deadline)"); 
-    address private immutable _signers;
+    address private _signer;
 
-    uint256 private _nextTokenId;
     string private  _tokenURI;
+    uint256 private _nextTokenId;
+
+    mapping(address => bool) public userReceive;
+
+    modifier isReceive() {
+        if(userReceive[msg.sender]) revert AlreadyReceived();
+        _;
+    }
 
     constructor(
         string memory _tokenUri,
         address _initialOwner,
         address _signerAddress
         )
-        ERC721("qqqqq", "qq")
-        EIP712("qqqqq", "V1.0.0")
+        ERC721("The Dawnbringer", "TDB")
+        EIP712("The Dawnbringer", "V1.0.0")
         Ownable(_initialOwner)
     {
         _tokenURI = _tokenUri;
-        _signers = _signerAddress;
+        _signer = _signerAddress;
     }
 
     function pause() public onlyOwner {
@@ -39,12 +47,19 @@ contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burn
         _unpause();
     }
 
-    function safeMint(address to) public onlyOwner{
-        _mint(to);
+    function updateTokenUri(string calldata newTokenUri) public onlyOwner{
+        _tokenURI = newTokenUri;
     }
 
-    function whitelistMint(uint256 deadline, bytes memory signature) public whenNotPaused{
-        if (deadline < block.timestamp) revert Expired(block.timestamp);
+    function updateSigners(address newSigner) public onlyOwner{
+        _signer = newSigner;
+    }
+
+    function whitelistMint(
+        uint256 deadline, 
+        bytes32 r, 
+        bytes32 vs) public whenNotPaused{
+        if (deadline < block.timestamp) revert MintExpired();
 
         bytes32 digest = _hashTypedDataV4(
             keccak256(
@@ -54,13 +69,12 @@ contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burn
                 )
             );
 
-        if(ECDSA.recover(digest, signature) != _signers) revert InvalidSignature();
-        _mint(msg.sender);
-    }
+        (address recovered,, ) = ECDSA.tryRecover(digest,  r, vs);
+        if(recovered != _signer) revert InvalidSignature();
 
-    function _mint(address to) private {
-        uint256 tokenId = _nextTokenId++;
-        _safeMint(to, tokenId);
+        _mint(msg.sender);
+
+        userReceive[msg.sender] = true;
     }
 
     // The following functions are overrides required by Solidity.
@@ -68,11 +82,14 @@ contract MoDragonContract is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burn
         return _tokenURI;
     }
 
+    function _mint(address to) private {
+        _safeMint(to, ++_nextTokenId);
+    }
+
     function _update(
         address to,
         uint256 tokenId, 
-        address auth
-        )internal override(ERC721, ERC721Pausable)returns (address){
+        address auth)internal override(ERC721, ERC721Pausable) returns (address){
         return super._update(to, tokenId, auth);
     }
 }
