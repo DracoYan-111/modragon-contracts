@@ -5,9 +5,9 @@ import {
 } from "@metamask/eth-sig-util";
 import { expect } from "chai";
 import { ethers } from "hardhat";
-import { MoDragonContract } from "../../typechain-types"
+import { DrawnBringerNFT } from "../../typechain-types"
 
-describe("MoDragonContract", function () {
+describe("DrawnBringerNFT", function () {
   let owner: any;
   let account: any;
 
@@ -15,14 +15,14 @@ describe("MoDragonContract", function () {
   const signe = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
   const PRIVATEKRY = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
 
-  let moDragonContract: MoDragonContract;
+  let drawnBringerNFT: DrawnBringerNFT;
 
   beforeEach(async function () {
     [owner, account] = await ethers.getSigners();
     let getContractFactory = await ethers.getContractFactory(
-      "/contracts/src/modragon/MoDragonContract.sol:MoDragonContract",
+      "/contracts/src/drawnBringer/DrawnBringerNFT.sol:DrawnBringerNFT",
     );
-    moDragonContract = await getContractFactory.deploy(
+    drawnBringerNFT = await getContractFactory.deploy(
       tokenURI,
       owner.address,
       signe
@@ -31,37 +31,29 @@ describe("MoDragonContract", function () {
   });
   it("🪪Should be consistent with the set address.", async function () {
 
-    expect(await moDragonContract.owner()).to.equal(owner.address);
+    expect(await drawnBringerNFT.owner()).to.equal(owner.address);
 
   })
   it("🖼️Should be consistent with the set tokenURI.", async function () {
 
-    expect(await moDragonContract.tokenURI(0)).to.equal(tokenURI);
+    expect(await drawnBringerNFT.tokenURI(0)).to.equal(tokenURI);
 
   })
   it("🙅‍♂️Only the owner should be able to pause and unpause", async function () {
 
-    await expect(moDragonContract.connect(account).pause()).to.be.reverted;
-    await expect(moDragonContract.connect(account).unpause()).to.be.reverted;
-    await expect(moDragonContract.pause()).not.to.be.reverted;
-    await expect(moDragonContract.unpause()).not.to.be.reverted;
+    await expect(drawnBringerNFT.connect(account).pause()).to.be.reverted;
+    await expect(drawnBringerNFT.connect(account).unpause()).to.be.reverted;
+    await expect(drawnBringerNFT.pause()).not.to.be.reverted;
+    await expect(drawnBringerNFT.unpause()).not.to.be.reverted;
 
   });
-
-  it("🙅Only the owner should be able to safeMint", async function () {
-
-    await expect(moDragonContract.connect(account).safeMint(account.address)).to.be.reverted;
-
-    await expect(moDragonContract.safeMint(account.address)).not.to.be.reverted;
-
-  })
   it("🙆‍♂️Should be consistent with the designated verifier.", async function () {
 
     // TODO Contract information
     const chainId = 1;
     const contractVersion = "V1.0.0";
-    const contractName = await moDragonContract.name();
-    const verifyingContract = await moDragonContract.getAddress();
+    const contractName = await drawnBringerNFT.name();
+    const verifyingContract = await drawnBringerNFT.getAddress();
 
     // TODO Signature information
     const user = owner.address;
@@ -103,7 +95,7 @@ describe("MoDragonContract", function () {
       version: SignTypedDataVersion.V4,
     });
 
-    await expect(moDragonContract.whitelistMint(
+    await expect(drawnBringerNFT.whitelistMint(
       deadline,
       signature,
     )).not.to.be.reverted;

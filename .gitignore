@@ -17,6 +17,8 @@ node_modules
 
 abis
 
+contracts/src/flattened
+
 # dotenv environment variable files
 .env
 .env.development.local

@@ -25,7 +25,7 @@
     "node:hh": "npx hardhat node",
     "flatten": "bash scripts/flatten.sh",
     "deploy:bash": "bash scripts/deploy.sh",
-    "deploy:local bash": "bash scripts/deploy_local.sh",
+    "deploy:local:bash": "bash scripts/deploy_local.sh",
     "test:hh": "npx hardhat test",
     "test:ll": "npx hardhat test --network localhost",
     "help": "npx hardhat help",

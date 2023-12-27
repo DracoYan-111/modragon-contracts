@@ -43,7 +43,7 @@ pnpm test:ll
 **Example bash local deploy:**
 
 ```console
-pnpm deploy:local bash
+pnpm deploy:local:bash
 ```
 
 **Example bash deploy:**
