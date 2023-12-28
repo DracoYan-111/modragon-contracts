@@ -24,10 +24,11 @@ describe("DrawnBringerNFT", function () {
     let getContractFactory = await ethers.getContractFactory(
       "/contracts/src/drawnBringer/DrawnBringerNFT.sol:DrawnBringerNFT",
     );
-    drawnBringerNFT = await getContractFactory.deploy(
+    drawnBringerNFT = (await (ethers as any).getContractFactory.deploy(
       tokenURI,
       owner.address,
       signe
+    )
     );
   });
   describe('🟰Equal', function () {

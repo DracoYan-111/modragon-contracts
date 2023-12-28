@@ -18,6 +18,26 @@ After having installed `pnpm`, simply run:
 pnpm install
 ```
 
+It is recommended to run
+
+```console
+npm install
+```
+
+Add forge-std
+
+```console
+cd contracts/lib
+```
+
+```console
+rm -rf forge-std
+```
+
+```console
+forge install foundry-rs/forge-std
+```
+
 ## Running Test scipts
 
 > [!NOTE]
