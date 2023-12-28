@@ -17,7 +17,7 @@ node_modules
 
 abis
 
-contracts/src/flattened
+/flattened
 
 # dotenv environment variable files
 .env

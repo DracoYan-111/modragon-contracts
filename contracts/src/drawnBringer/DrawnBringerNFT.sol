@@ -3,6 +3,7 @@ pragma solidity ^0.8.23.0;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import {BitMaps} from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {EIP712} from "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import {ERC721Pausable} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
@@ -13,16 +14,20 @@ error  AlreadyReceived();
 error  InvalidSignature();
 
 contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burnable {
+    event SetSigners(address newSigners);
+    event SetTokenUri(string newTokenURI);
+    event UserHasReceived(uint256 indexed tokenID, address indexed userAddress);
+
     bytes32 private constant WHITELIST_MINT= keccak256("whitelistMint(address user,uint256 deadline)"); 
     address private _signer;
 
     string private  _tokenURI;
     uint256 private _nextTokenId;
 
-    mapping(address => bool) public userReceive;
+    BitMaps.BitMap private userReceive;
 
     modifier isReceive() {
-        if(userReceive[msg.sender]) revert AlreadyReceived();
+        if(BitMaps.get(userReceive, uint256(uint160(msg.sender)))) revert AlreadyReceived();
         _;
     }
 
@@ -49,10 +54,12 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
 
     function updateTokenUri(string calldata newTokenUri) public onlyOwner{
         _tokenURI = newTokenUri;
+        emit SetTokenUri(newTokenUri);
     }
 
     function updateSigners(address newSigner) public onlyOwner{
         _signer = newSigner;
+        emit SetSigners(newSigner);
     }
 
     function whitelistMint(
@@ -73,8 +80,10 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
         if(recovered != _signer) revert InvalidSignature();
 
         _mint(msg.sender);
+        
+        BitMaps.setTo(userReceive, uint256(uint160(msg.sender)),true);
 
-        userReceive[msg.sender] = true;
+        emit UserHasReceived(_nextTokenId, msg.sender);
     }
 
     // The following functions are overrides required by Solidity.
@@ -91,5 +100,9 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
         uint256 tokenId, 
         address auth)internal override(ERC721, ERC721Pausable) returns (address){
         return super._update(to, tokenId, auth);
+    }
+
+    function getUserReceive(address userAddress) public view returns(bool){
+        return BitMaps.get(userReceive, uint256(uint160(userAddress)));
     }
 }
