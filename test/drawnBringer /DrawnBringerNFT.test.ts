@@ -24,11 +24,10 @@ describe("DrawnBringerNFT", function () {
     let getContractFactory = await ethers.getContractFactory(
       "/contracts/src/drawnBringer/DrawnBringerNFT.sol:DrawnBringerNFT",
     );
-    drawnBringerNFT = (await (ethers as any).getContractFactory.deploy(
+    drawnBringerNFT = await getContractFactory.deploy(
       tokenURI,
       owner.address,
       signe
-    )
     );
   });
   describe('🟰Equal', function () {
@@ -38,7 +37,7 @@ describe("DrawnBringerNFT", function () {
 
     })
     it("🖼️Should be consistent with the set tokenURI.", async function () {
-
+console.log(await drawnBringerNFT.tokenURI(0));
       expect(await drawnBringerNFT.tokenURI(0)).to.equal(tokenURI);
 
     })
@@ -126,7 +125,7 @@ describe("DrawnBringerNFT", function () {
         vs
       )).not.to.be.reverted;
 
-      expect(await drawnBringerNFT.userReceive(owner.address)).to.be.true
+      expect(await drawnBringerNFT.getUserReceive(owner.address)).to.be.true
     });
   })
 });
