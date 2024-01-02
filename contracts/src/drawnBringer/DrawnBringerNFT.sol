@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.23.0;
+pragma solidity ^0.8.23;
 
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -57,11 +57,21 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
         emit SetTokenUri(newTokenUri);
     }
 
+    /**
+     * @dev  Update signer(only owner)
+     * @param newSigner New signer adress
+     */
     function updateSigners(address newSigner) public onlyOwner{
         _signer = newSigner;
         emit SetSigners(newSigner);
     }
 
+    /**
+     * @dev Whitelist mint
+     * @param deadline Transaction duration
+     * @param r R short-signature fields
+     * @param vs VS short-signature fields
+     */
     function whitelistMint(
         uint256 deadline, 
         bytes32 r, 
@@ -87,7 +97,13 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
     }
 
     // The following functions are overrides required by Solidity.
-    function tokenURI(uint256)public view override(ERC721) returns (string memory){
+
+
+    /**
+     * @dev Check token uri
+     * @return token uri
+     */
+    function tokenURI(uint256) public view override(ERC721) returns (string memory){
         return _tokenURI;
     }
 
@@ -98,10 +114,15 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
     function _update(
         address to,
         uint256 tokenId, 
-        address auth)internal override(ERC721, ERC721Pausable) returns (address){
+        address auth) internal override(ERC721, ERC721Pausable) returns (address){
         return super._update(to, tokenId, auth);
     }
 
+   /**
+     * @dev Check whether the user has received it
+     * @param userAddress Check user address
+     * @return true/false
+     */
     function getUserReceive(address userAddress) public view returns(bool){
         return BitMaps.get(userReceive, uint256(uint160(userAddress)));
     }
