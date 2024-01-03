@@ -14,6 +14,8 @@ error  AlreadyReceived();
 error  InvalidSignature();
 
 contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burnable {
+    using BitMaps for BitMaps.BitMap;
+
     event SetSigners(address newSigners);
     event SetTokenUri(string newTokenURI);
     event UserHasReceived(uint256 indexed tokenID, address indexed userAddress);
@@ -27,7 +29,7 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
     BitMaps.BitMap private userReceive;
 
     modifier isReceive() {
-        if(BitMaps.get(userReceive, uint256(uint160(msg.sender)))) revert AlreadyReceived();
+        if(userReceive.get(uint256(uint160(msg.sender)))) revert AlreadyReceived();
         _;
     }
 
@@ -101,7 +103,7 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
 
         _mint(msg.sender);
         
-        BitMaps.setTo(userReceive, uint256(uint160(msg.sender)),true);
+        userReceive.setTo(uint256(uint160(msg.sender)),true);
 
         emit UserHasReceived(_nextTokenId, msg.sender);
     }
