@@ -18,7 +18,7 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
     event SetTokenUri(string newTokenURI);
     event UserHasReceived(uint256 indexed tokenID, address indexed userAddress);
 
-    bytes32 private constant WHITELIST_MINT= keccak256("whitelistMint(address user,uint256 deadline)"); 
+    bytes32 private constant WHITELIST_MINT= keccak256("WhitelistMint(address user,uint256 deadline)"); 
     address private _signer;
 
     string private  _tokenURI;
@@ -44,21 +44,31 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
         _signer = _signerAddress;
     }
 
+    /**
+     * @dev Pause related functions(only owner)
+     */
     function pause() public onlyOwner {
         _pause();
     }
 
+    /**
+     * @dev Turn on related functions(only owner)
+     */
     function unpause() public onlyOwner {
         _unpause();
     }
 
+    /**
+     * @dev Update token uri(only owner)
+     * @param newTokenUri New token uri
+     */
     function updateTokenUri(string calldata newTokenUri) public onlyOwner{
         _tokenURI = newTokenUri;
         emit SetTokenUri(newTokenUri);
     }
 
     /**
-     * @dev  Update signer(only owner)
+     * @dev Update signer(only owner)
      * @param newSigner New signer adress
      */
     function updateSigners(address newSigner) public onlyOwner{
@@ -107,8 +117,13 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
         return _tokenURI;
     }
 
-    function _mint(address to) private {
-        _safeMint(to, ++_nextTokenId);
+   /**
+     * @dev Check whether the user has received it
+     * @param userAddress Check user address
+     * @return true/false
+     */
+    function getUserReceive(address userAddress) public view returns(bool){
+        return BitMaps.get(userReceive, uint256(uint160(userAddress)));
     }
 
     function _update(
@@ -118,12 +133,7 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
         return super._update(to, tokenId, auth);
     }
 
-   /**
-     * @dev Check whether the user has received it
-     * @param userAddress Check user address
-     * @return true/false
-     */
-    function getUserReceive(address userAddress) public view returns(bool){
-        return BitMaps.get(userReceive, uint256(uint160(userAddress)));
+    function _mint(address to) private {
+        _safeMint(to, ++_nextTokenId);
     }
 }
