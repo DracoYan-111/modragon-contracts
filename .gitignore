@@ -72,9 +72,6 @@ coverage.json
 # forge-coverage lcov.info file
 lcov.info
 
-# xdeployer output directory
-deployments
-
 # Foundry output directory
 forge-artifacts
 

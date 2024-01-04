@@ -27,11 +27,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 		log: true,
 		autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
 	});
-
+    
+    // TODO If you want to cancel "verification", please enable comments
     console.log(
         "Waiting 30 seconds before beginning the contract verification to allow the block explorer to index the contract...\n",
       );
-      
+
     await delay(30000); // Wait for 30 seconds before verifying the contract
 
     await hre.run("verify:verify", {

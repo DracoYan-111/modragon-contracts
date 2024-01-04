@@ -78,6 +78,7 @@ task(
 
 const config: HardhatUserConfig = {
   paths: {
+    deploy: "./deploy",
     sources: "./contracts/src",
   },
   solidity: {
@@ -115,7 +116,7 @@ const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: {
       hardhat: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-      localhost:"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+      localhost:"0xbDA5747bFD65F08deb54cb465eB87D40e51B197E",
       goerli:deployer,
       ethMain:deployer,
       bscTestnet:deployer,
@@ -169,7 +170,7 @@ const config: HardhatUserConfig = {
     },
     bscMain: {
       chainId: 56,
-      url: vars.get("BSC_MAINNET_URL", "") || process.env.ETH_MAINNET_URL,
+      url: vars.get("BSC_MAINNET_URL", "") || process.env.BSC_MAINNET_URL,
       accounts,
       ledgerAccounts,
     },
@@ -219,31 +220,29 @@ const config: HardhatUserConfig = {
   xdeploy: {
     // Change this name to the name of your main contract
     // Does not necessarily have to match the contract file name
-    contract: "",
+    contract: "./contracts/src/drawnBringer/DrawnBringerNFT.sol:DrawnBringerNFT",
 
     // Change to `undefined` if your constructor does not have any input arguments
     constructorArgsPath: "./deploy-args.ts",
 
     // The salt must be the same for each EVM chain for which you want to have a single contract address
     // Change the salt if you are doing a re-deployment with the same codebase
-    salt: vars.get(
-      "SALT",
-      // `keccak256("SALT")`
-      ""
-    ) || process.env.SALT,
-
+    // salt: vars.get(
+    //   "SALT",
+    //   // `keccak256("SALT")`
+    //   " "
+    // ) || process.env.SALT,
+    salt:"0x442eccc626ecafb5bae4f555163584164ad06783f754ae9db27583f4228fa1f5",
     // This is your wallet's private key
     signer: accounts[0],
 
     // Use the network names specified here: https://github.com/pcaversaccio/xdeployer#configuration
     // Use `localhost` or `hardhat` for local testing
-    networks: ["hardhat"],
+    networks: ["locahlost"],
 
     // Use the matching env URL with your chosen RPC in the `.env` file
     rpcUrls: [
-      "hardhat",
-      vars.get("ETH_SEPOLIA_TESTNET_URL", "") || process.env.ETH_SEPOLIA_TESTNET_URL,
-      vars.get("OPTIMISM_SEPOLIA_URL", "") || process.env.OPTIMISM_SEPOLIA_URL,
+      "http://127.0.0.1:8545/"
     ],
 
     // Maximum limit is 15 * 10 ** 6 or 15,000,000. If the deployments are failing, try increasing this number
