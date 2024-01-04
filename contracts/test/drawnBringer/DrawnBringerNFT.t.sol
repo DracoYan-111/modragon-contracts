@@ -66,7 +66,7 @@ contract DrawnBringerNFTTest is Test,IERC721Receiver {
         moDragonContractTest.unpause();
     }
 
-    function testWhitelistMint() public {
+    function testWhitelistMint() external {
         uint256 deadline = 1705755809;
 
         bytes32 typedDataHash = getTypedDataHash(deadline);
