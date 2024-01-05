@@ -9,25 +9,28 @@ function delay(ms: number) {
 }
 
 async function main() {
-  // const constructorArgs = ["Hello, Hardhat!"];
-  // const contract = await hre.ethers.deployContract("Greeter", constructorArgs);
+  //const [owner, account] = await ethers.getSigners();
 
-  // await contract.waitForDeployment();
-  // const contractAddress = await contract.getAddress();
+  const constructorArgs = ["tokenUri", "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003", "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"];
+  const contract = await hre.ethers.deployContract("/contracts/src/drawnBringer/DrawnBringerNFT.sol:DrawnBringerNFT", constructorArgs);
 
-  // console.log("Greeter deployed to: " + `${GREEN}${contractAddress}${RESET}\n`);
+  await contract.waitForDeployment();
+  const contractAddress = await contract.getAddress();
 
-  // console.log(
-  //   "Waiting 30 seconds before beginning the contract verification to allow the block explorer to index the contract...\n",
-  // );
-  // await delay(30000); // Wait for 30 seconds before verifying the contract
+  console.log("Greeter deployed to: " + `${GREEN}${contractAddress}${RESET}\n`);
 
-  // await hre.run("verify:verify", {
-  //   address: contractAddress,
-  //   constructorArguments: constructorArgs,
-  // });
+  // TODO Uncomment if you want to enable the `verify`
+  console.log(
+    "Waiting 30 seconds before beginning the contract verification to allow the block explorer to index the contract...\n",
+  );
+  await delay(30000); // Wait for 30 seconds before verifying the contract
 
-  // Uncomment if you want to enable the `tenderly` extension
+  await hre.run("verify:verify", {
+    address: contractAddress,
+    constructorArguments: constructorArgs,
+  });
+
+  // TODO Uncomment if you want to enable the `tenderly` extension
   // await hre.tenderly.verify({
   //   name: "Greeter",
   //   address: contractAddress,

@@ -15,6 +15,13 @@
 # Dependency directory
 node_modules
 
+abis
+
+# plug-in generation
+flattened
+gasReporte
+contractSize
+
 # dotenv environment variable files
 .env
 .env.development.local
@@ -64,9 +71,6 @@ coverage.json
 
 # forge-coverage lcov.info file
 lcov.info
-
-# xdeployer output directory
-deployments
 
 # Foundry output directory
 forge-artifacts

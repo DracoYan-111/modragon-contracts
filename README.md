@@ -1,4 +1,5 @@
 # Modragon-contracts
+
 Modragon contracts repository
 
 ## Installation
@@ -16,15 +17,57 @@ After having installed `pnpm`, simply run:
 ```console
 pnpm install
 ```
+
+Add forge-std
+
+```console
+forge install foundry-rs/forge-std
+```
+
+## Running Test scipts
+
+> [!NOTE]
+> The test script runs in the Hardhat network by default. If you need to modify the network configuration, please do so in the hardhat.config.ts file. Remember to check the configuration information when using it
+
+**Runing Hardhat node:**
+
+```console
+pnpm test:hh
+```
+
+**Runing Localhost node:**
+
+```console
+pnpm test:ll
+```
+
 ## Running Deployments
 
 > [!NOTE]
 > The deployment script [`deploy.ts`](./scripts/deploy.ts) attempts to automatically verify the contract on the target chain after deployment. If you have not configured an API key, the verification will fail.
 
-**Example Goerli:**
+**Example bash local deploy:**
 
 ```console
-pnpm deploy:goerli
+pnpm deploy:local:bash
+```
+
+**Example bash deploy:**
+
+```console
+pnpm deploy:bash
+```
+
+> Please enter your parameters and other information as required during deployment. Note: When entering the contract path, 'contracts/contracts/src' and '.sol' are already auto-filled, just enter the folder/file name directly.
+
+**Example Scripts deploy:**
+
+```console
+pnpm deploy:localhost
+```
+
+```console
+pnpm deploy:<netwokr name>
 ```
 
 > The deployment script [`deploy.ts`](./scripts/deploy.ts) includes the `tenderly` Hardhat Runtime Environment (HRE) extension with the `verify` method. Please consider uncommenting and configuring the Tenderly `project`, `username`, `forkNetwork`, `privateVerification`, and `deploymentsDir` attributes in the [`hardhat.config.ts`](./hardhat.config.ts) file before deploying or remove this call. Also, for this plugin to function you need to create a `config.yaml` file at `$HOME/.tenderly/config.yaml` or `%HOMEPATH%\.tenderly\config.yaml` and add an `access_key` field to it. For further information, see [here](https://www.npmjs.com/package/@tenderly/hardhat-tenderly#installing-tenderly-cli).

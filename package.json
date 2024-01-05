@@ -22,16 +22,20 @@
   "author": "Pascal Marco Caversaccio <pascal.caversaccio@hotmail.ch>",
   "license": "MIT",
   "scripts": {
+    "node:hh": "npx hardhat node",
+    "flatten": "bash scripts/flatten.sh",
+    "deploy:bash": "bash scripts/deploy.sh",
+    "deploy:local:bash": "bash scripts/deploy_local.sh",
+    "test:hh": "npx hardhat test",
+    "test:ll": "npx hardhat test --network localhost",
     "help": "npx hardhat help",
     "accounts": "npx hardhat accounts",
     "balances": "npx hardhat balances",
-    "node:hh": "npx hardhat node",
     "clean": "npx hardhat clean && forge clean",
     "snapshot": "forge snapshot --out forge-artifacts",
     "coverage:hh": "npx hardhat coverage",
     "coverage:forge": "forge coverage --report summary",
     "coverage:forge:report": "forge coverage --report lcov && lcov --remove lcov.info 'test/*' --output-file lcov.info --rc lcov_branch_coverage=1 && genhtml lcov.info --branch-coverage --output-dir coverage",
-    "test:hh": "npx hardhat test",
     "test:forge": "forge test -vvv --root . -C contracts/src --match-path \"contracts/test/*\" --out forge-artifacts",
     "compile": "npx hardhat compile && forge build --root . -C contracts/src --optimize --out forge-artifacts",
     "size": "npx hardhat size-contracts",
@@ -121,6 +125,7 @@
     "@matterlabs/hardhat-zksync-ethers": "0.0.1-beta.2",
     "@matterlabs/hardhat-zksync-solc": "^1.0.6",
     "@matterlabs/hardhat-zksync-verify": "^1.2.2",
+    "@metamask/eth-sig-util": "^5.0.0",
     "@nomicfoundation/hardhat-chai-matchers": "^2.0.2",
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
     "@nomicfoundation/hardhat-foundry": "^1.1.1",
@@ -155,5 +160,9 @@
     "typescript": "^5.3.3",
     "xdeployer": "^3.0.0",
     "zksync-ethers": "^6.0.0"
+  },
+  "dependencies": {
+    "hardhat-deploy": "^0.11.45",
+    "dotenv": "^10.0.0"
   }
 }

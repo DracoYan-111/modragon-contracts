@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 
 # TODO Read the contract name
-# echo Which contract do you want to flatten \(e.g. Greeter\)?
-# read contract
+# Read the contract name
+echo 📄Which contract do you want to deploy \(e.g. Contract path\)?
+read contract
+
+contract_name="${contract##*/}"
+echo "👍Contract name extracted: => $contract_name <="
 
 # Remove an existing flattened contract
-rm -rf ${contract}_flattened.sol
+rm -rf ./contracts/src/flattened/${contract_name}_flattened.sol
 
 # Flatten the contract
-forge flatten ./contracts/src/${contract}.sol > ${contract}_flattened.sol
+forge flatten ./contracts/src/${contract}.sol > ./contracts/src/flattened/${contract_name}_flattened.sol
+#/Users/zhumaomao.eth/Desktop/myCode/solidity/modragon-contracts/contracts/src/modragon/MoDragonContract.sol
