@@ -80,7 +80,7 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
      * @param r R short-signature fields
      * @param vs VS short-signature fields
      */
-    function whitelistMint(uint256 deadline, bytes32 r, bytes32 vs) public isReceive whenNotPaused {
+    function whitelistMint(uint256 deadline, bytes32 r, bytes32 vs) public onlyCanMintOnce whenNotPaused {
         if (deadline < block.timestamp) revert MintExpired();
 
         bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(WHITELIST_MINT, msg.sender, deadline)));
