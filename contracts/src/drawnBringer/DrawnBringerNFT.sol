@@ -87,7 +87,7 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
     function whitelistMint(
         uint256 deadline, 
         bytes32 r, 
-        bytes32 vs) public whenNotPaused{
+        bytes32 vs) public isReceive whenNotPaused{
         if (deadline < block.timestamp) revert MintExpired();
 
         bytes32 digest = _hashTypedDataV4(
