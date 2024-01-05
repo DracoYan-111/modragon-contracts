@@ -16,7 +16,7 @@ error InvalidSignature();
 contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burnable {
     using BitMaps for BitMaps.BitMap;
 
-    event SetSigners(address newSigners);
+    event SetSigner(address newSigner);
     event SetTokenUri(string newTokenURI);
     event UserHasReceived(uint256 indexed tokenID, address indexed userAddress);
 
@@ -69,9 +69,9 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
      * @dev Update signer(only owner)
      * @param newSigner New signer adress
      */
-    function updateSigners(address newSigner) public onlyOwner {
+    function updateSigner(address newSigner) public onlyOwner {
         _signer = newSigner;
-        emit SetSigners(newSigner);
+        emit SetSigner(newSigner);
     }
 
     /**
