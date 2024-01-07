@@ -88,9 +88,9 @@ contract DrawnBringerNFT is ERC721, EIP712, Ownable, ERC721Pausable, ERC721Burna
         (address recovered,,) = ECDSA.tryRecover(digest, r, vs);
         if (recovered != _signer) revert InvalidSignature();
 
-        _mint(msg.sender);
-
         userReceive.setTo(uint256(uint160(msg.sender)), true);
+
+        _mint(msg.sender);
 
         emit UserHasReceived(_nextTokenId, msg.sender);
     }
