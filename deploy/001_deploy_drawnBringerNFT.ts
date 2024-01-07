@@ -18,7 +18,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     const args = [
         "https://cdn-dragonverseneo.mobox.app/nft/TheDawnBringer.gif",
          deployer,
-         deployer
+         "0x803470638940Ec595B40397cbAa597439DE55907"
         ];
 
 	let contract = await deploy('DrawnBringerNFT', {
