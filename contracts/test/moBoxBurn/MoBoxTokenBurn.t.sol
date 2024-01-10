@@ -60,7 +60,7 @@ contract MoBoxTokenBurnTest is Test {
     }
 
     function testUserBurnToken() public {
-       // mintToken();
+       mintToken();
 
         vm.prank(initialOwner);
         moBoxTokenBurnTest.userBurnToken(1);
