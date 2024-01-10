@@ -67,7 +67,7 @@ contract MoBoxTokenBurn is Ownable, Pausable {
      * @param count Number of count
      */
     function userBurnToken(uint256 count) public whenNotPaused {
-        if (count > 0 && count <= 5) revert CheckLimitExceededFailed();
+        if (count == 0 || count > 5) revert CheckLimitExceededFailed();
         if (msg.sender != tx.origin) revert CheckAddressValidityFailed(tx.origin);
 
         uint256 allBurnAmount = burnAmount * count;

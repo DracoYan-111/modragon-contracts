@@ -9,15 +9,16 @@ import {SafeERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeE
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 import {MoBoxTokenBurn} from "../../src/moBoxBurn/MoBoxTokenBurn.sol";
+import {TestToken} from "./testToken/TestToken.sol";
 
 contract MoBoxTokenBurnTest is Test {
+    TestToken public testToken;
     MoBoxTokenBurn public moBoxTokenBurnTest;
 
     address public initialOwner;
     IERC20 public moboxTokenAddressl;
 
     uint256 public constant BURN_AMOUNT = 0.1 ether;
-    IERC20 public constant MOBOX_TOKEN_ADDRESS = IERC20(0x000000000000000000000000000000000000dEaD);
     uint256 public constant INITIALOWNERKEY = 0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0;
 
     /**
@@ -26,7 +27,8 @@ contract MoBoxTokenBurnTest is Test {
     function setUp() external {
         initialOwner = vm.addr(INITIALOWNERKEY);
 
-        moBoxTokenBurnTest = new MoBoxTokenBurn(BURN_AMOUNT, initialOwner, MOBOX_TOKEN_ADDRESS);
+        testToken = new TestToken(initialOwner);
+        moBoxTokenBurnTest = new MoBoxTokenBurn(BURN_AMOUNT, initialOwner, testToken);
     }
 
     function testOwnerEq() external {
@@ -57,7 +59,36 @@ contract MoBoxTokenBurnTest is Test {
         moBoxTokenBurnTest.unpause();
     }
 
-    function testFail_UserBurnToken() external {
+    function testUserBurnToken() public {
+       // mintToken();
+
+        vm.prank(initialOwner);
+        moBoxTokenBurnTest.userBurnToken(1);
+    }
+
+    function testFail_UserBurnTokenNotContract() external {
+        moBoxTokenBurnTest.userBurnToken(1);
+    }
+
+    function testFail_UserBurnTokenCountEq0() external {
+        mintAndApproveToken();
+
+        vm.prank(initialOwner);
+        moBoxTokenBurnTest.userBurnToken(0);
+    }
+
+    function testFail_UserBurnTokenCountEq10() external {
+        mintAndApproveToken();
+
+        vm.prank(initialOwner);
         moBoxTokenBurnTest.userBurnToken(10);
+    }
+
+    function mintAndApproveToken() private {
+        vm.prank(initialOwner);
+        testToken.mint(initialOwner, 999999 ether);
+
+        vm.prank(initialOwner);
+        testToken.approve(address(moBoxTokenBurnTest), 999999 ether);
     }
 }
