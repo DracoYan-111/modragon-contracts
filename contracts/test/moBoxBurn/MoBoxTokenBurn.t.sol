@@ -45,13 +45,6 @@ contract MoBoxTokenBurnTest is Test {
         assertEq(moBoxTokenBurnTest.burnAmount(), 0.2 ether);
     }
 
-    function testSetMoboxToken() external {
-        vm.prank(initialOwner);
-        address tokenAddress = address(1);
-        moBoxTokenBurnTest.updateMoboxToken(IERC20(tokenAddress));
-        assertEq(address(moBoxTokenBurnTest.moboxTokenAddress()), tokenAddress);
-    }
-
     function testPause() external {
         vm.prank(initialOwner);
         moBoxTokenBurnTest.pause();
@@ -59,36 +52,28 @@ contract MoBoxTokenBurnTest is Test {
         moBoxTokenBurnTest.unpause();
     }
 
-    function testUserBurnToken() public {
-       // mintToken();
+    function testBurnTokenForPowern() public {
+        mintAndApproveToken();
 
-        vm.prank(initialOwner);
-        moBoxTokenBurnTest.userBurnToken(1);
-    }
-
-    function testFail_UserBurnTokenNotContract() external {
-        moBoxTokenBurnTest.userBurnToken(1);
+        moBoxTokenBurnTest.burnTokenForPower(1);
     }
 
     function testFail_UserBurnTokenCountEq0() external {
         mintAndApproveToken();
 
-        vm.prank(initialOwner);
-        moBoxTokenBurnTest.userBurnToken(0);
+        moBoxTokenBurnTest.burnTokenForPower(0);
     }
 
     function testFail_UserBurnTokenCountEq10() external {
         mintAndApproveToken();
 
-        vm.prank(initialOwner);
-        moBoxTokenBurnTest.userBurnToken(10);
+        moBoxTokenBurnTest.burnTokenForPower(10);
     }
 
     function mintAndApproveToken() private {
         vm.prank(initialOwner);
-        testToken.mint(initialOwner, 999999 ether);
+        testToken.mint(address(this), 999999 ether);
 
-        vm.prank(initialOwner);
         testToken.approve(address(moBoxTokenBurnTest), 999999 ether);
     }
 }
