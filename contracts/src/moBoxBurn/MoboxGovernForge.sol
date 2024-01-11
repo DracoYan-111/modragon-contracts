@@ -5,7 +5,7 @@ import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Pausable} from "@openzeppelin/contracts/utils/Pausable.sol";
 import {SafeERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-contract MoBoxTokenBurn is Ownable, Pausable {
+contract MoboxGovernForge is Ownable, Pausable {
     using SafeERC20 for IERC20;
 
     /**
@@ -50,14 +50,14 @@ contract MoBoxTokenBurn is Ownable, Pausable {
      * @dev Check the number of times destroyed
      * @param burnCount Number of times destroyed
      */
-    function burnTokenForPower(uint256 burnCount) public whenNotPaused {
+    function burnForProposal(uint256 burnCount) public whenNotPaused {
         if (burnCount == 0 || burnCount > 5) revert CheckLimitExceededFailed();
 
         uint256 allBurnAmount = burnAmount * burnCount;
         moboxTokenAddress.safeTransferFrom(msg.sender, BSC_BURN_ADDRESS, allBurnAmount);
 
-        userBurnCount[msg.sender] += burnCount;
+        uint256 totalNumberBurn = userBurnCount[msg.sender] += burnCount;
 
-        emit UserBurned(msg.sender, userBurnCount[msg.sender], allBurnAmount);
+        emit UserBurned(msg.sender, totalNumberBurn, allBurnAmount);
     }
 }

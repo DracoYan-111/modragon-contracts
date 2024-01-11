@@ -8,12 +8,12 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {SafeERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
-import {MoBoxTokenBurn} from "../../src/moBoxBurn/MoBoxTokenBurn.sol";
+import {MoboxGovernForge} from "../../src/moBoxBurn/MoboxGovernForge.sol";
 import {TestToken} from "./testToken/TestToken.sol";
 
-contract MoBoxTokenBurnTest is Test {
+contract MoboxGovernForgeTest is Test {
     TestToken public testToken;
-    MoBoxTokenBurn public moBoxTokenBurnTest;
+    MoboxGovernForge public moBoxTokenBurnTest;
 
     address public initialOwner;
     IERC20 public moboxTokenAddressl;
@@ -28,7 +28,7 @@ contract MoBoxTokenBurnTest is Test {
         initialOwner = vm.addr(INITIALOWNERKEY);
 
         testToken = new TestToken(initialOwner);
-        moBoxTokenBurnTest = new MoBoxTokenBurn(BURN_AMOUNT, initialOwner, testToken);
+        moBoxTokenBurnTest = new MoboxGovernForge(BURN_AMOUNT, initialOwner, testToken);
     }
 
     function testOwnerEq() external {
@@ -52,22 +52,25 @@ contract MoBoxTokenBurnTest is Test {
         moBoxTokenBurnTest.unpause();
     }
 
-    function testBurnTokenForPowern() public {
+    function testBurnTokenForProposal() public {
         mintAndApproveToken();
 
-        moBoxTokenBurnTest.burnTokenForPower(1);
+        moBoxTokenBurnTest.burnForProposal(1);
+
+        moBoxTokenBurnTest.burnForProposal(3);
+
     }
 
-    function testFail_UserBurnTokenCountEq0() external {
+    function testFail_BurnForProposalCountEq0() external {
         mintAndApproveToken();
 
-        moBoxTokenBurnTest.burnTokenForPower(0);
+        moBoxTokenBurnTest.burnForProposal(0);
     }
 
-    function testFail_UserBurnTokenCountEq10() external {
+    function testFail_BurnForProposalCountEq10() external {
         mintAndApproveToken();
 
-        moBoxTokenBurnTest.burnTokenForPower(10);
+        moBoxTokenBurnTest.burnForProposal(10);
     }
 
     function mintAndApproveToken() private {

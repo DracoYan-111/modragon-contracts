@@ -16,12 +16,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
      * mobox token address
      */
     const args = [
-         "10000000000000000000",
+         "1000000000000000",
          deployer,
          "0x01FD87cB74265a0a9Af6a62afB2FEf8C9646f515"
         ];
 
-	let contract = await deploy('MoBoxTokenBurn', {
+	let contract = await deploy('MoboxGovernForge', {
 		from: deployer,
 		args,
 		log: true,
@@ -41,5 +41,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     });
  }
 export default func;
-func.id = '001_deploy_moBoxTokenBurn'; // id required to prevent reexecution
-func.tags = ['MoBoxTokenBurn'];
+func.id = '001_deploy_moboxGovernForge'; // id required to prevent reexecution
+func.tags = ['MoboxGovernForge'];
