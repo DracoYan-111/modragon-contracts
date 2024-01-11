@@ -4,11 +4,11 @@ pragma solidity ^0.8.23;
 import {Vm} from "forge-std/Vm.sol";
 import {Test} from "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
-import {DrawnBringerNFT} from "../../src/drawnBringer/DrawnBringerNFT.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
+import {DrawnBringerNFT} from "../../src/drawnBringer/DrawnBringerNFT.sol";
 
 contract DrawnBringerNFTTest is Test,IERC721Receiver {
     bytes32 private constant TYPE_HASH =
@@ -56,7 +56,7 @@ contract DrawnBringerNFTTest is Test,IERC721Receiver {
 
     function testSetSigner() external {
         vm.prank(initialOwner);
-        moDragonContractTest.updateSigners(signerAddress);
+        moDragonContractTest.updateSigner(signerAddress);
     }
 
     function testPause() external {

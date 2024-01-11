@@ -22,8 +22,8 @@ ignored_error_codes = []                                      # a list of ignore
 fuzz = { runs = 256 }                                         # the number of fuzz runs for tests
 invariant = { runs = 256 }                                    # the number of runs that must execute for each invariant test group
 ffi = false                                                   # whether to enable foreign function interface (ffi) cheatcodes or not
-sender = '0x00a329c0648769a73afac7f9381e08fb43dbea72'         # the address of `msg.sender` in tests
-tx_origin = '0x00a329c0648769a73afac7f9381e08fb43dbea72'      # the address of `tx.origin` in tests
+sender = '0xdD2FD4581271e230360230F9337D5c0430Bf44C0'         # the address of `msg.sender` in tests
+tx_origin = '0xdD2FD4581271e230360230F9337D5c0430Bf44C0'      # the address of `tx.origin` in tests
 initial_balance = '0xffffffffffffffffffffffff'                # the initial balance of the test contract
 block_number = 0                                              # the block number we are at in tests
 chain_id = 31337                                              # the chain id we are on in tests
