@@ -14,6 +14,7 @@ import "@matterlabs/hardhat-zksync-deploy";
 import "@matterlabs/hardhat-zksync-verify";
 import "@matterlabs/hardhat-zksync-ethers";
 import "@truffle/dashboard-hardhat-plugin";
+import "@openzeppelin/hardhat-upgrades";
 import "hardhat-gas-reporter";
 import "hardhat-abi-exporter";
 import "solidity-coverage";
@@ -24,11 +25,11 @@ import * as tdly from "@tenderly/hardhat-tenderly";
 
 dotenv.config();
 
-const deployer = process.env.DEPLOYER||'0x0000000000000000000000000000000000000000';
+const deployer = process.env.DEPLOYER || '0x0000000000000000000000000000000000000000';
 const prodDeployer = process.env.PROD_DEPLOYER || '0x0000000000000000000000000000000000000000';
 const prodDeployerKey = process.env.PROD_DEPLOYER_KEY || '0x0000000000000000000000000000000000000000000000000000000000000000';
 
-const ethMainnetUrl = vars.get("ETH_MAINNET_URL",process.env.ETH_MAINNET_URL);
+const ethMainnetUrl = vars.get("ETH_MAINNET_URL", process.env.ETH_MAINNET_URL);
 
 const accounts = [
   vars.get(
@@ -116,11 +117,11 @@ const config: HardhatUserConfig = {
   namedAccounts: {
     deployer: {
       hardhat: "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-      localhost:"0xbDA5747bFD65F08deb54cb465eB87D40e51B197E",
-      goerli:deployer,
-      ethMain:deployer,
-      bscTestnet:deployer,
-      bscMain:deployer
+      localhost: "0xbDA5747bFD65F08deb54cb465eB87D40e51B197E",
+      goerli: deployer,
+      ethMain: deployer,
+      bscTestnet: deployer,
+      bscMain: deployer
     },
   },
   networks: {
@@ -152,19 +153,19 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       chainId: 5,
-      url: vars.get("ETH_GOERLI_TESTNET_URL","") || process.env.ETH_GOERLI_TESTNET_URL,
+      url: vars.get("ETH_GOERLI_TESTNET_URL", "") || process.env.ETH_GOERLI_TESTNET_URL,
       accounts,
       ledgerAccounts,
     },
     ethMain: {
       chainId: 1,
-      url: vars.get("ETH_MAINNET_URL","") || process.env.ETH_MAINNET_URL,
+      url: vars.get("ETH_MAINNET_URL", "") || process.env.ETH_MAINNET_URL,
       accounts,
       ledgerAccounts,
     },
     bscTestnet: {
       chainId: 97,
-      url: vars.get("BSC_TESTNET_URL","") || process.env.BSC_TESTNET_URL,
+      url: vars.get("BSC_TESTNET_URL", "") || process.env.BSC_TESTNET_URL,
       accounts,
       ledgerAccounts,
     },
@@ -188,7 +189,7 @@ const config: HardhatUserConfig = {
     },
     arbitrumSepolia: {
       chainId: 421614,
-      url: vars.get("ARBITRUM_SEPOLIA_URL","") || process.env.ARBITRUM_SEPOLIA_URL,
+      url: vars.get("ARBITRUM_SEPOLIA_URL", "") || process.env.ARBITRUM_SEPOLIA_URL,
       accounts,
       ledgerAccounts,
     },
@@ -232,7 +233,7 @@ const config: HardhatUserConfig = {
     //   // `keccak256("SALT")`
     //   " "
     // ) || process.env.SALT,
-    salt:"0x442eccc626ecafb5bae4f555163584164ad06783f754ae9db27583f4228fa1f5",
+    salt: "0x442eccc626ecafb5bae4f555163584164ad06783f754ae9db27583f4228fa1f5",
     // This is your wallet's private key
     signer: accounts[0],
 
@@ -250,7 +251,7 @@ const config: HardhatUserConfig = {
     gasLimit: 1.2 * 10 ** 6,
   },
   contractSizer: {
-    unit:'kB',
+    unit: 'kB',
     only: [],
     except: [],
     strict: true,
@@ -687,6 +688,13 @@ const config: HardhatUserConfig = {
     privateVerification: false,
     deploymentsDir: "deployments_tenderly",
   },
+  external: {
+    contracts: [
+      {
+        artifacts: 'node_modules/@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol/',
+      }
+    ]
+  }
 };
 
 export default config;
