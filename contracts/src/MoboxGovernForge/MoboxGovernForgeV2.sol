@@ -34,6 +34,7 @@ contract MoboxGovernForgeV2 is UUPSUpgradeable, PausableUpgradeable, IMoboxGover
 
         __Ownable_init(initialOwner_);
         __UUPSUpgradeable_init();
+        __Pausable_init();
     }
 
     function pause() external onlyOwner {
