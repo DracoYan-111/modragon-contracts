@@ -2,19 +2,18 @@
 pragma solidity ^0.8.23;
 
 import {SafeERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
+import {PausableUpgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 
 import {IMoboxGovernForgeV2} from "./interfaces/IMoboxGovernForgeV2.sol";
 
 contract MoboxGovernForgeV2 is
     Initializable,
     UUPSUpgradeable,
-    OwnableUpgradeable,
     PausableUpgradeable,
-    IMoboxGovernForgeV2
+    IMoboxGovernForgeV2,
+    Ownable2StepUpgradeable
 {
     using SafeERC20 for IERC20;
 
@@ -83,6 +82,11 @@ contract MoboxGovernForgeV2 is
     function burnAmount() external view returns (uint256) {
         MoboxGovernForgeV2Storage storage $ = _getMoboxGovernForgeV2Storage();
         return $.burnAmount;
+    }
+
+    function moboxTokenAddress() external view returns (address) {
+        MoboxGovernForgeV2Storage storage $ = _getMoboxGovernForgeV2Storage();
+        return address($.moboxTokenAddress);
     }
 
     function userBurnCount(address userAddr) external view returns (uint256) {
