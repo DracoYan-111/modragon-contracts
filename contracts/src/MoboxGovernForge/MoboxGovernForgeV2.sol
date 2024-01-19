@@ -4,17 +4,10 @@ pragma solidity ^0.8.23;
 import {SafeERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
-import {PausableUpgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
-
+import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import {IMoboxGovernForgeV2} from "./interfaces/IMoboxGovernForgeV2.sol";
 
-contract MoboxGovernForgeV2 is
-    Initializable,
-    UUPSUpgradeable,
-    PausableUpgradeable,
-    IMoboxGovernForgeV2,
-    Ownable2StepUpgradeable
-{
+contract MoboxGovernForgeV2 is UUPSUpgradeable, PausableUpgradeable, IMoboxGovernForgeV2, Ownable2StepUpgradeable {
     using SafeERC20 for IERC20;
 
     address public constant BSC_BURN_ADDRESS = 0x000000000000000000000000000000000000dEaD;
