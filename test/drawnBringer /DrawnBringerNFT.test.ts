@@ -53,8 +53,8 @@ console.log(await drawnBringerNFT.tokenURI(0));
     });
     it("🙅‍♂️Only the owner should be able to set new signers", async function () {
 
-      await expect(drawnBringerNFT.connect(account).updateSigners(owner.address)).to.be.reverted;
-      await expect(drawnBringerNFT.updateSigners(owner.address)).not.to.be.reverted;
+      await expect(drawnBringerNFT.connect(account).updateSigner(owner.address)).to.be.reverted;
+      await expect(drawnBringerNFT.updateSigner(owner.address)).not.to.be.reverted;
 
     });
     it("🙅‍♂️Only the owner should be able to set new tokenUri", async function () {

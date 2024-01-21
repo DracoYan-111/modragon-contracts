@@ -29,16 +29,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 	});
     
     // TODO If you want to cancel "verification", please enable comments
-    console.log(
-        "Waiting 30 seconds before beginning the contract verification to allow the block explorer to index the contract...\n",
-      );
+    // console.log(
+    //     "Waiting 30 seconds before beginning the contract verification to allow the block explorer to index the contract...\n",
+    //   );
 
-    await delay(30000); // Wait for 30 seconds before verifying the contract
+    // await delay(30000); // Wait for 30 seconds before verifying the contract
 
-    await hre.run("verify:verify", {
-        address: contract.address,
-        constructorArguments: args,
-    });
+    // await hre.run("verify:verify", {
+    //     address: contract.address,
+    //     constructorArguments: args,
+    // });
  }
 export default func;
 func.id = '001_deploy_moboxGovernForge'; // id required to prevent reexecution
