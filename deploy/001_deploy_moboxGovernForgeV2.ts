@@ -66,9 +66,3 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 export default func;
 func.id = '001_deploy_moboxGovernForgeV2'; // id required to prevent reexecution
 func.tags = ['MoboxGovernForgeV2'];
-1000000000000001000//1000000001000//1000000000001000//1000000000001000
-//0x5E7Eb57B163b78e93608E773e0F4a88A55d7C28F
-{
-  "url": "https://modragon-api.mobox.app/modragonGovern/snapshotData",
-  "type": "api-get"
-}
