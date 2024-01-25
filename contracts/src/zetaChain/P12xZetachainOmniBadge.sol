@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.7;
+pragma solidity >=0.8.7;
 
-import {ECDSA} from "@openzeppelin/contracts-4.9.5/utils/cryptography/ECDSA.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable-4.8.0/proxy/utils/UUPSUpgradeable.sol";
-import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable-4.8.0/access/Ownable2StepUpgradeable.sol";
-import {EIP712Upgradeable, Initializable} from "@openzeppelin/contracts-upgradeable-4.8.0/utils/cryptography/EIP712Upgradeable.sol";
+import {Ownable2StepUpgradeable,Initializable} from "@openzeppelin/contracts-upgradeable-4.8.0/access/Ownable2StepUpgradeable.sol";
+import {EIP712Upgradeable, ECDSAUpgradeable} from "@openzeppelin/contracts-upgradeable-4.8.0/utils/cryptography/EIP712Upgradeable.sol";
 import {ERC721Upgradeable, ERC721PausableUpgradeable} from "@openzeppelin/contracts-upgradeable-4.8.0/token/ERC721/extensions/ERC721PausableUpgradeable.sol";
 
-import {SystemContract,zContract,zContext} from "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
+import {SystemContract, zContract, zContext} from "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
 
 import {IP12xZetachainOmniBadge} from "./interfaces/IP12xZetachainOmniBadge.sol";
 
@@ -65,6 +64,7 @@ contract P12xZetachainOmniBadge is
         $.systemContract = SystemContract(_systemContractAddress);
 
         __ERC721_init("P12 x Zetachain OmniBadge", "P12 x Zetachain OmniBadge");
+        __EIP712_init("P12 x Zetachain OmniBadge", "V1.0.0");
         __ERC721Pausable_init();
         __UUPSUpgradeable_init();
         __Ownable_init();
@@ -130,7 +130,7 @@ contract P12xZetachainOmniBadge is
 
         bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(WHITELIST_MINT, msg.sender, deadline)));
 
-        (address recovered, ) = ECDSA.tryRecover(digest, r, vs);
+        (address recovered, ) = ECDSAUpgradeable.tryRecover(digest, r, vs);
         if (recovered != $._signer) revert InvalidSignature();
 
         $.userReceive[msg.sender] = true;
