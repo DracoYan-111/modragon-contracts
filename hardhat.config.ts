@@ -188,6 +188,18 @@ const config: HardhatUserConfig = {
       accounts,
       ledgerAccounts,
     },
+    zetaTestnet: {
+      chainId: 7001,
+      url: vars.get("ZETA_TESTNET_URL", "") || process.env.ZETA_TESTNET_URL,
+      accounts,
+      ledgerAccounts,
+    },
+    zetaMain: {
+      chainId: 7000,
+      url: vars.get("ZETA_MAINNET_URL", "") || process.env.ZETA_MAINNET_URL,
+      accounts,
+      ledgerAccounts,
+    },
     optimismTestnet: {
       chainId: 420,
       url: vars.get("OPTIMISM_TESTNET_URL", "") || process.env.OPTIMISM_TESTNET_URL,
