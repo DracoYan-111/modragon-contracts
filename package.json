@@ -22,6 +22,7 @@
   "author": "Pascal Marco Caversaccio <pascal.caversaccio@hotmail.ch>",
   "license": "MIT",
   "scripts": {
+    "verify":"npx hardhat verify --network",
     "node:hh": "npx hardhat node",
     "flatten": "bash scripts/flatten.sh",
     "deploy:bash": "bash scripts/deploy.sh",
@@ -54,6 +55,8 @@
     "deploy:ethmain": "npx hardhat run --network ethMain scripts/deploy.ts",
     "deploy:bsctestnet": "npx hardhat --network bscTestnet deploy",
     "deploy:bscmain": "npx hardhat --network bscMain deploy",
+    "deploy:zetatestnet": "npx hardhat --network zetaTestnet deploy",
+    "deploy:zetamain": "npx hardhat --network zetaMain deploy",
     "deploy:optimismtestnet": "npx hardhat run --network optimismTestnet scripts/deploy.ts",
     "deploy:optimismsepolia": "npx hardhat run --network optimismSepolia scripts/deploy.ts",
     "deploy:optimismmain": "npx hardhat run --network optimismMain scripts/deploy.ts",
