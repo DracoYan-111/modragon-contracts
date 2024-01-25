@@ -133,7 +133,6 @@
     "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@nomicfoundation/hardhat-verify": "^2.0.3",
-    "@openzeppelin/contracts": "^5.0.1",
     "@openzeppelin/hardhat-upgrades": "^3.0.2",
     "@tenderly/hardhat-tenderly": "^2.1.0",
     "@truffle/dashboard-hardhat-plugin": "^0.2.15",
@@ -163,8 +162,12 @@
     "zksync-ethers": "^6.0.0"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^5.0.1",
+    "@openzeppelin/contracts-4.9.5": "npm:@openzeppelin/contracts@4.9.5",
     "@openzeppelin/contracts-upgradeable": "^5.0.1",
+    "@openzeppelin/contracts-upgradeable-4.8.0": "npm:@openzeppelin/contracts-upgradeable@4.8.0",
     "@openzeppelin/upgrades-core": "^1.32.2",
+    "@zetachain/protocol-contracts": "^3.0.2",
     "dotenv": "^10.0.0",
     "hardhat-deploy": "^0.11.45",
     "viem": "^2.0.6"
