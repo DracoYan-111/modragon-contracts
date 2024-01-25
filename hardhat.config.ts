@@ -83,16 +83,29 @@ const config: HardhatUserConfig = {
     sources: "./contracts/src",
   },
   solidity: {
-    // Only use Solidity default versions `>=0.8.20` for EVM networks that support the opcode `PUSH0`
-    // Otherwise, use the versions `<=0.8.19`
-    version: "0.8.23",
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 999_999,
+    compilers: [
+      // Only use Solidity default versions `>=0.8.20` for EVM networks that support the opcode `PUSH0`
+      // Otherwise, use the versions `<=0.8.19`
+      {
+        version: "0.8.23",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 999_999,
+          },
+          evmVersion: "paris", // Prevent using the `PUSH0` opcode
+        }
       },
-      evmVersion: "paris", // Prevent using the `PUSH0` opcode
-    },
+      {
+        version: "0.8.7",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 999_999,
+          },
+        }
+      }
+    ]
   },
   zksolc: {
     version: "1.3.19",
