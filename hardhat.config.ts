@@ -134,7 +134,8 @@ const config: HardhatUserConfig = {
       goerli: deployer,
       ethMain: deployer,
       bscTestnet: deployer,
-      bscMain: deployer
+      bscMain: deployer,
+      zetaTestnet:deployer,
     },
   },
   networks: {
