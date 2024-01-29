@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.7;
 
-import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable-4.8.0/proxy/utils/UUPSUpgradeable.sol";
-import {Ownable2StepUpgradeable,Initializable} from "@openzeppelin/contracts-upgradeable-4.8.0/access/Ownable2StepUpgradeable.sol";
-import {EIP712Upgradeable, ECDSAUpgradeable} from "@openzeppelin/contracts-upgradeable-4.8.0/utils/cryptography/EIP712Upgradeable.sol";
-import {ERC721Upgradeable, ERC721PausableUpgradeable} from "@openzeppelin/contracts-upgradeable-4.8.0/token/ERC721/extensions/ERC721PausableUpgradeable.sol";
+import {BitMaps} from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
+import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {ERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
+import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
+import {EIP712Upgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
+import {ERC721PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol";
 
 import {SystemContract, zContract, zContext} from "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
 
@@ -20,6 +23,8 @@ contract P12xZetachainOmniBadge is
     IP12xZetachainOmniBadge,
     zContract
 {
+    using BitMaps for BitMaps.BitMap;
+
     bytes32 private constant WHITELIST_MINT = keccak256("WhitelistMint(address user,uint256 deadline)");
 
     // keccak256(abi.encode(uint256(keccak256("P12xZetachainOmniBadgeStorage")) - 1)) & ~bytes32(uint256(0xff))
@@ -31,13 +36,13 @@ contract P12xZetachainOmniBadge is
         string _tokenURI;
         uint256 _nextTokenId;
         SystemContract systemContract;
-        mapping(address => bool) userReceive;
+        BitMaps.BitMap userReceive;
     }
 
     modifier onlyCanMintOnce() {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        if ($.userReceive[msg.sender]) revert AlreadyReceived();
+        if ($.userReceive.get(uint256(uint160(msg.sender)))) revert AlreadyReceived();
         _;
     }
 
@@ -55,7 +60,8 @@ contract P12xZetachainOmniBadge is
     function initialize(
         address _systemContractAddress,
         string memory _tokenUri,
-        address _signerAddress
+        address _signerAddress,
+        address initialOwner
     ) public initializer {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
@@ -65,9 +71,9 @@ contract P12xZetachainOmniBadge is
 
         __ERC721_init("P12 x Zetachain OmniBadge", "P12 x Zetachain OmniBadge");
         __EIP712_init("P12 x Zetachain OmniBadge", "V1.0.0");
+        __Ownable_init(initialOwner);
         __ERC721Pausable_init();
         __UUPSUpgradeable_init();
-        __Ownable_init();
     }
 
     /**
@@ -130,10 +136,10 @@ contract P12xZetachainOmniBadge is
 
         bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(WHITELIST_MINT, msg.sender, deadline)));
 
-        (address recovered, ) = ECDSAUpgradeable.tryRecover(digest, r, vs);
+        (address recovered, , ) = ECDSA.tryRecover(digest, r, vs);
         if (recovered != $._signer) revert InvalidSignature();
 
-        $.userReceive[msg.sender] = true;
+        $.userReceive.setTo(uint256(uint160(msg.sender)), true);
 
         _mint(msg.sender);
 
@@ -160,7 +166,7 @@ contract P12xZetachainOmniBadge is
     function getUserReceive(address userAddress) public view returns (bool) {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        return $.userReceive[userAddress];
+        return BitMaps.get($.userReceive, uint256(uint160(userAddress)));
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
@@ -176,20 +182,6 @@ contract P12xZetachainOmniBadge is
         // TODO: implement the logic
     }
 
-    /**
-     * @dev Override _beforeTokenTransfer from both ERC721Upgradeable and ERC721PausableUpgradeable
-     */
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 firstTokenId,
-        uint256 batchSize
-    ) internal virtual override(ERC721Upgradeable, ERC721PausableUpgradeable) {
-        super._beforeTokenTransfer(from, to, firstTokenId, batchSize);
-
-        require(!paused(), "ERC721Pausable: token transfer while paused");
-    }
-
     function _getP12xZetachainOmniBadgeStorage() private pure returns (P12xZetachainOmniBadgeStorage storage $) {
         assembly {
             $.slot := P12xZetachainOmniBadgeStorageLocation
@@ -200,5 +192,13 @@ contract P12xZetachainOmniBadge is
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
         _safeMint(to, ++$._nextTokenId);
+    }
+
+    function _update(
+        address to,
+        uint256 tokenId,
+        address auth
+    ) internal override(ERC721Upgradeable, ERC721PausableUpgradeable) returns (address) {
+        return super._update(to, tokenId, auth);
     }
 }

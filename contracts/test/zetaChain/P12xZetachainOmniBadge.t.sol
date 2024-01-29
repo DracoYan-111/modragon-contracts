@@ -104,7 +104,7 @@ contract P12xZetachainOmniBadgeTest is Test, IERC721Receiver {
                 keccak256(bytes("P12 x Zetachain OmniBadge")),
                 keccak256(bytes(VERSION)),
                 1,
-                0x7b96aF9Bd211cBf6BA5b0dd53aa61Dc5806b6AcE
+                0xD7ACd2a9FD159E69Bb102A1ca21C9a3e3A5F771B
             )
         );
 

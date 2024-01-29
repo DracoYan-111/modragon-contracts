@@ -12,5 +12,5 @@ echo "👍Contract name extracted: => $contract_name <="
 rm -rf ./contracts/src/flattened/${contract_name}_flattened.sol
 
 # Flatten the contract
-forge flatten ./contracts/src/${contract}.sol > ./contracts/src/flattened/${contract_name}_flattened.sol
+forge flatten ./contracts/src/${contract}.sol > ./flattened/${contract_name}_flattened.sol
 #/Users/zhumaomao.eth/Desktop/myCode/solidity/modragon-contracts/contracts/src/modragon/MoDragonContract.sol
