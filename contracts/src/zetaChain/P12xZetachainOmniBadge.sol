@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.7;
+pragma solidity ^0.8.23;
 
 import {BitMaps} from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
@@ -9,9 +9,9 @@ import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/acces
 import {EIP712Upgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
 import {ERC721PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol";
 
-import {SystemContract, zContract, zContext} from "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
+import {SystemContract} from "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
 
-import {IP12xZetachainOmniBadge} from "./interfaces/IP12xZetachainOmniBadge.sol";
+import {IP12xZetachainOmniBadge, zContract, zContext} from "./interfaces/IP12xZetachainOmniBadge.sol";
 
 contract P12xZetachainOmniBadge is
     Initializable,
@@ -63,8 +63,7 @@ contract P12xZetachainOmniBadge is
         _;
     }
 
-    modifier onlyDaysUpdateAndMintBehavior(){
-
+    modifier onlyDaysUpdateAndMintBehavior() {
         uint256 voteDays = getVoteDays();
 
         if (voteDays == getVotingDurationDays()) revert votingHasEnded();
@@ -213,7 +212,7 @@ contract P12xZetachainOmniBadge is
      * @dev Users vote for their favorite games
      * @param gameId User favorite game id
      */
-    function userFavoriteGameVote(uint256 gameId) external whenNotPaused onlyDaysUpdateAndMintBehavior{
+    function userFavoriteGameVote(uint256 gameId) external whenNotPaused onlyDaysUpdateAndMintBehavior {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
         $.userVotingStatus[msg.sender][getVoteDays()] = gameId;
