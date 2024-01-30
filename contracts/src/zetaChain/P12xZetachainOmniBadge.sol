@@ -6,6 +6,7 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {ERC721Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
+import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import {EIP712Upgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
 import {ERC721PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol";
 
@@ -18,6 +19,7 @@ contract P12xZetachainOmniBadge is
     UUPSUpgradeable,
     EIP712Upgradeable,
     ERC721Upgradeable,
+    ReentrancyGuardUpgradeable,
     ERC721PausableUpgradeable,
     Ownable2StepUpgradeable,
     IP12xZetachainOmniBadge,
@@ -104,6 +106,7 @@ contract P12xZetachainOmniBadge is
         __Ownable_init(_initialOwner);
         __ERC721Pausable_init();
         __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
     }
 
     /**
@@ -179,7 +182,7 @@ contract P12xZetachainOmniBadge is
     /**
      * @dev User pays ZETA mint NFT
      */
-    function openMint() external payable whenNotPaused onlyCanMintOnceAndVerifyPayment {
+    function openMint() external payable nonReentrant whenNotPaused onlyCanMintOnceAndVerifyPayment {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
         $.userReceiveNFT.setTo(uint256(uint160(msg.sender)), true);
@@ -195,7 +198,7 @@ contract P12xZetachainOmniBadge is
     /**
      * @dev User receive the ZETA paid by mint cost
      */
-    function userReceiveMintCost() external whenNotPaused onlyCanOpenAndReceivedOnce {
+    function userReceiveMintCost() external nonReentrant whenNotPaused onlyCanOpenAndReceivedOnce {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
         $.userReceiveCost.setTo(uint256(uint160(msg.sender)), false);
@@ -212,7 +215,7 @@ contract P12xZetachainOmniBadge is
      * @dev Users vote for their favorite games
      * @param gameId User favorite game id
      */
-    function userFavoriteGameVote(uint256 gameId) external whenNotPaused onlyDaysUpdateAndMintBehavior {
+    function userFavoriteGameVote(uint256 gameId) external nonReentrant whenNotPaused onlyDaysUpdateAndMintBehavior {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
         $.userVotingStatus[msg.sender][getVoteDays()] = gameId;
@@ -280,20 +283,20 @@ contract P12xZetachainOmniBadge is
      * @dev Check voting start time
      * @return Voting start time
      */
-    function getVotingStartTime() public view returns (uint128) {
+    function getVotingStartTime() public view returns (uint256) {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        return uint128($.voteStartTimeAndDurationDays >> 64);
+        return $.voteStartTimeAndDurationDays >> 64;
     }
 
     /**
      * @dev Check voting duration days
      * @return Voting duration days
      */
-    function getVotingDurationDays() public view returns (uint64) {
+    function getVotingDurationDays() public view returns (uint256) {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        return uint64($.voteStartTimeAndDurationDays & 0xFFFFFFFFFFFFFFFF);
+        return $.voteStartTimeAndDurationDays & 0xFFFFFFFFFFFFFFFF;
     }
 
     // The following functions are overrides required by Solidity.
