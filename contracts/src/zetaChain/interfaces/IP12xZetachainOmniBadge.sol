@@ -1,19 +1,5 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
-struct zContext {
-    bytes origin;
-    address sender;
-    uint256 chainID;
-}
-
-interface zContract {
-    function onCrossChainCall(
-        zContext calldata context,
-        address zrc20,
-        uint256 amount,
-        bytes calldata message
-    ) external;
-}
 
 interface IP12xZetachainOmniBadgeDef {
     // =========== ERROR ==========
@@ -44,7 +30,7 @@ interface IP12xZetachainOmniBadgeDef {
 
     event UserHasReceivedCost(address indexed userAddress);
     event UserHasReceivedNFT(uint256 indexed tokenID, address indexed userAddress);
-    event UserVoteForGameID(address indexed userAddress, uint256 indexed timeStamp, uint256 indexed gameID);
+    event UserVoteForGameID(address indexed userAddress, uint256 indexed timeStamp, uint256 indexed gameID,uint256 day);
 }
 
 interface IP12xZetachainOmniBadge is IP12xZetachainOmniBadgeDef {}

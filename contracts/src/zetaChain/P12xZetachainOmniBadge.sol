@@ -10,9 +10,8 @@ import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/ut
 import {EIP712Upgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
 import {ERC721PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721PausableUpgradeable.sol";
 
-import {SystemContract} from "@zetachain/protocol-contracts/contracts/zevm/SystemContract.sol";
-
-import {IP12xZetachainOmniBadge, zContract, zContext} from "./interfaces/IP12xZetachainOmniBadge.sol";
+import {IP12xZetachainOmniBadge} from "./interfaces/IP12xZetachainOmniBadge.sol";
+import {ISystemContract, zContract, zContext} from "./interfaces/ISystemContract.sol";
 
 contract P12xZetachainOmniBadge is
     Initializable,
@@ -43,7 +42,7 @@ contract P12xZetachainOmniBadge is
         uint256 voteStartTimeAndDurationDays;
         mapping(address => uint256) userPaysFees;
         mapping(address => mapping(uint256 => uint256)) userVotingStatus;
-        SystemContract systemContract;
+        ISystemContract systemContract;
     }
 
     modifier onlyCanMintOnceAndVerifyPayment() {
@@ -98,7 +97,7 @@ contract P12xZetachainOmniBadge is
 
         $._tokenURI = _tokenUri;
         $.payQuantity = _payQuantity;
-        $.systemContract = SystemContract(_systemContractAddress);
+        $.systemContract = ISystemContract(_systemContractAddress);
         $.voteStartTimeAndDurationDays = _voteStartTimeAndDurationDays;
 
         __ERC721_init("P12 x Zetachain OmniBadge", "P12 x Zetachain OmniBadge");
@@ -166,7 +165,7 @@ contract P12xZetachainOmniBadge is
     function updateSystemContract(address newSystemContract) external onlyOwner {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        $.systemContract = SystemContract(newSystemContract);
+        $.systemContract = ISystemContract(newSystemContract);
 
         emit SetSystemContract(newSystemContract);
     }
@@ -218,9 +217,10 @@ contract P12xZetachainOmniBadge is
     function userFavoriteGameVote(uint256 gameId) external nonReentrant whenNotPaused onlyDaysUpdateAndMintBehavior {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        $.userVotingStatus[msg.sender][getVoteDays()] = gameId;
+        uint256 voteDays = getVoteDays();
+        $.userVotingStatus[msg.sender][voteDays] = gameId;
 
-        emit UserVoteForGameID(msg.sender, block.timestamp, gameId);
+        emit UserVoteForGameID(msg.sender, block.timestamp, gameId, voteDays);
     }
 
     /**

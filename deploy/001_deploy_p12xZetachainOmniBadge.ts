@@ -10,13 +10,10 @@ function storeData(
   votingStartTime: number,
   votingDurationDays: number,
 ): number {
-  // 将votingDurationDays放在最低的64位
   const durationData: number = votingDurationDays;
 
-  // 将votingStartTime左移64位，为votingDurationDays留出空间
   const startTimeData: number = votingStartTime << 64;
 
-  // 通过按位或操作(|)将两个值合并到一个uint256中
   return startTimeData | durationData;
 }
 
@@ -49,11 +46,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
     autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
     proxy: {
-      // 取消ProxyAdmin检查
+      // Cancel ProxyAdmin check
       checkProxyAdmin: false,
       proxyContract: "ERC1967Proxy",
       proxyArgs: ["{implementation}", "{data}"],
-      // 更新合约需要被调用的方法
+      // Methods that need to be called to update the contract
       upgradeFunction: {
         methodName: "upgradeToAndCall",
         upgradeArgs: ["{implementation}", "{data}"],
