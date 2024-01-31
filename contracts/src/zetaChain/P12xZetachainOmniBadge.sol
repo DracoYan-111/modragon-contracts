@@ -26,8 +26,6 @@ contract P12xZetachainOmniBadge is
 {
     using BitMaps for BitMaps.BitMap;
 
-    bytes32 private constant WHITELIST_MINT = keccak256("WhitelistMint(address user,uint256 deadline)");
-
     // keccak256(abi.encode(uint256(keccak256("P12xZetachainOmniBadgeStorage")) - 1)) & ~bytes32(uint256(0xff))
     bytes32 private constant P12xZetachainOmniBadgeStorageLocation =
         0x1cd131e6d0ca7e68ef19f43129322449a3aeef57e2f4bd8760e571742140ec00;
@@ -58,7 +56,7 @@ contract P12xZetachainOmniBadge is
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
         if (!$.collectionStarts) revert ReceiveCostTimeNotArrived();
-        if (!BitMaps.get($.userReceiveCost, uint256(uint160(msg.sender))) && $.userPaysFees[msg.sender] == 0)
+        if ($.userReceiveCost.get(uint256(uint160(msg.sender))) && $.userPaysFees[msg.sender] == 0)
             revert AlreadyReceivedCost();
 
         _;
@@ -185,7 +183,6 @@ contract P12xZetachainOmniBadge is
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
         $.userReceiveNFT.setTo(uint256(uint160(msg.sender)), true);
-        $.userReceiveCost.setTo(uint256(uint160(msg.sender)), true);
 
         _mint(msg.sender);
 
@@ -200,7 +197,7 @@ contract P12xZetachainOmniBadge is
     function userReceiveMintCost() external nonReentrant whenNotPaused onlyCanOpenAndReceivedOnce {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        $.userReceiveCost.setTo(uint256(uint160(msg.sender)), false);
+        $.userReceiveCost.setTo(uint256(uint160(msg.sender)), true);
 
         uint256 userMintFee = $.userPaysFees[msg.sender];
         $.userPaysFees[msg.sender] -= userMintFee;
@@ -231,7 +228,7 @@ contract P12xZetachainOmniBadge is
     function getUserReceiveNFT(address userAddress) public view returns (bool) {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        return BitMaps.get($.userReceiveNFT, uint256(uint160(userAddress)));
+        return $.userReceiveNFT.get(uint256(uint160(userAddress)));
     }
 
     /**
@@ -242,7 +239,7 @@ contract P12xZetachainOmniBadge is
     function getUserReceiveCost(address userAddress) public view returns (bool) {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
-        return BitMaps.get($.userReceiveCost, uint256(uint160(userAddress)));
+        return $.userReceiveCost.get(uint256(uint160(userAddress)));
     }
 
     /**
