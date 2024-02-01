@@ -46,18 +46,9 @@ contract P12xZetachainOmniBadge is
     modifier onlyCanMintOnceAndVerifyPayment() {
         P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
 
+        if ($.collectionStarts) revert ReceiveCostTimeNotArrived();
         if (msg.value != $.payQuantity) revert IncorrectAmountZETA();
         if ($.userReceiveNFT.get(uint256(uint160(msg.sender)))) revert AlreadyReceivedNFT();
-
-        _;
-    }
-
-    modifier onlyCanOpenAndReceivedOnce() {
-        P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
-
-        if (!$.collectionStarts) revert ReceiveCostTimeNotArrived();
-        if ($.userReceiveCost.get(uint256(uint160(msg.sender))) && $.userPaysFees[msg.sender] == 0)
-            revert AlreadyReceivedCost();
 
         _;
     }
@@ -176,6 +167,10 @@ contract P12xZetachainOmniBadge is
         emit CollectionStartsStatus($.collectionStarts);
     }
 
+    function withdrawZeta(address receiverAddress, uint256 amount) external onlyOwner {
+        _callSendZETA(receiverAddress, amount);
+    }
+
     /**
      * @dev User pays ZETA mint NFT
      */
@@ -189,22 +184,6 @@ contract P12xZetachainOmniBadge is
         $.userPaysFees[msg.sender] = msg.value;
 
         emit UserHasReceivedNFT($._nextTokenId, msg.sender);
-    }
-
-    /**
-     * @dev User receive the ZETA paid by mint cost
-     */
-    function userReceiveMintCost() external nonReentrant whenNotPaused onlyCanOpenAndReceivedOnce {
-        P12xZetachainOmniBadgeStorage storage $ = _getP12xZetachainOmniBadgeStorage();
-
-        $.userReceiveCost.setTo(uint256(uint160(msg.sender)), true);
-
-        uint256 userMintFee = $.userPaysFees[msg.sender];
-        $.userPaysFees[msg.sender] -= userMintFee;
-
-        _callSendZETA(msg.sender, userMintFee);
-
-        emit UserHasReceivedCost(msg.sender);
     }
 
     /**

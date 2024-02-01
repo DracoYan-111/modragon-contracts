@@ -3,13 +3,11 @@ pragma solidity ^0.8.23;
 
 interface IP12xZetachainOmniBadgeDef {
     // =========== ERROR ==========
-    // error MintExpired();
     error NonSystemContract();
 
     error AlreadyReceivedNFT();
     error AlreadyReceivedCost();
 
-    // error InvalidSignature();
     error ZETATransferFailed();
     error IncorrectAmountZETA();
     error InsufficientZETABalance();
@@ -28,7 +26,6 @@ interface IP12xZetachainOmniBadgeDef {
 
     event CollectionStartsStatus(bool indexed isOpen);
 
-    event UserHasReceivedCost(address indexed userAddress);
     event UserHasReceivedNFT(uint256 indexed tokenID, address indexed userAddress);
     event UserVoteForGameID(address indexed userAddress, uint256 indexed timeStamp, uint256 indexed gameID,uint256 day);
 }
