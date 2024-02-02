@@ -135,7 +135,8 @@ const config: HardhatUserConfig = {
       ethMain: deployer,
       bscTestnet: deployer,
       bscMain: deployer,
-      zetaTestnet:deployer,
+      zetaTestnet: deployer,
+      zetaMain: deployer,
     },
   },
   networks: {

@@ -21,9 +21,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy } = hre.deployments;
   const { deployer } = await hre.getNamedAccounts();
 
-  // 2024-01-30 00:00:01
-  // 99 days
-  let voteStartTimeAndDurationDays = storeData(1706544001, 99);
+  // 2024-02-02 00:00:01 
+  // 9999 days
+  let voteStartTimeAndDurationDays = storeData(1706803201, 9999);
 
   console.log(deployer)
   /**
@@ -34,9 +34,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
    *  _payQuantity
    */
   const args = [
-    voteStartTimeAndDurationDays,
-    "0x803470638940Ec595B40397cbAa597439DE55907",
-    "test token uri",
+    voteStartTimeAndDurationDays, // 2024-02-02 00:00:01  9999days
+    "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921", //Zeta chain systemContractAddress
+    "https://cdn1.p12.games/collabs/zetachain/P12_Zetachain_OmniBadge.png",
     deployer,
     "100000000000000000" // 0.1ETH
   ];
@@ -62,9 +62,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         },
       },
     },
-    deterministicDeployment: keccak256(
-      stringToBytes("P12xZetachainOmniBadge_PROD"),
-    ),
+    // eip-155 disabled
+    // deterministicDeployment: keccak256(
+    //   stringToBytes("P12xZetachainOmniBadge_PROD"),
+    // ),
   });
 
   // TODO If you want to cancel "verification", please enable comments
