@@ -116,7 +116,7 @@ contract MerlinchainDBALRewards is
         }
     }
 
-    function mint(uint256 mintAmount, IERC20 tokenAddress) external payable onlyMintOpen {
+    function mint(uint256 mintAmount, IERC20 tokenAddress) external payable onlyMintOpen nonReentrant{
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
         uint256 paymentAmount;
@@ -134,14 +134,14 @@ contract MerlinchainDBALRewards is
         }
         $.userMintNumber[msg.sender] += mintAmount;
 
-        emit UserMint(paymentAmount, address(tokenAddress));
+        emit UserMint(mintAmount, paymentAmount, address(tokenAddress));
     }
 
-    function receiveDbalToken(uint256, uint256, bytes32[] calldata) external {
+    function receiveDbalToken(uint256, uint256, bytes32[] calldata) external nonReentrant{
         emit UserHasReceivedDBAL();
     }
 
-    function receiveRefundToken(uint256, uint256, bytes32[] calldata) external {
+    function receiveRefundToken(uint256, uint256, bytes32[] calldata) external nonReentrant{
         emit UserHasReceivedRefund();
     }
 
