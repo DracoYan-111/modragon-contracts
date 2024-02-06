@@ -89,6 +89,11 @@ contract MerlinchainDBALRewards is
         _unpause();
     }
 
+    /**
+     * @dev Update merkle root data only owner
+     * @param merkleRootNumber 1 is _DBALMerkleRoot 2 is _refundMerkleRoot
+     * @param merkleRoot Merkle root data
+     */
     function updateMerkleRoot(uint256 merkleRootNumber, bytes32 merkleRoot) external onlyOwner {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
@@ -101,21 +106,28 @@ contract MerlinchainDBALRewards is
         emit SetMerkleRootInformation(merkleRootNumber, merkleRoot);
     }
 
-    function updateTokenAddress(IERC20 newDBALAddress, IERC20 newMUSDTAddress) external onlyOwner {
+    /**
+     * @dev Update token address only owner
+     * @param erc20TokenNumber 1 is DBAL 2 is MUSDT
+     * @param newTokenAddress New token address
+     */
+    function updateTokenAddress(uint256 erc20TokenNumber, IERC20 newTokenAddress) external onlyOwner {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
-        if (address(newDBALAddress) != address(0)) {
-            $.DBALAddress = newDBALAddress;
 
-            emit SetTokenAddress(0, address(newDBALAddress));
+        if (erc20TokenNumber == 1) {
+            $.DBALAddress = newTokenAddress;
+        } else {
+            $.MUSDTAddress = newTokenAddress;
         }
 
-        if (address(newMUSDTAddress) != address(0)) {
-            $.MUSDTAddress = newMUSDTAddress;
-
-            emit SetTokenAddress(1, address(newMUSDTAddress));
-        }
+        emit SetTokenAddress(erc20TokenNumber, address(newTokenAddress));
     }
 
+    /**
+     * @dev User mint
+     * @param mintAmount Mint quantity
+     * @param tokenAddress Pay token address(address(0) is MBTC else MUSDT)
+     */
     function mint(uint256 mintAmount, IERC20 tokenAddress) external payable onlyMintOpen nonReentrant {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
@@ -145,23 +157,42 @@ contract MerlinchainDBALRewards is
         emit UserHasReceivedRefund();
     }
 
-    function isClaimed(uint256 index) public view returns (bool) {
+    /**
+     * @dev Check if the user has claimed
+     * @param index Index in merkle tree
+     * @param functionIndex 1 for MBTC else for MUSDT
+     */
+    function isClaimed(uint256 index, uint256 functionIndex) public view returns (bool) {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
         uint256 claimedWordIndex = index / 256;
         uint256 claimedBitIndex = index % 256;
-        uint256 claimedWord = $.claimedMBTCBitMap[claimedWordIndex];
+
+        uint256 claimedWord = functionIndex == 1
+            ? $.claimedMBTCBitMap[claimedWordIndex]
+            : $.claimedMUSDTBitMap[claimedWordIndex];
         uint256 mask = (1 << claimedBitIndex);
 
-        return claimedWord & mask == mask;
+        return (claimedWord & mask == mask);
     }
 
+    /**
+     * @dev Get the sum of mint
+     * @param userAddress User address
+     * @return User address the sum of mint
+     */
     function getUserMintNumber(address userAddress) external view returns (uint256) {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
         return $.userMintNumber[userAddress];
     }
 
+    /**
+     * @dev Get pay the number of MBTC and MUSDT
+     * @param mintAmount Mint amount
+     * @return Pay MBTC total number
+     * @return Pay MUSDT total number
+     */
     function getQuantityCharged(uint256 mintAmount) public view returns (uint256, uint256) {
         if (mintAmount == 0) revert IncorrectMintAmount();
 
@@ -170,12 +201,35 @@ contract MerlinchainDBALRewards is
         return (mintAmount * $.MBTCQuantityCharged, mintAmount * $.MUSDTQuantityCharged);
     }
 
+    /**
+     * @dev Get the token address
+     * @return DBAL token address
+     * @return MUSDT token address
+     */
     function getTokenAddress() external view returns (IERC20, IERC20) {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
         return ($.DBALAddress, $.MUSDTAddress);
     }
 
+    /**
+     * @dev Get user address the number of MBTC and MUSDT
+     * @param userAddress Check user address
+     * @return User pay MBTC total number
+     * @return User pay MUSDT total number
+     */
+    function getUserPayTokenDetails(address userAddress) external view returns (uint256, uint256) {
+        MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
+
+        return ($.userPaysMBTCNumber[userAddress], $.userPaysMUSDTNumber[userAddress]);
+    }
+
+    /**
+     * @dev Get the status of function
+     * @return mintStatus Mint function off or on
+     * @return dbalStatus DBAL function off or on
+     * @return refundStatus Refund function off or on
+     */
     function extractStatus() public view returns (bool mintStatus, bool dbalStatus, bool refundStatus) {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
@@ -191,12 +245,22 @@ contract MerlinchainDBALRewards is
         refundStatus = ($.mintDbalRefundStatus % 10) > 0;
     }
 
-    function _setClaimed(uint256 index) private {
+    /**
+     * @dev Set the status of collection token
+     * @param index Index in merkle tree
+     * @param functionIndex 1 for MBTC else for MUSDT
+     */
+    function _setClaimed(uint256 index, uint256 functionIndex) private {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
         uint256 claimedWordIndex = index / 256;
         uint256 claimedBitIndex = index % 256;
-        $.claimedMBTCBitMap[claimedWordIndex] = $.claimedMBTCBitMap[claimedWordIndex] | (1 << claimedBitIndex);
+
+        if (functionIndex == 1) {
+            $.claimedMBTCBitMap[claimedWordIndex] = $.claimedMBTCBitMap[claimedWordIndex] | (1 << claimedBitIndex);
+        } else {
+            $.claimedMUSDTBitMap[claimedWordIndex] = $.claimedMUSDTBitMap[claimedWordIndex] | (1 << claimedBitIndex);
+        }
     }
 
     function _getMerlinchainDBALRewardsStorage() private pure returns (MerlinchainDBALRewardsStorage storage $) {
