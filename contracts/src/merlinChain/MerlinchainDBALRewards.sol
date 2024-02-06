@@ -29,8 +29,8 @@ contract MerlinchainDBALRewards is
 
     struct MerlinchainDBALRewardsStorage {
         IERC20 DBALAddress;
-        uint128 DBALQuantityCharged;
         IERC20 MUSDTAddress;
+        uint128 MBTCQuantityCharged;
         uint128 MUSDTQuantityCharged;
         bytes32 _DBALMerkleRoot;
         bytes32 _refundMerkleRoot;
@@ -43,9 +43,12 @@ contract MerlinchainDBALRewards is
         BitMaps.BitMap userReceiveDBAL;
         BitMaps.BitMap userReceiveRefund;
         mapping(address => uint256) userMintNumber;
+        mapping(uint256 => uint256) claimedMBTCBitMap;
+        mapping(uint256 => uint256) claimedMUSDTBitMap;
         mapping(address => uint256) userPaysMBTCNumber;
         mapping(address => uint256) userPaysMUSDTNumber;
     }
+
     modifier onlyMintOpen() {
         (bool mintStatus, , ) = extractStatus();
         if (!mintStatus) revert EventIsClosed();
@@ -56,9 +59,17 @@ contract MerlinchainDBALRewards is
         _disableInitializers();
     }
 
-    function initialize(address _initialOwner) public initializer {
+    function initialize(
+        address _initialOwner,
+        IERC20 _MUSDTAddress,
+        uint128 _MBTCQuantityCharged,
+        uint128 _MUSDTQuantityCharged
+    ) public initializer {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
+        $.MUSDTAddress = _MUSDTAddress;
+        $.MBTCQuantityCharged = _MBTCQuantityCharged;
+        $.MUSDTQuantityCharged = _MUSDTQuantityCharged;
         // The default value is 9000,
         // 9 is a placeholder
         // 1 is mint function on
@@ -90,13 +101,31 @@ contract MerlinchainDBALRewards is
         emit SetMerkleRootInformation(merkleRootNumber, merkleRoot);
     }
 
+    function updateTokenAddress(IERC20 newDBALAddress, IERC20 newMUSDTAddress) external onlyOwner {
+        MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
+        if (address(newDBALAddress) != address(0)) {
+            $.DBALAddress = newDBALAddress;
+
+            emit SetTokenAddress(0, address(newDBALAddress));
+        }
+
+        if (address(newMUSDTAddress) != address(0)) {
+            $.MUSDTAddress = newMUSDTAddress;
+
+            emit SetTokenAddress(1, address(newMUSDTAddress));
+        }
+    }
+
     function mint(uint256 mintAmount, IERC20 tokenAddress) external payable onlyMintOpen {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
+
         uint256 paymentAmount;
 
         if (address(tokenAddress) == address(0)) {
-            paymentAmount = mintAmount * $.DBALQuantityCharged;
+            paymentAmount = mintAmount * $.MBTCQuantityCharged;
+
             if (msg.value != paymentAmount) revert IncorrectMintAmount();
+
             $.userPaysMBTCNumber[msg.sender] += paymentAmount;
         } else {
             paymentAmount = mintAmount * $.MUSDTQuantityCharged;
@@ -104,15 +133,33 @@ contract MerlinchainDBALRewards is
             tokenAddress.safeTransferFrom(msg.sender, address(this), paymentAmount);
         }
         $.userMintNumber[msg.sender] += mintAmount;
-        emit UserMint();
+
+        emit UserMint(paymentAmount, address(tokenAddress));
     }
 
-    function receiveDbalToken(uint256 index, bytes32[] calldata proof) external {
+    function receiveDbalToken(uint256, uint256, bytes32[] calldata) external {
         emit UserHasReceivedDBAL();
     }
 
-    function receiveRefundToken(uint256 index, bytes32[] calldata proof) external {
+    function receiveRefundToken(uint256, uint256, bytes32[] calldata) external {
         emit UserHasReceivedRefund();
+    }
+
+    function isClaimed(uint256 index) public view returns (bool) {
+        MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
+
+        uint256 claimedWordIndex = index / 256;
+        uint256 claimedBitIndex = index % 256;
+        uint256 claimedWord = $.claimedMBTCBitMap[claimedWordIndex];
+        uint256 mask = (1 << claimedBitIndex);
+
+        return claimedWord & mask == mask;
+    }
+
+    function getUserMintNumber(address userAddress) external view returns (uint256) {
+        MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
+
+        return $.userMintNumber[userAddress];
     }
 
     function extractStatus() public view returns (bool mintStatus, bool dbalStatus, bool refundStatus) {
@@ -128,6 +175,14 @@ contract MerlinchainDBALRewards is
 
         // Single digit is the status of refund collection method.
         refundStatus = ($.mintDbalRefundStatus % 10) > 0;
+    }
+
+    function _setClaimed(uint256 index) private {
+        MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
+
+        uint256 claimedWordIndex = index / 256;
+        uint256 claimedBitIndex = index % 256;
+        $.claimedMBTCBitMap[claimedWordIndex] = $.claimedMBTCBitMap[claimedWordIndex] | (1 << claimedBitIndex);
     }
 
     function _getMerlinchainDBALRewardsStorage() private pure returns (MerlinchainDBALRewardsStorage storage $) {

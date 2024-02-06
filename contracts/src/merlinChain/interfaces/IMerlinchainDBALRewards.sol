@@ -10,9 +10,10 @@ contract IMerlinchainDBALRewardsDef {
     error IncorrectMintQuantity();
     error InsufficientMBTCBalance();
 
-    event UserMint();
     event UserHasReceivedDBAL();
     event UserHasReceivedRefund();
+    event UserMint(uint256 quantity, address tokenAddress);
+    event SetTokenAddress(uint256 number, address tokenAddress);
     event SetMerkleRootInformation(uint256 functionName, bytes32 merkleRoot);
 }
 
