@@ -116,32 +116,32 @@ contract MerlinchainDBALRewards is
         }
     }
 
-    function mint(uint256 mintAmount, IERC20 tokenAddress) external payable onlyMintOpen nonReentrant{
+    function mint(uint256 mintAmount, IERC20 tokenAddress) external payable onlyMintOpen nonReentrant {
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
         uint256 paymentAmount;
 
         if (address(tokenAddress) == address(0)) {
-            paymentAmount = mintAmount * $.MBTCQuantityCharged;
+            (paymentAmount, ) = getQuantityCharged(mintAmount);
 
-            if (msg.value != paymentAmount) revert IncorrectMintAmount();
+            if (msg.value != paymentAmount) revert IncorrectMintQuantity();
 
             $.userPaysMBTCNumber[msg.sender] += paymentAmount;
         } else {
-            paymentAmount = mintAmount * $.MUSDTQuantityCharged;
+            (, paymentAmount) = getQuantityCharged(mintAmount);
 
-            tokenAddress.safeTransferFrom(msg.sender, address(this), paymentAmount);
+            $.MUSDTAddress.safeTransferFrom(msg.sender, address(this), paymentAmount);
         }
         $.userMintNumber[msg.sender] += mintAmount;
 
         emit UserMint(mintAmount, paymentAmount, address(tokenAddress));
     }
 
-    function receiveDbalToken(uint256, uint256, bytes32[] calldata) external nonReentrant{
+    function receiveDbalToken(uint256, uint256, bytes32[] calldata) external nonReentrant {
         emit UserHasReceivedDBAL();
     }
 
-    function receiveRefundToken(uint256, uint256, bytes32[] calldata) external nonReentrant{
+    function receiveRefundToken(uint256, uint256, bytes32[] calldata) external nonReentrant {
         emit UserHasReceivedRefund();
     }
 
@@ -160,6 +160,20 @@ contract MerlinchainDBALRewards is
         MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
 
         return $.userMintNumber[userAddress];
+    }
+
+    function getQuantityCharged(uint256 mintAmount) public view returns (uint256, uint256) {
+        if (mintAmount == 0) revert IncorrectMintAmount();
+
+        MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
+
+        return (mintAmount * $.MBTCQuantityCharged, mintAmount * $.MUSDTQuantityCharged);
+    }
+
+    function getTokenAddress() external view returns (IERC20, IERC20) {
+        MerlinchainDBALRewardsStorage storage $ = _getMerlinchainDBALRewardsStorage();
+
+        return ($.DBALAddress, $.MUSDTAddress);
     }
 
     function extractStatus() public view returns (bool mintStatus, bool dbalStatus, bool refundStatus) {
