@@ -953,27 +953,6 @@
       "transferOwnership(address)": {
         "details": "Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one. Can only be called by the current owner."
       },
-      "updateMerkleRoot(uint256,bytes32)": {
-        "details": "Update merkle root data only owner",
-        "params": {
-          "merkleRoot": "Merkle root data",
-          "merkleRootNumber": "1 is _DBALMerkleRoot 2 is _refundMerkleRoot"
-        }
-      },
-      "updateTokenAddress(uint256,address)": {
-        "details": "Update token address only owner",
-        "params": {
-          "erc20TokenNumber": "1 is DBAL 2 is MUSDT",
-          "newTokenAddress": "New token address"
-        }
-      },
-      "updateTokenQuantityCharged(uint256,uint256)": {
-        "details": "Update token quantity charged",
-        "params": {
-          "chargedNumber": "New quantity charged",
-          "tokenQuantityChargedNumber": "1 is MUSDT else MBTC"
-        }
-      },
       "upgradeToAndCall(address,bytes)": {
         "custom:oz-upgrades-unsafe-allow-reachable": "delegatecall",
         "details": "Upgrade the implementation of the proxy to `newImplementation`, and subsequently execute the function call encoded in `data`. Calls {_authorizeUpgrade}. Emits an {Upgraded} event."

@@ -137,6 +137,8 @@ const config: HardhatUserConfig = {
       bscMain: deployer,
       zetaTestnet: deployer,
       zetaMain: deployer,
+      merlinTestnet:deployer,
+      merlinMain:deployer,
     },
   },
   networks: {
@@ -199,6 +201,18 @@ const config: HardhatUserConfig = {
     zetaMain: {
       chainId: 7000,
       url: vars.get("ZETA_MAINNET_URL", "") || process.env.ZETA_MAINNET_URL,
+      accounts,
+      ledgerAccounts,
+    },
+    merlinTestnet: {
+      chainId: 686868,
+      url: vars.get("MERLIN_TESTNET_URL", "") || process.env.MERLIN_TESTNET_URL,
+      accounts,
+      ledgerAccounts,
+    },
+    merlinMain: {
+      chainId: 686868,
+      url: vars.get("MERLIN_MAINNET_URL", "") || process.env.MERLIN_MAINNET_URL,
       accounts,
       ledgerAccounts,
     },

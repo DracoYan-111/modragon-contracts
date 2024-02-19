@@ -57,6 +57,8 @@
     "deploy:bscmain": "npx hardhat --network bscMain deploy",
     "deploy:zetatestnet": "npx hardhat --network zetaTestnet deploy",
     "deploy:zetamain": "npx hardhat --network zetaMain deploy",
+    "deploy:merlintestnet": "npx hardhat --network merlinTestnet deploy",
+    "deploy:merlinmain": "npx hardhat --network merlinMain deploy",
     "deploy:optimismtestnet": "npx hardhat run --network optimismTestnet scripts/deploy.ts",
     "deploy:optimismsepolia": "npx hardhat run --network optimismSepolia scripts/deploy.ts",
     "deploy:optimismmain": "npx hardhat run --network optimismMain scripts/deploy.ts",
