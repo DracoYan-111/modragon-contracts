@@ -163,7 +163,7 @@ contract MerlinchainDBALRewards is
         }
         $.userMintNumber[msg.sender] += mintAmount;
 
-        emit UserMint(mintAmount, paymentAmount, address(tokenAddress));
+        emit UserMint(tx.origin, msg.sender, mintAmount, paymentAmount, address(tokenAddress));
     }
 
     function receiveDbalToken(uint256, uint256, bytes32[] calldata) external nonReentrant {
