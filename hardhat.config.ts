@@ -185,6 +185,7 @@ const config: HardhatUserConfig = {
       url: vars.get("BSC_TESTNET_URL", "") || process.env.BSC_TESTNET_URL,
       accounts,
       ledgerAccounts,
+      gasPrice:10000000000
     },
     bscMain: {
       chainId: 56,
