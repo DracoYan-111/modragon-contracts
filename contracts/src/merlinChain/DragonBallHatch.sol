@@ -49,21 +49,21 @@ contract DragonBallHatch is
     /**
      * @dev Owner withdraw tokens
      * @param tokenAddress Token address(address(0) is BTC)
-     * @param amount Withdraw token amount
+     * @param tokenAmount Withdraw token amount
      * @param recipientAddr Recipient address
      */
-    function withdrawFunds(IERC20 tokenAddress, uint256 amount, address recipientAddr) external onlyOwner {
+    function withdrawFunds(IERC20 tokenAddress, uint256 tokenAmount, address recipientAddr) external onlyOwner {
         DragonBallHatchStorage storage $ = _geDragonBallHatchStorage();
 
-        $.tokenAmount[tokenAddress] -= amount;
+        $.tokenAmount[tokenAddress] -= tokenAmount;
 
         if (address(tokenAddress) == address(0)) {
-            _callSendBTC(recipientAddr, amount);
+            _callSendBTC(recipientAddr, tokenAmount);
         } else {
-            tokenAddress.safeTransfer(recipientAddr, amount);
+            tokenAddress.safeTransfer(recipientAddr, tokenAmount);
         }
 
-        emit OwnerWithdraw(address(tokenAddress), amount, recipientAddr);
+        emit OwnerWithdraw(address(tokenAddress), tokenAmount, recipientAddr);
     }
 
     /**
