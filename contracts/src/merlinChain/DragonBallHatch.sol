@@ -53,7 +53,7 @@ contract DragonBallHatch is
      * @param recipientAddr Recipient address
      */
     function withdrawFunds(IERC20 tokenAddress, uint256 tokenAmount, address recipientAddr) external onlyOwner {
-        DragonBallHatchStorage storage $ = _geDragonBallHatchStorage();
+        DragonBallHatchStorage storage $ = _getDragonBallHatchStorage();
 
         $.tokenAmount[tokenAddress] -= tokenAmount;
 
@@ -77,7 +77,7 @@ contract DragonBallHatch is
         IERC20 paymentToken,
         uint256 paymentAmount
     ) external payable nonReentrant whenNotPaused {
-        DragonBallHatchStorage storage $ = _geDragonBallHatchStorage();
+        DragonBallHatchStorage storage $ = _getDragonBallHatchStorage();
 
         if (address(paymentToken) == address(0)) {
             if (msg.value != paymentAmount) revert BTCPaymentFailed();
@@ -95,12 +95,12 @@ contract DragonBallHatch is
      * @param paymentToken Token address
      */
     function getTokenAmount(IERC20 paymentToken) external view returns (uint256) {
-        DragonBallHatchStorage storage $ = _geDragonBallHatchStorage();
+        DragonBallHatchStorage storage $ = _getDragonBallHatchStorage();
 
         return $.tokenAmount[paymentToken];
     }
 
-    function _geDragonBallHatchStorage() private pure returns (DragonBallHatchStorage storage $) {
+    function _getDragonBallHatchStorage() private pure returns (DragonBallHatchStorage storage $) {
         assembly {
             $.slot := DragonBallHatchStorageLocation
         }
