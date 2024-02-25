@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-contract IDragonBallHatchDef {
+interface IDragonBallHatchDef {
     error EventIsClosed();
     error BTCPaymentFailed();
     error BTCTransferFailed();
@@ -11,4 +11,4 @@ contract IDragonBallHatchDef {
     event UserHatching(string bizId, address paymentToken, uint256 paymentAmount, address senderAddress);
 }
 
-contract IDragonBallHatch is IDragonBallHatchDef {}
+interface IDragonBallHatch is IDragonBallHatchDef {}
