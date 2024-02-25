@@ -11,8 +11,8 @@ import {IDragonBallHatch} from "./interfaces/IDragonBallHatch.sol";
 
 contract DragonBallHatch is
     Initializable,
-    Ownable2StepUpgradeable,
     UUPSUpgradeable,
+    Ownable2StepUpgradeable,
     ReentrancyGuardUpgradeable,
     PausableUpgradeable,
     IDragonBallHatch
