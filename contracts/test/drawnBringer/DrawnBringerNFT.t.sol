@@ -13,7 +13,7 @@ import {DrawnBringerNFT} from "../../src/drawnBringer/DrawnBringerNFT.sol";
 contract DrawnBringerNFTTest is Test,IERC721Receiver {
     bytes32 private constant TYPE_HASH =
         keccak256("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)");
-    bytes32 private constant WHITELIST_MINT = keccak256("whitelistMint(address user,uint256 deadline)");
+    bytes32 private constant WHITELIST_MINT = keccak256("WhitelistMint(address user,uint256 deadline)");
 
     uint256 public constant INITIALOWNERKEY = 0xde9be858da4a475276426320d5e9262ecfc3ba460bfac56360bfa6c4c28b4ee0;
     uint256 public constant SIGNERPRIVATEKEY = 0xdf57089febbacf7ba0bc227dafbffa9fc08a93fdc68e1e42411a14efcf23656e;
@@ -67,7 +67,7 @@ contract DrawnBringerNFTTest is Test,IERC721Receiver {
     }
 
     function testWhitelistMint() external {
-        uint256 deadline = 1705755809;
+        uint256 deadline = 2705755809;
 
         bytes32 typedDataHash = getTypedDataHash(deadline);
         (uint8 v, bytes32 r, bytes32 s) = vm.sign(SIGNERPRIVATEKEY, typedDataHash);

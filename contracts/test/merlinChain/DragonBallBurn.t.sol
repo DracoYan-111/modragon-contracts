@@ -4,7 +4,7 @@ pragma solidity ^0.8.23;
 import {Vm} from "forge-std/Vm.sol";
 import {Test} from "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
-import {Upgrades} from "openzeppelin-foundry-upgrades/Upgrades.sol";
+import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 
 import {TestNFT} from "../testToken/TestNFT.sol";
 import {DragonBallBurn} from "../../src/merlinChain/DragonBallBurn.sol";
@@ -24,13 +24,88 @@ contract DragonBallBurnTest is Test {
 
         testNFT = new TestNFT(initialOwner);
 
-        address proxy = Upgrades.deployUUPSProxy(
-            "DragonBallBurn.sol",
-            abi.encodeCall(MyContract.initialize, (initialOwner, testNFT, 1))
-        );
+        address dragonBallBurns = address(new DragonBallBurn());
+
+        bytes memory data = abi.encodeCall(DragonBallBurn.initialize, (initialOwner, testNFT, 31337));
+        address proxy = address(new ERC1967Proxy(dragonBallBurns, data));
 
         dragonBallBurn = DragonBallBurn(proxy);
+    }
 
+    function testGetOwner() public {
         assertEq(dragonBallBurn.owner(), initialOwner);
+    }
+
+    function testPauseAndUnpause() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        dragonBallBurn.pause();
+        dragonBallBurn.unpause();
+    }
+
+    function testFail_PauseAndUnpauseNotOwner() external {
+        dragonBallBurn.pause();
+        dragonBallBurn.unpause();
+    }
+
+    function testUpdateBurnNFTAddress() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        dragonBallBurn.updateBurnNFTAddress(testNFT);
+    }
+
+    function testFail_UpdateBurnNFTAddressNotOwner() external {
+        dragonBallBurn.updateBurnNFTAddress(testNFT);
+    }
+
+    function testUpdateCheckChainId() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        dragonBallBurn.updateCheckChainId(1);
+    }
+
+    function testFail_UpdateCheckChainIdNotOwner() external {
+        dragonBallBurn.updateCheckChainId(1);
+    }
+
+    function testBurnNfGetCoupons() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        testNFT.safeMint(initialOwner);
+        testNFT.safeMint(initialOwner);
+        testNFT.setApprovalForAll(address(dragonBallBurn), true);
+
+        uint256[] memory testIds = new uint256[](2);
+        testIds[0] = 0;
+        testIds[1] = 1;
+
+        dragonBallBurn.burnNfGetCoupons(testIds, initialOwner);
+    }
+
+    function testFail_BurnNfGetCouponsNotApproval() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        testNFT.safeMint(initialOwner);
+        testNFT.safeMint(initialOwner);
+
+        uint256[] memory testIds = new uint256[](2);
+        testIds[0] = 3;
+        testIds[1] = 4;
+
+        dragonBallBurn.burnNfGetCoupons(testIds, initialOwner);
+    }
+
+    function testFail_BurnNfGetCouponsNotTargetAddress() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        testNFT.safeMint(initialOwner);
+        testNFT.safeMint(initialOwner);
+        testNFT.setApprovalForAll(address(dragonBallBurn), true);
+
+        uint256[] memory testIds = new uint256[](2);
+        testIds[0] = 3;
+        testIds[1] = 4;
+
+        dragonBallBurn.burnNfGetCoupons(testIds, address(0));
     }
 }

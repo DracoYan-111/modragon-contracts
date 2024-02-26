@@ -84,10 +84,6 @@ contract P12xZetachainOmniBadgeTest is Test, IERC721Receiver {
         bytes32 vs = s | (bytes32(uint256(v - 1)) << 255);
         signerAddress = vm.addr(SIGNERPRIVATEKEY);
 
-        console.logAddress(signerAddress);
-        console.logUint(deadline);
-        console.logBytes32(r);
-        console.logBytes32(vs);
         // p12xZetachainOmniBadgeTeest.whitelistMint(deadline, r, vs);
 
         // assertEq(p12xZetachainOmniBadgeTeest.getUserReceive(address(this)), true);
