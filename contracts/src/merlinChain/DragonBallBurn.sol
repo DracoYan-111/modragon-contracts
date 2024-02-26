@@ -54,6 +54,30 @@ contract DragonBallBurn is
     }
 
     /**
+     * @dev Owner update burn NFT address
+     * @param newBurnNFTAddress New burn NFT address
+     */
+    function updateBurnNFTAddress(IERC721 newBurnNFTAddress) external onlyOwner {
+        DragonBallBurnStorage storage $ = _getDragonBallBurnStorage();
+
+        $.burnNFTAddress = newBurnNFTAddress;
+
+        emit SetBurnNFTAddress(address(newBurnNFTAddress));
+    }
+
+    /**
+     * @dev Owner update check chain id
+     * @param newCheckChainId New check chain id
+     */
+    function updateCheckChainId(uint256 newCheckChainId) external onlyOwner {
+        DragonBallBurnStorage storage $ = _getDragonBallBurnStorage();
+
+        $.checkChainId = newCheckChainId;
+
+        emit SetCheckChainId(newCheckChainId);
+    }
+
+    /**
      * @dev Owner withdraw NFTs
      * @param nftTokenIds Withdraw NFT id list
      * @param recipientAddr Recipient address
