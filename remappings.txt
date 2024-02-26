@@ -4,3 +4,4 @@ forge-std/=contracts/lib/forge-std/src/
 @openzeppelin/=node_modules/@openzeppelin/
 @zetachain/=node_modules/@zetachain/
 ds-test/=contracts/lib/forge-std/lib/ds-test/src/
+openzeppelin-foundry-upgrades/=contracts/lib/openzeppelin-foundry-upgrades/src/
