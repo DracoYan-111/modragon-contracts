@@ -3,6 +3,7 @@ pragma solidity ^0.8.23;
 
 interface IDragonBallBurnDef {
     error ChainAddressCheckFailed();
+    error WronWithdrawTokenId(uint256 tokenId);
 
     event SetCheckChainId(uint256 newCheckChainId);
     event SetBurnNFTAddress(address newBurnNFTAddress);

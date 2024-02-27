@@ -24,8 +24,10 @@ contract DragonBallBurn is
         0x873ce42bb11da2a877551a94a0d3c475f2712498a6c230654f29ac5df3ca2400;
 
     struct DragonBallBurnStorage {
-        uint256 checkChainId;
+        uint128 checkChainId;
         IERC721 burnNFTAddress;
+        uint256[] burnNftIds;
+        uint256[] withdrawBurnNftIds;
         mapping(address => uint256) userReceivesAmount;
     }
 
@@ -33,7 +35,7 @@ contract DragonBallBurn is
         _disableInitializers();
     }
 
-    function initialize(address initialOwner_, IERC721 burnNFTAddress_, uint256 checkChainId_) public initializer {
+    function initialize(address initialOwner_, IERC721 burnNFTAddress_, uint128 checkChainId_) public initializer {
         DragonBallBurnStorage storage $ = _getDragonBallBurnStorage();
 
         $.checkChainId = checkChainId_;
@@ -69,7 +71,7 @@ contract DragonBallBurn is
      * @dev Owner update check chain id
      * @param newCheckChainId New check chain id
      */
-    function updateCheckChainId(uint256 newCheckChainId) external onlyOwner {
+    function updateCheckChainId(uint128 newCheckChainId) external onlyOwner {
         DragonBallBurnStorage storage $ = _getDragonBallBurnStorage();
 
         $.checkChainId = newCheckChainId;
@@ -85,16 +87,16 @@ contract DragonBallBurn is
     function withdrawNfts(uint256[] calldata nftTokenIds, address recipientAddr) external onlyOwner {
         DragonBallBurnStorage storage $ = _getDragonBallBurnStorage();
 
-        $.burnNFTAddress.setApprovalForAll(recipientAddr, true);
+        for (uint256 i; i < nftTokenIds.length; ) {
+            uint256 nftTokenId = nftTokenIds[i];
+            $.burnNFTAddress.safeTransferFrom(address(this), recipientAddr, nftTokenId);
 
-        for (uint256 i = 0; i < nftTokenIds.length; ) {
-            $.burnNFTAddress.safeTransferFrom(address(this), recipientAddr, nftTokenIds[i]);
+            $.withdrawBurnNftIds.push(nftTokenId);
 
             unchecked {
                 ++i;
             }
         }
-        $.burnNFTAddress.setApprovalForAll(recipientAddr, false);
 
         emit OwnerWithdraw(address($.burnNFTAddress), nftTokenIds, recipientAddr);
     }
@@ -115,8 +117,11 @@ contract DragonBallBurn is
 
         uint256 burnAmount = nftTokenIds.length;
 
-        for (uint256 i = 0; i < burnAmount; ) {
-            $.burnNFTAddress.safeTransferFrom(msg.sender, address(this), nftTokenIds[i]);
+        for (uint256 i; i < burnAmount; ) {
+            uint256 nftTokenId = nftTokenIds[i];
+            $.burnNFTAddress.safeTransferFrom(msg.sender, address(this), nftTokenId);
+
+            $.burnNftIds.push(nftTokenId);
 
             unchecked {
                 ++i;
@@ -136,6 +141,24 @@ contract DragonBallBurn is
         DragonBallBurnStorage storage $ = _getDragonBallBurnStorage();
 
         return $.userReceivesAmount[userAddress];
+    }
+
+    /**
+     * @dev Get burn NFT id Array
+     */
+    function getBurnNftIds() external view returns (uint256[] memory) {
+        DragonBallBurnStorage storage $ = _getDragonBallBurnStorage();
+
+        return $.burnNftIds;
+    }
+
+    /**
+     * @dev Get withdraw burn NFT id Array
+     */
+    function getWithdrawBurnNftIds() external view returns (uint256[] memory) {
+        DragonBallBurnStorage storage $ = _getDragonBallBurnStorage();
+
+        return $.withdrawBurnNftIds;
     }
 
     function _getDragonBallBurnStorage() private pure returns (DragonBallBurnStorage storage $) {
