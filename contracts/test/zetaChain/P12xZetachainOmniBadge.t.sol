@@ -75,20 +75,6 @@ contract P12xZetachainOmniBadgeTest is Test, IERC721Receiver {
     //     p12xZetachainOmniBadgeTeest.unpause();
     // }
 
-    function testWhitelistMint() external {
-        uint256 deadline = 2705755809;
-
-        bytes32 typedDataHash = getTypedDataHash(deadline);
-        (uint8 v, bytes32 r, bytes32 s) = vm.sign(SIGNERPRIVATEKEY, typedDataHash);
-
-        bytes32 vs = s | (bytes32(uint256(v - 1)) << 255);
-        signerAddress = vm.addr(SIGNERPRIVATEKEY);
-
-        // p12xZetachainOmniBadgeTeest.whitelistMint(deadline, r, vs);
-
-        // assertEq(p12xZetachainOmniBadgeTeest.getUserReceive(address(this)), true);
-    }
-
     function getTypedDataHash(uint256 deadline) private pure returns (bytes32 typedDataHash) {
         bytes32 structHash = keccak256(
             abi.encode(WHITELIST_MINT, 0x5B38Da6a701c568545dCfcB03FcB875f56beddC4, deadline)

@@ -80,6 +80,8 @@ contract DragonBallBurnTest is Test {
         testIds[1] = 1;
 
         dragonBallBurn.burnNfGetCoupons(testIds, initialOwner);
+
+        assertEq(testNFT.balanceOf(address(dragonBallBurn)), 2);
     }
 
     function testFail_BurnNfGetCouponsNotApproval() external {
@@ -89,8 +91,8 @@ contract DragonBallBurnTest is Test {
         testNFT.safeMint(initialOwner);
 
         uint256[] memory testIds = new uint256[](2);
-        testIds[0] = 3;
-        testIds[1] = 4;
+        testIds[0] = 0;
+        testIds[1] = 1;
 
         dragonBallBurn.burnNfGetCoupons(testIds, initialOwner);
     }
@@ -103,9 +105,35 @@ contract DragonBallBurnTest is Test {
         testNFT.setApprovalForAll(address(dragonBallBurn), true);
 
         uint256[] memory testIds = new uint256[](2);
-        testIds[0] = 3;
-        testIds[1] = 4;
+        testIds[0] = 0;
+        testIds[1] = 1;
 
         dragonBallBurn.burnNfGetCoupons(testIds, address(0));
+    }
+
+    function testWithdrawNfts() external {
+        this.testBurnNfGetCoupons();
+
+        uint256[] memory testIds = new uint256[](2);
+        testIds[0] = 0;
+        testIds[1] = 1;
+
+        assertEq(testNFT.balanceOf(address(dragonBallBurn)), 2);
+
+        dragonBallBurn.withdrawNfts(testIds, initialOwner);
+    }
+
+    function testFail_WithdrawNftsNotOwner() external {
+        this.testBurnNfGetCoupons();
+
+        vm.stopPrank();
+
+        uint256[] memory testIds = new uint256[](2);
+        testIds[0] = 0;
+        testIds[1] = 1;
+
+        assertEq(testNFT.balanceOf(address(dragonBallBurn)), 2);
+
+        dragonBallBurn.withdrawNfts(testIds, initialOwner);
     }
 }
