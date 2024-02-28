@@ -55,19 +55,19 @@ contract TestNFT is ERC721, ERC721Enumerable, Ownable {
         }
     }
 
-    function getDragonByTokenId(uint256 tokenId) public pure returns (uint256[] memory attrs) {
+    function getDragonByTokenId(uint256) public pure returns (uint256[] memory attrs) {
         attrs = new uint256[](12);
-        attrs[0] = uint256(tokenId);
-        attrs[1] = uint256(777);
+        attrs[0] = uint256(1);
+        attrs[1] = uint256(16);
         attrs[2] = uint256(1048579);
-        attrs[3] = uint256(10);
-        attrs[4] = uint256(48);
-        attrs[5] = uint256(3);
-        attrs[6] = uint256(1);
-        attrs[7] = uint256(10);
+        attrs[3] = uint256(1);
+        attrs[4] = uint256(1);
+        attrs[5] = uint256(0);
+        attrs[6] = uint256(0);
+        attrs[7] = uint256(1698967691);
         attrs[8] = uint256(1039273);
         attrs[9] = uint256(1022125);
-        attrs[10] = uint256(2063597568);
+        attrs[10] = uint256(22016);
         attrs[11] = uint256(0);
     }
 }
