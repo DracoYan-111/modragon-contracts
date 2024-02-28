@@ -8,8 +8,8 @@ import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import {SafeERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
-import {MoboxGovernForge} from "../../src/MoboxGovernForge/MoboxGovernForge.sol";
-import {TestToken} from "../testToken/TestToken.sol";
+import {MoboxGovernForge} from "../../src/moboxGovernForge/MoboxGovernForge.sol";
+import {TestToken} from "../../src/testToken/TestToken.sol";
 
 contract MoboxGovernForgeTest is Test {
     TestToken public testToken;

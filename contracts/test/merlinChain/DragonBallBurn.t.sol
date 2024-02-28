@@ -82,7 +82,7 @@ contract DragonBallBurnTest is Test {
 
         testNFT.setApprovalForAll(address(dragonBallBurn), true);
 
-        dragonBallBurn.burnNfGetCoupons(testIds, initialOwner);
+        dragonBallBurn.burnNftGetCoupons(testIds, initialOwner);
 
         assertEq(testNFT.balanceOf(address(dragonBallBurn)), 10);
     }
@@ -99,7 +99,7 @@ contract DragonBallBurnTest is Test {
             }
         }
 
-        dragonBallBurn.burnNfGetCoupons(testIds, initialOwner);
+        dragonBallBurn.burnNftGetCoupons(testIds, initialOwner);
     }
 
     function testFail_BurnNfGetCouponsNotTargetAddress() external {
@@ -116,7 +116,7 @@ contract DragonBallBurnTest is Test {
 
         testNFT.setApprovalForAll(address(dragonBallBurn), true);
 
-        dragonBallBurn.burnNfGetCoupons(testIds, address(0));
+        dragonBallBurn.burnNftGetCoupons(testIds, address(0));
     }
 
     function testWithdrawNfts() external {
