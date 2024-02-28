@@ -106,7 +106,7 @@ contract DragonBallBurn is
      * @param nftTokenIds TokenIds to be destroyed
      * @param targetAddress Receive target address
      */
-    function burnNfGetCoupons(
+    function burnNftGetCoupons(
         uint256[] calldata nftTokenIds,
         address targetAddress
     ) external nonReentrant whenNotPaused {
