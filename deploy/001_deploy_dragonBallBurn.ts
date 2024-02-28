@@ -12,13 +12,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   console.log(deployer)
   /**
-    address _initialOwner,
+    address initialOwner_, 
+    IERC721 burnNFTAddress_, 
+    uint128 checkChainId_
    */
   const args = [
-    deployer
+    deployer,
+    "0xCa3b7d7b0a3dcFD9df318E1be4503f7054eA9528",
+    686868
   ];
 
-  let contract = await deploy('DragonBallHatch', {
+  let contract = await deploy('DragonBallBurn', {
     from: deployer,
     log: true,
     autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
@@ -59,5 +63,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // });
 };
 export default func;
-func.id = "001_deploy_dragonBallHatch"; // id required to prevent reexecution
-func.tags = ["DragonBallHatch"];
+func.id = "001_deploy_dragonBallBurn"; // id required to prevent reexecution
+func.tags = ["DragonBallBurn"];
