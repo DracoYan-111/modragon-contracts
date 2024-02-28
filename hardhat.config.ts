@@ -139,6 +139,8 @@ const config: HardhatUserConfig = {
       zetaMain: deployer,
       merlinTestnet:deployer,
       merlinMain:deployer,
+      arbitrumGoerli:deployer,
+      arbitrumMain:deployer
     },
   },
   networks: {
@@ -229,9 +231,9 @@ const config: HardhatUserConfig = {
       accounts,
       ledgerAccounts,
     },
-    arbitrumSepolia: {
-      chainId: 421614,
-      url: vars.get("ARBITRUM_SEPOLIA_URL", "") || process.env.ARBITRUM_SEPOLIA_URL,
+    arbitrumGoerli: {
+      chainId: 421613,
+      url: vars.get("ARBITRUM_GOERLI_URL", "") || process.env.ARBITRUM_GOERLI_URL,
       accounts,
       ledgerAccounts,
     },
@@ -347,8 +349,7 @@ const config: HardhatUserConfig = {
       polygonZkEVMTestnet: vars.get("POLYGON_ZKEVM_API_KEY", ""),
       // For Arbitrum testnet & mainnets
       arbitrumOne: vars.get("ARBITRUM_API_KEY", ""),
-      arbitrumNova: vars.get("ARBITRUM_API_KEY", ""),
-      arbitrumSepolia: vars.get("ARBITRUM_API_KEY", ""),
+      arbitrumGoerli: vars.get("ARBITRUM_API_KEY", ""),
       // For Avalanche testnet & mainnet
       avalanche: vars.get("AVALANCHE_API_KEY", ""),
       avalancheFujiTestnet: vars.get("AVALANCHE_API_KEY", ""),
@@ -522,19 +523,11 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: "arbitrumNova",
-        chainId: 42170,
-        urls: {
-          apiURL: "https://api-nova.arbiscan.io/api",
-          browserURL: "https://nova.arbiscan.io",
-        },
-      },
-      {
-        network: "arbitrumSepolia",
+        network: "arbitrumGoerli",
         chainId: 421614,
         urls: {
-          apiURL: "https://api-sepolia.arbiscan.io/api",
-          browserURL: "https://sepolia.arbiscan.io",
+          apiURL: "https://api-goerli.arbiscan.io/api",
+          browserURL: "https://goerli.arbiscan.io",
         },
       },
       {
