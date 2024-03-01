@@ -1,7 +1,11 @@
 hardhat/=node_modules/hardhat/
 xdeployer/=node_modules/xdeployer/
 forge-std/=contracts/lib/forge-std/src/
+weighted-math-lib/=contracts/lib/weighted-math-lib/src/
 @openzeppelin/=node_modules/@openzeppelin/
+v2-core/=node_modules/@sablier/v2-core/
+@prb/math/=node_modules/@prb/math/
+@weighted-math-lib/=contracts/lib/weighted-math-lib/src/
 @zetachain/=node_modules/@zetachain/
 ds-test/=contracts/lib/forge-std/lib/ds-test/src/
 openzeppelin-foundry-upgrades/=contracts/lib/openzeppelin-foundry-upgrades/src/

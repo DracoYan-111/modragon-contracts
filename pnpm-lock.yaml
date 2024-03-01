@@ -20,6 +20,12 @@ dependencies:
   '@openzeppelin/upgrades-core':
     specifier: ^1.32.2
     version: 1.32.2
+  '@prb/math':
+    specifier: ^4.0.2
+    version: 4.0.2
+  '@sablier/v2-core':
+    specifier: ^1.1.2
+    version: 1.1.2(@prb/math@4.0.2)
   '@zetachain/protocol-contracts':
     specifier: ^3.0.2
     version: 3.0.2
@@ -29,6 +35,9 @@ dependencies:
   hardhat-deploy:
     specifier: ^0.11.45
     version: 0.11.45
+  solady:
+    specifier: ^0.0.173
+    version: 0.0.173
   viem:
     specifier: ^2.0.6
     version: 2.0.6(typescript@5.3.3)
@@ -1335,6 +1344,10 @@ packages:
       '@openzeppelin/contracts': 5.0.1
     dev: false
 
+  /@openzeppelin/contracts@4.9.2:
+    resolution: {integrity: sha512-mO+y6JaqXjWeMh9glYVzVu8HYPGknAAnWyxTRhGeckOruyXQMNnlcW6w/Dx9ftLeIQk6N+ZJFuVmTwF7lEIFrg==}
+    dev: false
+
   /@openzeppelin/contracts@4.9.5:
     resolution: {integrity: sha512-ZK+W5mVhRppff9BE6YdR8CC52C8zAvsVAiWhEtQ5+oNxFE6h1WdeWo+FJSF8KKvtxxVYZ7MTP/5KoVpAU3aSWg==}
     dev: false
@@ -1460,6 +1473,19 @@ packages:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
     dev: true
+
+  /@prb/math@4.0.2:
+    resolution: {integrity: sha512-kJgqvXR6iyU7+N959RzggSFhBdnRuSDnc/bs8u6MzdWw7aYIUaAr+uMVdpP6Dheypjerd7sfJgFOs19FRFhscg==}
+    dev: false
+
+  /@sablier/v2-core@1.1.2(@prb/math@4.0.2):
+    resolution: {integrity: sha512-b9tSDVlwNc28l/kuBnizqYQ399OxS5kL03m9d9v79WH/9IMjrEFq0dhVX/sMsIWvzj3GXZ60P1oL1QWymeLXJQ==}
+    peerDependencies:
+      '@prb/math': 4.0.x
+    dependencies:
+      '@openzeppelin/contracts': 4.9.2
+      '@prb/math': 4.0.2
+    dev: false
 
   /@scure/base@1.1.5:
     resolution: {integrity: sha512-Brj9FiG2W1MRQSTB212YVPRrcbjkv48FoZi/u4l/zds/ieRrqsh7aUf6CLwkAq61oKXr/ZlTzlY66gLIj3TFTQ==}
@@ -7104,6 +7130,10 @@ packages:
       astral-regex: 2.0.0
       is-fullwidth-code-point: 3.0.0
     dev: true
+
+  /solady@0.0.173:
+    resolution: {integrity: sha512-6DAm9wdjN5NRQMkdy93Sh2Se7KQDX2fI9Ioj4hw0LHxAZn4vYg1sRSvodCn41RrDa1BVZWwLz0AGAG4mhzPJIQ==}
+    dev: false
 
   /solc@0.7.3(debug@4.3.4):
     resolution: {integrity: sha512-GAsWNAjGzIDg7VxzP6mPjdurby3IkGCjQcM8GFYZT6RyaoUZKmMU6Y7YwG+tFGhv7dwZ8rmR4iwFDrrD99JwqA==}
