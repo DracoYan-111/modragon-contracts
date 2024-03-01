@@ -10,3 +10,6 @@
 [submodule "contracts/lib/solidity-stringutils"]
 	path = contracts/lib/solidity-stringutils
 	url = https://github.com/Arachnid/solidity-stringutils
+[submodule "contracts/lib/weighted-math-lib"]
+	path = contracts/lib/weighted-math-lib
+	url = https://github.com/marigoldlabs/weighted-math-lib
