@@ -27,7 +27,7 @@ contract MoboxGovernForgeTest is Test {
     function setUp() external {
         initialOwner = vm.addr(INITIALOWNERKEY);
 
-        testToken = new TestToken(initialOwner);
+        testToken = new TestToken(initialOwner,"111");
         moBoxTokenBurnTest = new MoboxGovernForge(BURN_AMOUNT, initialOwner, testToken);
     }
 

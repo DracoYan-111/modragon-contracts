@@ -23,7 +23,7 @@ contract DragonBallBurnTest is Test {
     function setUp() external {
         initialOwner = vm.addr(INITIALOWNERKEY);
 
-        testToken = new TestToken(initialOwner);
+        testToken = new TestToken(initialOwner,"123");
 
         address dragonBallHatchs = address(new DragonBallHatch());
 
