@@ -39,28 +39,11 @@ contract LiquidityBootstrapPoolFactoryTest is Test {
             liquidityBootstrapPoolTestAddress,
             initialOwner,
             initialOwner,
-            0,
-            0,
-            0
+            10,
+            10,
+            10
         );
     }
-
-    //[0x5AF6087695f26F9609a855507c2862bf81f9d08d,
-    // 0x7246dA495733Bb2783a704324d25aafa9F486e46,
-    // 0x3e8B6e286f78B13C35E11d567935c3aFEECb9003,
-    // 0,
-    // 0,
-    // 309485009821345068724781055,
-    // 309485009821345068724781055,
-    // 309485009821345068724781055,
-    // 50000000000000000,
-    // 500000000000000000,
-    // 1709623027,
-    // 1709536627,
-    // 0,
-    // 0,
-    // true,
-    // 0x0000000000000000000000000000000000000000000000000000000000000000]
 
     function testCreateLiquidityBootstrapPool() external {
         vm.startPrank(initialOwner, initialOwner);
@@ -71,73 +54,107 @@ contract LiquidityBootstrapPoolFactoryTest is Test {
         testToken2.approve(address(liquidityBootstrapPoolFactoryTest), 100000 ether);
 
         PoolSettings memory poolSettings = PoolSettings(
-            address(testToken1),
-            address(testToken2),
-            initialOwner,
-            0,
-            0,
-            309485009821345068724781055,
-            309485009821345068724781055,
-            309485009821345068724781055,
-            50000000000000000,
-            950000000000000000,
-            uint40(block.timestamp),
-            uint40(block.timestamp + 1 days),
-            0,
-            0,
-            true,
-            0x0000000000000000000000000000000000000000000000000000000000000000
+            address(testToken1), // A token
+            address(testToken2), // B token
+            initialOwner, // owner
+            0, // virtua A token
+            0, // virtua B token
+            309485009821345068724781055, // max B token price(default)
+            309485009821345068724781055, // max B token out(default)
+            309485009821345068724781055, // max A token in(default)
+            0.05 ether, // start ratio(percentage)
+            0.5 ether, // end ratio(percentage)
+            uint40(block.timestamp), // start time
+            uint40(block.timestamp + 1 days), //end time
+            0, // default
+            0, // default
+            true, // sell Allowed
+            0x0000000000000000000000000000000000000000000000000000000000000000 //whitelist
         );
 
         liquidityBootstrapPoolTest = LiquidityBootstrapPool(
             liquidityBootstrapPoolFactoryTest.createLiquidityBootstrapPool(
                 poolSettings,
-                100000000000000000,
-                1000000000000000000,
+                1000 ether,
+                10 ether,
                 keccak256(abi.encode(poolSettings, block.timestamp))
             )
         );
-        //console.logAddress(address(liquidityBootstrapPoolTest));
+
         testToken1.approve(address(liquidityBootstrapPoolTest), 100000 ether);
         testToken2.approve(address(liquidityBootstrapPoolTest), 100000 ether);
 
-        // Pool memory pool = liquidityBootstrapPoolTest.args();
-        // uint256 assetsIn = 1 ether;
-        // uint256 swapFees = assetsIn.mulWad(liquidityBootstrapPoolTest.swapFee());
-        // uint256 sharesOut = pool.previewSharesOut(assetsIn.rawSub(swapFees));
-        // console.logUint(sharesOut);
+        vm.warp(block.timestamp + 100);
+        console.logString("==================1");
 
-        // // uint256 minSharesOut = 100;
-        // // if (sharesOut < minSharesOut) console.logString("SlippageExceeded();");
-        // // two revert ==========
+        uint256 assetsIn = liquidityBootstrapPoolTest.previewAssetsIn(10 ether);
+        // console.logString("Buy 10ether assets need:");
+        console.logUint(assetsIn);
 
-        // (uint256 assetReserve, uint256 shareReserve, uint256 assetWeight, uint256 shareWeight) = pool
-        //     .computeReservesAndWeights();
-        // console.logUint(assetReserve);
-        // console.logUint(shareReserve);
-        // console.logUint(assetWeight);
-        // console.logUint(shareWeight);
+        // uint256 sharesIn = liquidityBootstrapPoolTest.previewSharesIn(assetsIn);
+        // console.logUint(sharesIn);
 
-        // (uint256 assetReserveScaled, uint256 shareReserveScaled) = pool.scaledReserves(assetReserve, shareReserve);
-        // console.logUint(assetReserveScaled);
-        // console.logUint(shareReserveScaled);
-
-        // uint256 sharesInScaled = pool.share.scaleTokenBefore(assetsIn.rawSub(swapFees));
-
-        // console.logUint(sharesInScaled);
-
-        // uint256 assetsOut = sharesInScaled.getAmountOut(
-        //     shareReserveScaled,
-        //     assetReserveScaled,
-        //     shareWeight,
-        //     assetWeight
-        // );
+        // uint256 assetsOut = liquidityBootstrapPoolTest.previewAssetsOut(1 ether);
         // console.logUint(assetsOut);
-        // console.logUint(shareReserveScaled.mulWad(0.3 ether));
 
-        // if (sharesInScaled > shareReserveScaled.mulWad(0.3 ether)) {
-        //     console.logUint(22222222222);
-        // }
-        liquidityBootstrapPoolTest.swapExactAssetsForShares(0.0001 ether, 0, initialOwner);
+        // uint256 sharesOut = liquidityBootstrapPoolTest.previewSharesOut(assetsOut);
+        // console.logUint(sharesOut);
+        //===========================================================================
+        console.logString("==================2");
+
+        uint256 userShares = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
+        // console.logString("Amount before purchase");
+        console.logUint(userShares);
+
+        // Buy shares
+        liquidityBootstrapPoolTest.swapExactAssetsForShares(assetsIn, 0, initialOwner);
+
+        uint256 userShares1 = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
+        //console.logString("Amount after purchase");
+        console.logUint(userShares1);
+
+        console.logString("==================3");
+
+        uint256 assetsOut1 = liquidityBootstrapPoolTest.previewAssetsOut(userShares1);
+        //console.logString("Sell quantity");
+        console.logUint(assetsOut1);
+       console.logString("==================6");
+        console.logUint(liquidityBootstrapPoolTest.totalSwapFeesAsset());
+
+        // Sell shares
+        liquidityBootstrapPoolTest.swapSharesForExactAssets(assetsOut1, userShares1, initialOwner);
+
+       console.logString("==================6");
+        console.logUint(liquidityBootstrapPoolTest.totalSwapFeesAsset());
+
+        uint256 userShares2 = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
+        //console.logString("Amount after sale");
+        console.logUint(userShares2);
+       console.logString("==================6");
+        console.logUint(liquidityBootstrapPoolTest.totalSwapFeesAsset());
+        
+
+        vm.warp(block.timestamp + 43300);
+        console.logString("==================4");
+
+        // Buy shares
+        liquidityBootstrapPoolTest.swapExactAssetsForShares(
+            liquidityBootstrapPoolTest.previewAssetsIn(10 ether),
+            0,
+            initialOwner
+        );
+
+        console.logUint(liquidityBootstrapPoolTest.purchasedShares(initialOwner));
+
+        vm.warp(block.timestamp + 96400);
+        console.logString("==================5");
+
+        liquidityBootstrapPoolTest.close();
+        console.logString("==================6");
+        console.logUint(liquidityBootstrapPoolTest.totalSwapFeesAsset());
+
+        console.logUint(liquidityBootstrapPoolTest.purchasedShares(initialOwner));
+
+        liquidityBootstrapPoolTest.redeem(initialOwner, false);
     }
 }
