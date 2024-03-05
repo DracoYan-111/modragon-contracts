@@ -418,7 +418,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     ) public virtual whenNotPaused whenSaleActive onlyWhitelisted(proof) nonReentrant returns (uint256 sharesOut) {
         Pool memory pool = args();
 
-        uint256 swapFees = assetsIn.mulWad(swapFee());
+        uint256 swapFees = 0; // assetsIn.mulWad(swapFee());
         totalSwapFeesAsset += swapFees;
 
         sharesOut = pool.previewSharesOut(assetsIn.rawSub(swapFees));
@@ -588,7 +588,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         Pool memory pool = args();
 
         sharesIn = pool.previewSharesIn(assetsOut);
-        uint256 swapFees = sharesIn.mulWad(swapFee());
+        uint256 swapFees = 0;// sharesIn.mulWad(swapFee());
         sharesIn += swapFees;
         totalSwapFeesShare += swapFees;
 
@@ -636,32 +636,32 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         if (closed) revert ClosingDisallowed();
         if (block.timestamp < saleEnd()) revert ClosingDisallowed();
 
-        uint256 totalAssets = asset().balanceOf(address(this)).rawSub(totalSwapFeesAsset);
-        uint256 platformFees = totalAssets.mulWad(platformFee());
-        uint256 totalAssetsMinusFees = totalAssets.rawSub(platformFees).rawSub(totalReferred);
+        // uint256 totalAssets = asset().balanceOf(address(this)).rawSub(totalSwapFeesAsset);
+        // uint256 platformFees = totalAssets.mulWad(platformFee());
+        // uint256 totalAssetsMinusFees = totalAssets.rawSub(platformFees).rawSub(totalReferred);
 
-        if (totalAssets != 0) {
-            // Transfer and distribute fees
-            asset().safeTransfer(platform(), platformFees + totalSwapFeesAsset);
-            share().safeTransfer(platform(), totalSwapFeesShare);
-            Treasury(platform()).distributeFee(asset(), platformFees, totalSwapFeesAsset, share(), totalSwapFeesShare);
+        // if (totalAssets != 0) {
+        //     // Transfer and distribute fees
+        //     asset().safeTransfer(platform(), platformFees + totalSwapFeesAsset);
+        //     share().safeTransfer(platform(), totalSwapFeesShare);
+        //     Treasury(platform()).distributeFee(asset(), platformFees, totalSwapFeesAsset, share(), totalSwapFeesShare);
 
-            // Transfer asset
-            asset().safeTransfer(manager(), totalAssetsMinusFees);
-        }
+        //     // Transfer asset
+        //     asset().safeTransfer(manager(), totalAssetsMinusFees);
+        // }
 
-        uint256 totalShares = share().balanceOf(address(this));
-        uint256 unsoldShares = totalShares.rawSub(totalPurchased);
+        // uint256 totalShares = share().balanceOf(address(this));
+        // uint256 unsoldShares = totalShares;//.rawSub(totalPurchased);
 
-        if (totalShares != 0) {
-            share().safeTransfer(manager(), unsoldShares);
-        }
+        // if (totalShares != 0) {
+        //     share().safeTransfer(manager(), unsoldShares);
+        // }
 
         closed = true;
 
-        share().safeApprove(address(SABLIER), totalShares);
+        // share().safeApprove(address(SABLIER), totalShares);
 
-        emit Close(totalAssetsMinusFees, platformFees, totalSwapFeesAsset, totalSwapFeesShare);
+        emit Close(0, 0, totalSwapFeesAsset, totalSwapFeesShare);
     }
 
     /// -----------------------------------------------------------------------
