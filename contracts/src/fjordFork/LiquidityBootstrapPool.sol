@@ -418,7 +418,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     ) public virtual whenNotPaused whenSaleActive onlyWhitelisted(proof) nonReentrant returns (uint256 sharesOut) {
         Pool memory pool = args();
 
-        uint256 swapFees = 0; // assetsIn.mulWad(swapFee());
+        uint256 swapFees = assetsIn.mulWad(swapFee());
         totalSwapFeesAsset += swapFees;
 
         sharesOut = pool.previewSharesOut(assetsIn.rawSub(swapFees));
@@ -588,7 +588,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         Pool memory pool = args();
 
         sharesIn = pool.previewSharesIn(assetsOut);
-        uint256 swapFees = 0;// sharesIn.mulWad(swapFee());
+        uint256 swapFees = sharesIn.mulWad(swapFee());
         sharesIn += swapFees;
         totalSwapFeesShare += swapFees;
 
@@ -636,26 +636,26 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         if (closed) revert ClosingDisallowed();
         if (block.timestamp < saleEnd()) revert ClosingDisallowed();
 
-        // uint256 totalAssets = asset().balanceOf(address(this)).rawSub(totalSwapFeesAsset);
-        // uint256 platformFees = totalAssets.mulWad(platformFee());
-        // uint256 totalAssetsMinusFees = totalAssets.rawSub(platformFees).rawSub(totalReferred);
+        uint256 totalAssets = asset().balanceOf(address(this)).rawSub(totalSwapFeesAsset);
+        uint256 platformFees = totalAssets.mulWad(platformFee());
+        uint256 totalAssetsMinusFees = totalAssets.rawSub(platformFees).rawSub(totalReferred);
 
-        // if (totalAssets != 0) {
-        //     // Transfer and distribute fees
-        //     asset().safeTransfer(platform(), platformFees + totalSwapFeesAsset);
-        //     share().safeTransfer(platform(), totalSwapFeesShare);
-        //     Treasury(platform()).distributeFee(asset(), platformFees, totalSwapFeesAsset, share(), totalSwapFeesShare);
+        if (totalAssets != 0) {
+            // Transfer and distribute fees
+            //asset().safeTransfer(platform(), platformFees + totalSwapFeesAsset);
+            //share().safeTransfer(platform(), totalSwapFeesShare);
+            //Treasury(platform()).distributeFee(asset(), platformFees, totalSwapFeesAsset, share(), totalSwapFeesShare);
 
-        //     // Transfer asset
-        //     asset().safeTransfer(manager(), totalAssetsMinusFees);
-        // }
+            // Transfer asset
+            asset().safeTransfer(manager(), totalAssetsMinusFees);
+        }
 
-        // uint256 totalShares = share().balanceOf(address(this));
-        // uint256 unsoldShares = totalShares;//.rawSub(totalPurchased);
+        uint256 totalShares = share().balanceOf(address(this));
+        uint256 unsoldShares = totalShares.rawSub(totalPurchased);
 
-        // if (totalShares != 0) {
-        //     share().safeTransfer(manager(), unsoldShares);
-        // }
+        if (totalShares != 0) {
+            share().safeTransfer(manager(), unsoldShares);
+        }
 
         closed = true;
 
@@ -683,20 +683,20 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         uint256 streamID;
 
         if (vestShares() && vestEnd() > block.timestamp) {
-            shares = purchasedShares[msg.sender];
-            delete purchasedShares[msg.sender];
+            // shares = purchasedShares[msg.sender];
+            // delete purchasedShares[msg.sender];
 
-            LockupLinear.CreateWithRange memory params;
+            // LockupLinear.CreateWithRange memory params;
 
-            params.sender = manager();
-            params.recipient = msg.sender;
-            params.totalAmount = uint128(shares);
-            params.asset = IERC20(share());
-            params.cancelable = false;
-            params.range = LockupLinear.Range({start: uint40(saleEnd()), cliff: vestCliff(), end: vestEnd()});
-            params.broker = Broker(address(0), ud60x18(0));
+            // params.sender = manager();
+            // params.recipient = msg.sender;
+            // params.totalAmount = uint128(shares);
+            // params.asset = IERC20(share());
+            // params.cancelable = false;
+            // params.range = LockupLinear.Range({start: uint40(saleEnd()), cliff: vestCliff(), end: vestEnd()});
+            // params.broker = Broker(address(0), ud60x18(0));
 
-            streamID = SABLIER.createWithRange(params);
+            // streamID = SABLIER.createWithRange(params);
         } else {
             shares = purchasedShares[msg.sender];
 
