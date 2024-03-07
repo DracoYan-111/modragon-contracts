@@ -1,20 +1,20 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity ^0.8.23;
 
-import "weighted-math-lib/WeightedMathLib.sol";
+import {WeightedMathLib} from "weighted-math-lib/WeightedMathLib.sol";
 
-import "solady/src/utils/SafeTransferLib.sol";
-import "solady/src/utils/MerkleProofLib.sol";
-import "solady/src/utils/LibString.sol";
-import "solady/src/utils/Clone.sol";
+import {SafeTransferLib} from "solady/src/utils/SafeTransferLib.sol";
+import {MerkleProofLib} from "solady/src/utils/MerkleProofLib.sol";
+import {LibString} from "solady/src/utils/LibString.sol";
+import {Clone} from "solady/src/utils/Clone.sol";
 
+import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {Broker, LockupLinear, IERC20} from "v2-core/src/types/DataTypes.sol";
 import {ud60x18} from "@prb/math/src/UD60x18.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-import "./utils/LiquidityBootstrapLib.sol";
-import "./utils/Pausable.sol";
-import "./Treasury.sol";
+import {LiquidityBootstrapLib, Pool} from "./utils/LiquidityBootstrapLib.sol";
+import {FixedPointMathLib, Treasury} from "./Treasury.sol";
+import {Pausable} from "./utils/Pausable.sol";
 
 contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// -----------------------------------------------------------------------
@@ -63,9 +63,6 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
     /// @dev Error thrown when an address is not allowed to call a function.
     error CallerDisallowed();
-
-    /// @dev Error thrown when an not manager is not allowed to call a function.
-    error NotManagerDisallowed();
 
     /// @dev Error thrown when the sender is not the recipient.
     error RecipientNotSender();
@@ -316,18 +313,19 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         _;
     }
 
-    /// @notice Modifier to check if is a manager.
-    /// @dev This modifier checks if is a manager
-    modifier onlyManager() virtual {
-        if (msg.sender != manager()) {
-            revert NotManagerDisallowed();
+    /// @notice Modifier to check whether recipient is consistent with sender.
+    /// @dev This modifier recipient checks whether it is consistent with sender.
+    /// @param recipient The address to receive the shares.
+    modifier recipientIsSender(address recipient) virtual {
+        if (msg.sender != recipient) {
+            revert RecipientNotSender();
         }
         _;
     }
 
     /**
      *
-     *  CONSTRUCTOR & INITIALIZATION
+     * INITIALIZATION
      *
      */
 
@@ -467,11 +465,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         uint256 assets,
         uint256 shares,
         uint256 swapFees
-    ) internal virtual {
-        if (msg.sender != recipient) {
-            revert RecipientNotSender();
-        }
-
+    ) internal virtual recipientIsSender(recipient) {
         if (assets + assetsIn - swapFees >= maxTotalAssetsIn()) {
             revert AssetsInExceeded();
         }
@@ -610,11 +604,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         uint256 assets,
         uint256 shares,
         uint256 swapFees
-    ) internal virtual {
-        if (msg.sender != recipient) {
-            revert RecipientNotSender();
-        }
-
+    ) internal virtual recipientIsSender(recipient) {
         if (assets >= maxTotalAssetsIn()) {
             revert AssetsInExceeded();
         }
@@ -680,15 +670,18 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// @param recipient The address to receive redeemed shares and assets.
     /// @param referred A boolean indicating whether the user has been referred.
     /// @return shares The number of shares redeemed.
-    function redeem(address recipient, bool referred) external virtual returns (uint256 shares) {
-        if (msg.sender != recipient) {
-            revert RecipientNotSender();
-        }
-        
+    function redeem(
+        address recipient,
+        bool referred
+    ) external virtual recipientIsSender(recipient) returns (uint256 shares) {
         if (!closed) revert RedeemingDisallowed();
 
-        uint256 streamID;
+        shares = purchasedShares[msg.sender];
 
+        delete purchasedShares[msg.sender];
+
+        share().safeTransfer(msg.sender, shares);
+        
         shares = purchasedShares[msg.sender];
 
         delete purchasedShares[msg.sender];
@@ -704,16 +697,8 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         }
 
         if (shares != 0) {
-            emit Redeem(msg.sender, streamID, shares);
+            emit Redeem(msg.sender, block.timestamp, shares);
         }
-    }
-
-    /// @notice Emergency withdrawal function only manager
-    /// @dev This method is used for emergency withdrawals from the project side
-    /// @param recipient The address to receive redeemed shares and assets.
-    function emergencyWithdrawal(address recipient) external onlyManager {
-        share().safeTransfer(recipient, share().balanceOf(address(this)));
-        asset().safeTransfer(recipient, asset().balanceOf(address(this)));
     }
 
     /// -----------------------------------------------------------------------
@@ -729,6 +714,19 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         }
 
         _togglePause();
+    }
+
+    /// @notice Emergency withdrawal and pause function.
+    /// @dev This method is used for emergency withdrawals from the project side.
+    /// @param recipient The address to receive redeemed shares and assets.
+    function emergencyWithdrawal(address recipient) external {
+        if (msg.sender != manager()) {
+            revert CallerDisallowed();
+        }
+        if (paused == false) _togglePause();
+
+        share().safeTransfer(recipient, share().balanceOf(address(this)));
+        asset().safeTransfer(recipient, asset().balanceOf(address(this)));
     }
 
     /// -----------------------------------------------------------------------
