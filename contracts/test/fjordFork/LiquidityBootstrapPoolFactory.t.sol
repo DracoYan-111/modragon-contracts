@@ -5,16 +5,16 @@ import {Vm} from "forge-std/Vm.sol";
 import {Test} from "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
 
-import {LiquidityBootstrapPoolFactory, PoolSettings} from "../../src/fjordFork/LiquidityBootstrapPoolFactory.sol";
-import {LiquidityBootstrapPool, FixedPointMathLib, WeightedMathLib} from "../../src/fjordFork/LiquidityBootstrapPoolNew.sol";
-import {LiquidityBootstrapLib, Pool} from "../../src/fjordFork/utils/LiquidityBootstrapLib.sol";
 
+import {LiquidityBootstrapPool, FixedPointMathLib, WeightedMathLib} from "../../src/fjordFork/LiquidityBootstrapPoolNew.sol";
+import {LiquidityBootstrapPoolFactory, PoolSettings} from "../../src/fjordFork/LiquidityBootstrapPoolFactory.sol";
+import {LiquidityBootstrapLib, Pool} from "../../src/fjordFork/utils/LiquidityBootstrapLib.sol";
 import {TestToken} from "../../src/testToken/TestToken.sol";
 
 contract LiquidityBootstrapPoolFactoryTest is Test {
     using LiquidityBootstrapLib for *;
-    using WeightedMathLib for *;
     using FixedPointMathLib for *;
+    using WeightedMathLib for *;
 
     LiquidityBootstrapPoolFactory public liquidityBootstrapPoolFactoryTest;
     LiquidityBootstrapPool public liquidityBootstrapPoolTest;
@@ -45,7 +45,10 @@ contract LiquidityBootstrapPoolFactoryTest is Test {
         );
     }
 
-    function testCreateLiquidityBootstrapPool() external {
+    /**
+     * @dev Test factory contract CreateLiquidityBootstrapPool function
+     */
+    function testCreateLiquidityBootstrapPool() public {
         vm.startPrank(initialOwner, initialOwner);
         testToken1.mint(initialOwner, 100000 ether);
         testToken1.approve(address(liquidityBootstrapPoolFactoryTest), 100000 ether);
@@ -56,9 +59,9 @@ contract LiquidityBootstrapPoolFactoryTest is Test {
         PoolSettings memory poolSettings = PoolSettings(
             address(testToken1), // A token
             address(testToken2), // B token
-            initialOwner, // owner
-            0, // virtua A token
-            0, // virtua B token
+            initialOwner, // manger
+            0, // default
+            0, // default
             309485009821345068724781055, // max B token price(default)
             309485009821345068724781055, // max B token out(default)
             309485009821345068724781055, // max A token in(default)
@@ -83,97 +86,94 @@ contract LiquidityBootstrapPoolFactoryTest is Test {
 
         testToken1.approve(address(liquidityBootstrapPoolTest), 100000 ether);
         testToken2.approve(address(liquidityBootstrapPoolTest), 100000 ether);
+    }
 
-        console.logString("==================");
+    /**
+     * @dev Test pool contract buy function
+     */
+    function testPoolContractBuy() public {
+        testCreateLiquidityBootstrapPool();
 
-        console.logUint(liquidityBootstrapPoolTest.previewAssetsIn(10 ether));
+        assertGt(liquidityBootstrapPoolTest.previewAssetsIn(10 ether), 0);
 
         vm.warp(block.timestamp + 1000);
 
-        console.logString("==================1");
-
         uint256 assetsIn = liquidityBootstrapPoolTest.previewAssetsIn(10 ether);
-        // console.logString("Buy 10ether assets need:");
-        console.logUint(assetsIn);
+        // Buy 10ether assets need
+        assertGt(assetsIn, 0);
 
         uint256 sharesIn = liquidityBootstrapPoolTest.previewSharesIn(assetsIn);
-        console.logUint(sharesIn);
+        assertGt(sharesIn, 0);
 
         uint256 assetsOut = liquidityBootstrapPoolTest.previewAssetsOut(10 ether);
-        console.logUint(assetsOut);
+        assertGt(assetsOut, 0);
 
         uint256 sharesOut = liquidityBootstrapPoolTest.previewSharesOut(assetsOut);
-        console.logUint(sharesOut);
+        assertGt(sharesOut, 0);
+
         //===========================================================================
 
         vm.warp(block.timestamp + 2000);
 
-        console.logString("==================2");
-        console.logUint(liquidityBootstrapPoolTest.previewAssetsIn(10 ether));
-
-        // uint256 userShares = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
-        // // console.logString("Amount before purchase");
-        // console.logUint(userShares);
-
         // Buy shares
         liquidityBootstrapPoolTest.swapExactAssetsForShares(assetsIn, sharesOut, initialOwner);
 
-        uint256 userShares1 = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
-        //console.logString("Amount after purchase");
-        console.logUint(userShares1);
+        uint256 userShares = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
+        // Amount after purchase
+        assertGt(userShares, 0);
+
+        assertEq(liquidityBootstrapPoolTest.totalSwapFeesAsset(), 0);
 
         vm.warp(block.timestamp + 3000);
+    }
 
-        console.logString("==================3");
-        console.logUint(liquidityBootstrapPoolTest.purchasedShares(initialOwner));
-        uint256 userShares3 = userShares1;
-        console.logUint(userShares3);
+    /**
+     * @dev Test pool contract sell function
+     */
+    function testPoolContractSell() public {
+        testPoolContractBuy();
 
-        //uint256 assetsOut1 = liquidityBootstrapPoolTest.previewAssetsOut(userShares1);
-        //console.logString("Sell quantity");
-        //console.logUint(assetsOut1);
-        uint256 assetsOut3 = liquidityBootstrapPoolTest.previewAssetsOut(userShares1);
+        uint256 userShares = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
+        assertGt(userShares, 0);
 
-        console.logUint(assetsOut3);
+        uint256 assetsOut = liquidityBootstrapPoolTest.previewAssetsOut(userShares);
+        assertGt(assetsOut, 0);
 
         // Sell shares
-        liquidityBootstrapPoolTest.swapExactSharesForAssets(userShares1, assetsOut3, initialOwner);
+        liquidityBootstrapPoolTest.swapExactSharesForAssets(userShares, assetsOut, initialOwner);
 
-        uint256 userShares2 = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
-        //console.logString("Amount after sale");
-        console.logUint(userShares2);
+        uint256 userSharesNew = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
+        assertEq(userSharesNew, 0);
+
+        assertEq(liquidityBootstrapPoolTest.totalSwapFeesAsset(), 0);
 
         vm.warp(block.timestamp + 43300);
+    }
 
-        console.logString("==================4");
-
-        // Buy shares
-        liquidityBootstrapPoolTest.swapExactAssetsForShares(
-            liquidityBootstrapPoolTest.previewAssetsIn(10 ether),
-            0,
-            initialOwner
-        );
-
-        console.logUint(liquidityBootstrapPoolTest.purchasedShares(initialOwner));
+    /**
+     * @dev Test pool contract close function
+     */
+    function testPoolContractClose() public {
+        testPoolContractSell();
 
         vm.warp(block.timestamp + 96400);
-        console.logString("==================5");
 
         liquidityBootstrapPoolTest.close();
-        console.logString("==================6");
-        console.logUint(liquidityBootstrapPoolTest.totalSwapFeesAsset());
-        console.logUint(liquidityBootstrapPoolTest.totalSwapFeesShare());
-        console.logUint(liquidityBootstrapPoolTest.referredAssets(initialOwner));
 
-        console.logUint(liquidityBootstrapPoolTest.purchasedShares(initialOwner));
+        assertEq(liquidityBootstrapPoolTest.closed(), true);
+        assertEq(liquidityBootstrapPoolTest.totalSwapFeesAsset(), 0);
+    }
 
-        liquidityBootstrapPoolTest.redeem(initialOwner, false);
+    /**
+     * @dev Test pool contract redeem function
+     */
+    function testPoolContractRedeem() public {
+        testPoolContractBuy();
+        vm.warp(block.timestamp + 96400);
 
-        console.logUint(testToken1.balanceOf(address(liquidityBootstrapPoolTest)));
-        console.logUint(testToken2.balanceOf(address(liquidityBootstrapPoolTest)));
-        // vm.stopPrank();
+        liquidityBootstrapPoolTest.close();
 
-        liquidityBootstrapPoolTest.emergencyWithdrawal(initialOwner);
-        console.logUint(testToken2.balanceOf(address(liquidityBootstrapPoolTest)));
+        uint256 userShares = liquidityBootstrapPoolTest.purchasedShares(initialOwner);
+        assertGt(userShares, 0);
     }
 }
