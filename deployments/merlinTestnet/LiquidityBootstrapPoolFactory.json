@@ -1,0 +1,1099 @@
+{
+  "address": "0x0bE448bF9f50690DDAb1a6A7D9A6D937dC2DA19c",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_implementation",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_feeRecipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint48",
+          "name": "_platformFee",
+          "type": "uint48"
+        },
+        {
+          "internalType": "uint48",
+          "name": "_referrerFee",
+          "type": "uint48"
+        },
+        {
+          "internalType": "uint48",
+          "name": "_swapFee",
+          "type": "uint48"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "AlreadyInitialized",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAssetOrShare",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAssetValue",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidVestCliff",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidVestEnd",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidWeightConfig",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MaxFeeExceeded",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NewOwnerIsZeroAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "NoHandoverRequest",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SalePeriodLow",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Unauthorized",
+      "type": "error"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        }
+      ],
+      "name": "FeeRecipientSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "pendingOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipHandoverCanceled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "pendingOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipHandoverRequested",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "oldOwner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "OwnershipTransferred",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "PlatformFeeSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "name": "PoolCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "ReferrerFeeSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "SwapFeeSet",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "cancelOwnershipHandover",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "pendingOwner",
+          "type": "address"
+        }
+      ],
+      "name": "completeOwnershipHandover",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "share",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint88",
+              "name": "virtualAssets",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "virtualShares",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxSharePrice",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxSharesOut",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxAssetsIn",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint64",
+              "name": "weightStart",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "weightEnd",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint40",
+              "name": "saleStart",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "saleEnd",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "vestCliff",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "vestEnd",
+              "type": "uint40"
+            },
+            {
+              "internalType": "bool",
+              "name": "sellingAllowed",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "whitelistMerkleRoot",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct PoolSettings",
+          "name": "args",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint256",
+          "name": "shares",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "assets",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "salt",
+          "type": "bytes32"
+        }
+      ],
+      "name": "createLiquidityBootstrapPool",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "factorySettings",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "feeRecipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint48",
+          "name": "platformFee",
+          "type": "uint48"
+        },
+        {
+          "internalType": "uint48",
+          "name": "referrerFee",
+          "type": "uint48"
+        },
+        {
+          "internalType": "uint48",
+          "name": "swapFee",
+          "type": "uint48"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "feeRecipient",
+          "type": "address"
+        },
+        {
+          "internalType": "uint48",
+          "name": "platformFee",
+          "type": "uint48"
+        },
+        {
+          "internalType": "uint48",
+          "name": "referrerFee",
+          "type": "uint48"
+        },
+        {
+          "internalType": "uint48",
+          "name": "swapFee",
+          "type": "uint48"
+        }
+      ],
+      "name": "modifySettings",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "result",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "pendingOwner",
+          "type": "address"
+        }
+      ],
+      "name": "ownershipHandoverExpiresAt",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "result",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "share",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint88",
+              "name": "virtualAssets",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "virtualShares",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxSharePrice",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxSharesOut",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxAssetsIn",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint64",
+              "name": "weightStart",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "weightEnd",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint40",
+              "name": "saleStart",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "saleEnd",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "vestCliff",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "vestEnd",
+              "type": "uint40"
+            },
+            {
+              "internalType": "bool",
+              "name": "sellingAllowed",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "whitelistMerkleRoot",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct PoolSettings",
+          "name": "args",
+          "type": "tuple"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "salt",
+          "type": "bytes32"
+        }
+      ],
+      "name": "predictDeterministicAddress",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "share",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint88",
+              "name": "virtualAssets",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "virtualShares",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxSharePrice",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxSharesOut",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint88",
+              "name": "maxAssetsIn",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint64",
+              "name": "weightStart",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "weightEnd",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint40",
+              "name": "saleStart",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "saleEnd",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "vestCliff",
+              "type": "uint40"
+            },
+            {
+              "internalType": "uint40",
+              "name": "vestEnd",
+              "type": "uint40"
+            },
+            {
+              "internalType": "bool",
+              "name": "sellingAllowed",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "whitelistMerkleRoot",
+              "type": "bytes32"
+            }
+          ],
+          "internalType": "struct PoolSettings",
+          "name": "args",
+          "type": "tuple"
+        }
+      ],
+      "name": "predictInitCodeHash",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "renounceOwnership",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "requestOwnershipHandover",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "recipient",
+          "type": "address"
+        }
+      ],
+      "name": "setFeeRecipient",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint48",
+          "name": "fee",
+          "type": "uint48"
+        }
+      ],
+      "name": "setPlatformFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint48",
+          "name": "fee",
+          "type": "uint48"
+        }
+      ],
+      "name": "setReferrerFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint48",
+          "name": "fee",
+          "type": "uint48"
+        }
+      ],
+      "name": "setSwapFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "transferOwnership",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x23ae71732797125df08fd990badd7d760126b27b3525c3213c34084548953741",
+  "receipt": {
+    "to": null,
+    "from": "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003",
+    "contractAddress": "0x0bE448bF9f50690DDAb1a6A7D9A6D937dC2DA19c",
+    "transactionIndex": 0,
+    "gasUsed": "1601356",
+    "logsBloom": "0x00000000000000010000000000000000000040000000000000800000000000000004000000000000000000000000080000000000000000000000008800000000000010000000000040200000000000000001020000000000000000020000000000000000020000000000000000000800000000000000000000800000000000400000000000000000000000000800000000001000000100000000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000100000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000010",
+    "blockHash": "0xa90df077fba73b7e01b775144cc28956a49723ca97cb7df7c826049488c8cb01",
+    "transactionHash": "0x23ae71732797125df08fd990badd7d760126b27b3525c3213c34084548953741",
+    "logs": [
+      {
+        "transactionIndex": 0,
+        "blockNumber": 3575650,
+        "transactionHash": "0x23ae71732797125df08fd990badd7d760126b27b3525c3213c34084548953741",
+        "address": "0x0bE448bF9f50690DDAb1a6A7D9A6D937dC2DA19c",
+        "topics": [
+          "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0",
+          "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "0x0000000000000000000000003e8b6e286f78b13c35e11d567935c3afeecb9003"
+        ],
+        "data": "0x",
+        "logIndex": 0,
+        "blockHash": "0xa90df077fba73b7e01b775144cc28956a49723ca97cb7df7c826049488c8cb01"
+      },
+      {
+        "transactionIndex": 0,
+        "blockNumber": 3575650,
+        "transactionHash": "0x23ae71732797125df08fd990badd7d760126b27b3525c3213c34084548953741",
+        "address": "0x0bE448bF9f50690DDAb1a6A7D9A6D937dC2DA19c",
+        "topics": [
+          "0xbf9a9534339a9d6b81696e05dcfb614b7dc518a31d48be3cfb757988381fb323"
+        ],
+        "data": "0x0000000000000000000000003e8b6e286f78b13c35e11d567935c3afeecb9003",
+        "logIndex": 1,
+        "blockHash": "0xa90df077fba73b7e01b775144cc28956a49723ca97cb7df7c826049488c8cb01"
+      },
+      {
+        "transactionIndex": 0,
+        "blockNumber": 3575650,
+        "transactionHash": "0x23ae71732797125df08fd990badd7d760126b27b3525c3213c34084548953741",
+        "address": "0x0bE448bF9f50690DDAb1a6A7D9A6D937dC2DA19c",
+        "topics": [
+          "0xdc4e4be378c228e1b7b13787e1d0620609304c2f71ed3a6ee69e4aae99d58cd9"
+        ],
+        "data": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "logIndex": 2,
+        "blockHash": "0xa90df077fba73b7e01b775144cc28956a49723ca97cb7df7c826049488c8cb01"
+      },
+      {
+        "transactionIndex": 0,
+        "blockNumber": 3575650,
+        "transactionHash": "0x23ae71732797125df08fd990badd7d760126b27b3525c3213c34084548953741",
+        "address": "0x0bE448bF9f50690DDAb1a6A7D9A6D937dC2DA19c",
+        "topics": [
+          "0x11388023ce3c3ee3995ef04b4ad33102dab6bed131ac79d8531163e61a34f93b"
+        ],
+        "data": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "logIndex": 3,
+        "blockHash": "0xa90df077fba73b7e01b775144cc28956a49723ca97cb7df7c826049488c8cb01"
+      },
+      {
+        "transactionIndex": 0,
+        "blockNumber": 3575650,
+        "transactionHash": "0x23ae71732797125df08fd990badd7d760126b27b3525c3213c34084548953741",
+        "address": "0x0bE448bF9f50690DDAb1a6A7D9A6D937dC2DA19c",
+        "topics": [
+          "0x4cc356a4f0cf9460d4d6f22c6c58a7cb56a92755a9d27d92b2dff03c5b3e9438"
+        ],
+        "data": "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "logIndex": 4,
+        "blockHash": "0xa90df077fba73b7e01b775144cc28956a49723ca97cb7df7c826049488c8cb01"
+      }
+    ],
+    "blockNumber": 3575650,
+    "cumulativeGasUsed": "1601356",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [
+    "0xaA79E64a4c9E9f9Fde1872b161c73a09a11F4B5a",
+    "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003",
+    "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003",
+    0,
+    0,
+    0
+  ],
+  "numDeployments": 1,
+  "solcInputHash": "2e81722341d025bcd17e0e7cae534d50",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.23+commit.f704f362\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_implementation\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feeRecipient\",\"type\":\"address\"},{\"internalType\":\"uint48\",\"name\":\"_platformFee\",\"type\":\"uint48\"},{\"internalType\":\"uint48\",\"name\":\"_referrerFee\",\"type\":\"uint48\"},{\"internalType\":\"uint48\",\"name\":\"_swapFee\",\"type\":\"uint48\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"AlreadyInitialized\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAssetOrShare\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidAssetValue\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidVestCliff\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidVestEnd\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"InvalidWeightConfig\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"MaxFeeExceeded\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NewOwnerIsZeroAddress\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"NoHandoverRequest\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"SalePeriodLow\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Unauthorized\",\"type\":\"error\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"}],\"name\":\"FeeRecipientSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"pendingOwner\",\"type\":\"address\"}],\"name\":\"OwnershipHandoverCanceled\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"pendingOwner\",\"type\":\"address\"}],\"name\":\"OwnershipHandoverRequested\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"oldOwner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"OwnershipTransferred\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"fee\",\"type\":\"uint256\"}],\"name\":\"PlatformFeeSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"}],\"name\":\"PoolCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"fee\",\"type\":\"uint256\"}],\"name\":\"ReferrerFeeSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"fee\",\"type\":\"uint256\"}],\"name\":\"SwapFeeSet\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"cancelOwnershipHandover\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"pendingOwner\",\"type\":\"address\"}],\"name\":\"completeOwnershipHandover\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"share\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint88\",\"name\":\"virtualAssets\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"virtualShares\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxSharePrice\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxSharesOut\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxAssetsIn\",\"type\":\"uint88\"},{\"internalType\":\"uint64\",\"name\":\"weightStart\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"weightEnd\",\"type\":\"uint64\"},{\"internalType\":\"uint40\",\"name\":\"saleStart\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"saleEnd\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"vestCliff\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"vestEnd\",\"type\":\"uint40\"},{\"internalType\":\"bool\",\"name\":\"sellingAllowed\",\"type\":\"bool\"},{\"internalType\":\"bytes32\",\"name\":\"whitelistMerkleRoot\",\"type\":\"bytes32\"}],\"internalType\":\"struct PoolSettings\",\"name\":\"args\",\"type\":\"tuple\"},{\"internalType\":\"uint256\",\"name\":\"shares\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"assets\",\"type\":\"uint256\"},{\"internalType\":\"bytes32\",\"name\":\"salt\",\"type\":\"bytes32\"}],\"name\":\"createLiquidityBootstrapPool\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"factorySettings\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"feeRecipient\",\"type\":\"address\"},{\"internalType\":\"uint48\",\"name\":\"platformFee\",\"type\":\"uint48\"},{\"internalType\":\"uint48\",\"name\":\"referrerFee\",\"type\":\"uint48\"},{\"internalType\":\"uint48\",\"name\":\"swapFee\",\"type\":\"uint48\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"feeRecipient\",\"type\":\"address\"},{\"internalType\":\"uint48\",\"name\":\"platformFee\",\"type\":\"uint48\"},{\"internalType\":\"uint48\",\"name\":\"referrerFee\",\"type\":\"uint48\"},{\"internalType\":\"uint48\",\"name\":\"swapFee\",\"type\":\"uint48\"}],\"name\":\"modifySettings\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"result\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"pendingOwner\",\"type\":\"address\"}],\"name\":\"ownershipHandoverExpiresAt\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"result\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"share\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint88\",\"name\":\"virtualAssets\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"virtualShares\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxSharePrice\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxSharesOut\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxAssetsIn\",\"type\":\"uint88\"},{\"internalType\":\"uint64\",\"name\":\"weightStart\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"weightEnd\",\"type\":\"uint64\"},{\"internalType\":\"uint40\",\"name\":\"saleStart\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"saleEnd\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"vestCliff\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"vestEnd\",\"type\":\"uint40\"},{\"internalType\":\"bool\",\"name\":\"sellingAllowed\",\"type\":\"bool\"},{\"internalType\":\"bytes32\",\"name\":\"whitelistMerkleRoot\",\"type\":\"bytes32\"}],\"internalType\":\"struct PoolSettings\",\"name\":\"args\",\"type\":\"tuple\"},{\"internalType\":\"bytes32\",\"name\":\"salt\",\"type\":\"bytes32\"}],\"name\":\"predictDeterministicAddress\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"share\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"creator\",\"type\":\"address\"},{\"internalType\":\"uint88\",\"name\":\"virtualAssets\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"virtualShares\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxSharePrice\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxSharesOut\",\"type\":\"uint88\"},{\"internalType\":\"uint88\",\"name\":\"maxAssetsIn\",\"type\":\"uint88\"},{\"internalType\":\"uint64\",\"name\":\"weightStart\",\"type\":\"uint64\"},{\"internalType\":\"uint64\",\"name\":\"weightEnd\",\"type\":\"uint64\"},{\"internalType\":\"uint40\",\"name\":\"saleStart\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"saleEnd\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"vestCliff\",\"type\":\"uint40\"},{\"internalType\":\"uint40\",\"name\":\"vestEnd\",\"type\":\"uint40\"},{\"internalType\":\"bool\",\"name\":\"sellingAllowed\",\"type\":\"bool\"},{\"internalType\":\"bytes32\",\"name\":\"whitelistMerkleRoot\",\"type\":\"bytes32\"}],\"internalType\":\"struct PoolSettings\",\"name\":\"args\",\"type\":\"tuple\"}],\"name\":\"predictInitCodeHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"renounceOwnership\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"requestOwnershipHandover\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"recipient\",\"type\":\"address\"}],\"name\":\"setFeeRecipient\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint48\",\"name\":\"fee\",\"type\":\"uint48\"}],\"name\":\"setPlatformFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint48\",\"name\":\"fee\",\"type\":\"uint48\"}],\"name\":\"setReferrerFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint48\",\"name\":\"fee\",\"type\":\"uint48\"}],\"name\":\"setSwapFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOwner\",\"type\":\"address\"}],\"name\":\"transferOwnership\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"errors\":{\"AlreadyInitialized()\":[{\"details\":\"Cannot double-initialize.\"}],\"InvalidAssetOrShare()\":[{\"details\":\"Error thrown when the asset or share address is invalid.\"}],\"InvalidAssetValue()\":[{\"details\":\"Error thrown when the asset value is 0.\"}],\"InvalidVestCliff()\":[{\"details\":\"Error thrown when the vestCliff is less than saleEnd.\"}],\"InvalidVestEnd()\":[{\"details\":\"Error thrown when the vestCliff is greater or equal to vestEnd.\"}],\"InvalidWeightConfig()\":[{\"details\":\"Error thrown when the weight config is not correct.\"}],\"MaxFeeExceeded()\":[{\"details\":\"Error thrown when the maximum fee is exceeded.\"}],\"NewOwnerIsZeroAddress()\":[{\"details\":\"The `newOwner` cannot be the zero address.\"}],\"NoHandoverRequest()\":[{\"details\":\"The `pendingOwner` does not have a valid handover request.\"}],\"SalePeriodLow()\":[{\"details\":\"Error thrown when the sale period is too low.\"}],\"Unauthorized()\":[{\"details\":\"The caller is not authorized to call the function.\"}]},\"events\":{\"FeeRecipientSet(address)\":{\"details\":\"Emitted when the fee recipient address is updated.\",\"params\":{\"recipient\":\"The new fee recipient address.\"}},\"OwnershipHandoverCanceled(address)\":{\"details\":\"The ownership handover to `pendingOwner` has been canceled.\"},\"OwnershipHandoverRequested(address)\":{\"details\":\"An ownership handover to `pendingOwner` has been requested.\"},\"OwnershipTransferred(address,address)\":{\"details\":\"The ownership is transferred from `oldOwner` to `newOwner`. This event is intentionally kept the same as OpenZeppelin's Ownable to be compatible with indexers and [EIP-173](https://eips.ethereum.org/EIPS/eip-173), despite it not being as lightweight as a single argument event.\"},\"PlatformFeeSet(uint256)\":{\"details\":\"Emitted when the platform fee is updated.\",\"params\":{\"fee\":\"The new platform fee value.\"}},\"PoolCreated(address)\":{\"details\":\"Emitted when a new Liquidity Bootstrap Pool is created.\",\"params\":{\"pool\":\"The address of the newly created Liquidity Bootstrap Pool.\"}},\"ReferrerFeeSet(uint256)\":{\"details\":\"Emitted when the referrer fee is updated.\",\"params\":{\"fee\":\"The new referrer fee value.\"}},\"SwapFeeSet(uint256)\":{\"details\":\"Emitted when the swap fee is updated.\",\"params\":{\"fee\":\"The new swap fee value.\"}}},\"kind\":\"dev\",\"methods\":{\"cancelOwnershipHandover()\":{\"details\":\"Cancels the two-step ownership handover to the caller, if any.\"},\"completeOwnershipHandover(address)\":{\"details\":\"Allows the owner to complete the two-step ownership handover to `pendingOwner`. Reverts if there is no existing ownership handover requested by `pendingOwner`.\"},\"constructor\":{\"params\":{\"_feeRecipient\":\"The address that will receive platform and referrer fees.\",\"_implementation\":\"The address of the Liquidity Bootstrap Pool implementation contract.\",\"_owner\":\"The owner of the factory contract.\",\"_platformFee\":\"The platform fee, represented as a fraction with a denominator of 10,000.\",\"_referrerFee\":\"The referrer fee, represented as a fraction with a denominator of 10,000.\",\"_swapFee\":\"The referrer fee, represented as a fraction with a denominator of 10,000.\"}},\"createLiquidityBootstrapPool((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32),uint256,uint256,bytes32)\":{\"params\":{\"args\":\"The PoolSettings struct containing pool-specific parameters.\",\"salt\":\"The salt value for deterministic pool creation.\",\"shares\":\"The number of shares to transfer to the newly created pool.\"},\"returns\":{\"pool\":\"The address of the newly created Liquidity Bootstrap Pool.\"}},\"modifySettings(address,uint48,uint48,uint48)\":{\"params\":{\"feeRecipient\":\"The new fee recipient address.\",\"platformFee\":\"The new platform fee value, represented as a fraction with a denominator of 10,000.\",\"referrerFee\":\"The new referrer fee value, represented as a fraction with a denominator of 10,000.\",\"swapFee\":\"The new swap fee value, represented as a fraction with a denominator of 10,000.\"}},\"owner()\":{\"details\":\"Returns the owner of the contract.\"},\"ownershipHandoverExpiresAt(address)\":{\"details\":\"Returns the expiry timestamp for the two-step ownership handover to `pendingOwner`.\"},\"predictDeterministicAddress((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32),bytes32)\":{\"params\":{\"args\":\"The PoolSettings struct containing pool-specific parameters.\",\"salt\":\"The salt value for deterministic pool creation.\"},\"returns\":{\"_0\":\"The deterministic address of the pool.\"}},\"predictInitCodeHash((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32))\":{\"params\":{\"args\":\"The PoolSettings struct containing pool-specific parameters.\"},\"returns\":{\"_0\":\"The init code hash of the pool.\"}},\"renounceOwnership()\":{\"details\":\"Allows the owner to renounce their ownership.\"},\"requestOwnershipHandover()\":{\"details\":\"Request a two-step ownership handover to the caller. The request will automatically expire in 48 hours (172800 seconds) by default.\"},\"setFeeRecipient(address)\":{\"params\":{\"recipient\":\"The new fee recipient address.\"}},\"setPlatformFee(uint48)\":{\"params\":{\"fee\":\"The new platform fee value, represented as a fraction with a denominator of 10,000.\"}},\"setReferrerFee(uint48)\":{\"params\":{\"fee\":\"The new referrer fee value, represented as a fraction with a denominator of 10,000.\"}},\"setSwapFee(uint48)\":{\"params\":{\"fee\":\"The new swap fee value, represented as a fraction with a denominator of 10,000.\"}},\"transferOwnership(address)\":{\"details\":\"Allows the owner to transfer the ownership to `newOwner`.\"}},\"stateVariables\":{\"implementation\":{\"details\":\"Immutable storage for the implementation address of Liquidity Bootstrap Pools.\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"createLiquidityBootstrapPool((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32),uint256,uint256,bytes32)\":{\"notice\":\"Creates a new Liquidity Bootstrap Pool with the provided settings and parameters.\"},\"factorySettings()\":{\"notice\":\"Storage for factory-specific settings.\"},\"modifySettings(address,uint48,uint48,uint48)\":{\"notice\":\"Modifies multiple factory settings at once.\"},\"predictDeterministicAddress((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32),bytes32)\":{\"notice\":\"Predicts the deterministic address of a Liquidity Bootstrap Pool.\"},\"predictInitCodeHash((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32))\":{\"notice\":\"Predicts the init code hash for a Liquidity Bootstrap Pool.\"},\"setFeeRecipient(address)\":{\"notice\":\"Sets the fee recipient address.\"},\"setPlatformFee(uint48)\":{\"notice\":\"Sets the platform fee percentage.\"},\"setReferrerFee(uint48)\":{\"notice\":\"Sets the referrer fee percentage.\"},\"setSwapFee(uint48)\":{\"notice\":\"Sets the swap fee percentage.\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/src/fjordFork/LiquidityBootstrapPoolFactory.sol\":\"LiquidityBootstrapPoolFactory\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":999999},\"remappings\":[]},\"sources\":{\"contracts/src/fjordFork/LiquidityBootstrapPoolFactory.sol\":{\"content\":\"// SPDX-License-Identifier: AGPL-3.0-only\\npragma solidity ^0.8.23;\\n\\nimport \\\"solady/src/auth/Ownable.sol\\\";\\nimport \\\"solady/src/utils/LibClone.sol\\\";\\nimport \\\"solady/src/utils/SafeTransferLib.sol\\\";\\n\\nstruct PoolSettings {\\n    address asset;\\n    address share;\\n    address creator;\\n    uint88 virtualAssets;\\n    uint88 virtualShares;\\n    uint88 maxSharePrice;\\n    uint88 maxSharesOut;\\n    uint88 maxAssetsIn;\\n    uint64 weightStart;\\n    uint64 weightEnd;\\n    uint40 saleStart;\\n    uint40 saleEnd;\\n    uint40 vestCliff;\\n    uint40 vestEnd;\\n    bool sellingAllowed;\\n    bytes32 whitelistMerkleRoot;\\n}\\n\\nstruct FactorySettings {\\n    address feeRecipient;\\n    uint48 platformFee;\\n    uint48 referrerFee;\\n    uint48 swapFee;\\n}\\n\\nuint256 constant MAX_FEE_BIPS = 0.1e4;\\n\\ncontract LiquidityBootstrapPoolFactory is Ownable {\\n    /// -----------------------------------------------------------------------\\n    /// Dependencies\\n    /// -----------------------------------------------------------------------\\n\\n    using LibClone for *;\\n\\n    using SafeTransferLib for *;\\n\\n    /// -----------------------------------------------------------------------\\n    /// Events\\n    /// -----------------------------------------------------------------------\\n\\n    /// @dev Emitted when a new Liquidity Bootstrap Pool is created.\\n    /// @param pool The address of the newly created Liquidity Bootstrap Pool.\\n    event PoolCreated(address pool);\\n\\n    /// @dev Emitted when the fee recipient address is updated.\\n    /// @param recipient The new fee recipient address.\\n    event FeeRecipientSet(address recipient);\\n\\n    /// @dev Emitted when the platform fee is updated.\\n    /// @param fee The new platform fee value.\\n    event PlatformFeeSet(uint256 fee);\\n\\n    /// @dev Emitted when the referrer fee is updated.\\n    /// @param fee The new referrer fee value.\\n    event ReferrerFeeSet(uint256 fee);\\n\\n    /// @dev Emitted when the swap fee is updated.\\n    /// @param fee The new swap fee value.\\n    event SwapFeeSet(uint256 fee);\\n\\n    /// -----------------------------------------------------------------------\\n    /// Errors\\n    /// -----------------------------------------------------------------------\\n\\n    /// @dev Error thrown when the maximum fee is exceeded.\\n    error MaxFeeExceeded();\\n\\n    /// @dev Error thrown when the sale period is too low.\\n    error SalePeriodLow();\\n\\n    /// @dev Error thrown when the weight config is not correct.\\n    error InvalidWeightConfig();\\n\\n    /// @dev Error thrown when the asset or share address is invalid.\\n    error InvalidAssetOrShare();\\n\\n    /// @dev Error thrown when the asset value is 0.\\n    error InvalidAssetValue();\\n\\n    /// @dev Error thrown when the vestCliff is less than saleEnd.\\n    error InvalidVestCliff();\\n\\n    /// @dev Error thrown when the vestCliff is greater or equal to vestEnd.\\n    error InvalidVestEnd();\\n\\n    /// -----------------------------------------------------------------------\\n    /// Mutable Storage\\n    /// -----------------------------------------------------------------------\\n\\n    /// @notice Storage for factory-specific settings.\\n    FactorySettings public factorySettings;\\n\\n    /// -----------------------------------------------------------------------\\n    /// Immutable Storage\\n    /// -----------------------------------------------------------------------\\n\\n    /// @dev Immutable storage for the implementation address of Liquidity Bootstrap Pools.\\n    address internal immutable implementation;\\n\\n    /// -----------------------------------------------------------------------\\n    /// Constructor\\n    /// -----------------------------------------------------------------------\\n\\n    /// @param _implementation The address of the Liquidity Bootstrap Pool implementation contract.\\n    /// @param _owner The owner of the factory contract.\\n    /// @param _feeRecipient The address that will receive platform and referrer fees.\\n    /// @param _platformFee The platform fee, represented as a fraction with a denominator of 10,000.\\n    /// @param _referrerFee The referrer fee, represented as a fraction with a denominator of 10,000.\\n    /// @param _swapFee The referrer fee, represented as a fraction with a denominator of 10,000.\\n    constructor(\\n        address _implementation,\\n        address _owner,\\n        address _feeRecipient,\\n        uint48 _platformFee,\\n        uint48 _referrerFee,\\n        uint48 _swapFee\\n    ) {\\n        // Check that the platform and referrer fees are within the allowed range.\\n        if (_platformFee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n        if (_referrerFee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n        if (_swapFee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n\\n        // Initialize the owner and implementation address.\\n        _initializeOwner(_owner);\\n        implementation = _implementation;\\n\\n        // Set the initial factory settings including fee recipient and fees.\\n        factorySettings = FactorySettings(_feeRecipient, _platformFee, _referrerFee, _swapFee);\\n\\n        // Emit events for the initial fee settings.\\n        emit FeeRecipientSet(_feeRecipient);\\n        emit PlatformFeeSet(_platformFee);\\n        emit ReferrerFeeSet(_referrerFee);\\n        emit SwapFeeSet(_swapFee);\\n    }\\n\\n    /// -----------------------------------------------------------------------\\n    /// Creation Logic\\n    /// -----------------------------------------------------------------------\\n\\n    /// @notice Creates a new Liquidity Bootstrap Pool with the provided settings and parameters.\\n    /// @param args The PoolSettings struct containing pool-specific parameters.\\n    /// @param shares The number of shares to transfer to the newly created pool.\\n    /// @param salt The salt value for deterministic pool creation.\\n    /// @return pool The address of the newly created Liquidity Bootstrap Pool.\\n    function createLiquidityBootstrapPool(\\n        PoolSettings memory args,\\n        uint256 shares,\\n        uint256 assets,\\n        bytes32 salt\\n    ) external virtual returns (address pool) {\\n        if (args.share == args.asset || args.share == address(0) || args.asset == address(0)) {\\n            revert InvalidAssetOrShare();\\n        }\\n\\n        // Check timestamps to ensure the sale will not immediately end.\\n        if (uint40(block.timestamp + 1 days) > args.saleEnd || args.saleEnd - args.saleStart < uint40(1 days)) {\\n            revert SalePeriodLow();\\n        }\\n\\n        // Vesting must start after the sale ends.\\n        if (args.saleEnd < args.vestEnd) {\\n            if (args.saleEnd > args.vestCliff) {\\n                revert InvalidVestCliff();\\n            }\\n\\n            if (args.vestCliff >= args.vestEnd) {\\n                revert InvalidVestEnd();\\n            }\\n        }\\n\\n        if (\\n            args.weightStart < 0.01 ether ||\\n            args.weightStart > 0.99 ether ||\\n            args.weightEnd > 0.99 ether ||\\n            args.weightEnd < 0.01 ether\\n        ) {\\n            revert InvalidWeightConfig();\\n        }\\n\\n        if (assets == 0 && args.virtualAssets == 0) revert InvalidAssetValue();\\n\\n        pool = implementation.cloneDeterministic(_encodeImmutableArgs(args), salt);\\n\\n        args.share.safeTransferFrom(msg.sender, pool, shares);\\n        args.asset.safeTransferFrom(msg.sender, pool, assets);\\n\\n        emit PoolCreated(pool);\\n    }\\n\\n    /// -----------------------------------------------------------------------\\n    /// Settings Modification Logic\\n    /// -----------------------------------------------------------------------\\n\\n    /// @notice Sets the fee recipient address.\\n    /// @param recipient The new fee recipient address.\\n    function setFeeRecipient(address recipient) external virtual onlyOwner {\\n        factorySettings.feeRecipient = recipient;\\n\\n        emit FeeRecipientSet(recipient);\\n    }\\n\\n    /// @notice Sets the platform fee percentage.\\n    /// @param fee The new platform fee value, represented as a fraction with a denominator of 10,000.\\n    function setPlatformFee(uint48 fee) external virtual onlyOwner {\\n        if (fee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n\\n        factorySettings.platformFee = fee;\\n\\n        emit PlatformFeeSet(fee);\\n    }\\n\\n    /// @notice Sets the referrer fee percentage.\\n    /// @param fee The new referrer fee value, represented as a fraction with a denominator of 10,000.\\n    function setReferrerFee(uint48 fee) external virtual onlyOwner {\\n        if (fee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n\\n        factorySettings.referrerFee = fee;\\n\\n        emit ReferrerFeeSet(fee);\\n    }\\n\\n    /// @notice Sets the swap fee percentage.\\n    /// @param fee The new swap fee value, represented as a fraction with a denominator of 10,000.\\n    function setSwapFee(uint48 fee) external virtual onlyOwner {\\n        if (fee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n\\n        factorySettings.swapFee = fee;\\n\\n        emit SwapFeeSet(fee);\\n    }\\n\\n    /// @notice Modifies multiple factory settings at once.\\n    /// @param feeRecipient The new fee recipient address.\\n    /// @param platformFee The new platform fee value, represented as a fraction with a denominator of 10,000.\\n    /// @param referrerFee The new referrer fee value, represented as a fraction with a denominator of 10,000.\\n    /// @param swapFee The new swap fee value, represented as a fraction with a denominator of 10,000.\\n    function modifySettings(\\n        address feeRecipient,\\n        uint48 platformFee,\\n        uint48 referrerFee,\\n        uint48 swapFee\\n    ) external virtual onlyOwner {\\n        if (platformFee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n        if (referrerFee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n        if (swapFee > MAX_FEE_BIPS) revert MaxFeeExceeded();\\n\\n        factorySettings = FactorySettings(feeRecipient, platformFee, referrerFee, swapFee);\\n\\n        emit FeeRecipientSet(feeRecipient);\\n        emit PlatformFeeSet(platformFee);\\n        emit ReferrerFeeSet(referrerFee);\\n        emit SwapFeeSet(swapFee);\\n    }\\n\\n    /// -----------------------------------------------------------------------\\n    /// Factory Helper Logic\\n    /// -----------------------------------------------------------------------\\n\\n    /// @notice Predicts the deterministic address of a Liquidity Bootstrap Pool.\\n    /// @param args The PoolSettings struct containing pool-specific parameters.\\n    /// @param salt The salt value for deterministic pool creation.\\n    /// @return The deterministic address of the pool.\\n    function predictDeterministicAddress(\\n        PoolSettings memory args,\\n        bytes32 salt\\n    ) external view virtual returns (address) {\\n        return implementation.predictDeterministicAddress(_encodeImmutableArgs(args), salt, address(this));\\n    }\\n\\n    /// @notice Predicts the init code hash for a Liquidity Bootstrap Pool.\\n    /// @param args The PoolSettings struct containing pool-specific parameters.\\n    /// @return The init code hash of the pool.\\n    function predictInitCodeHash(PoolSettings memory args) external view virtual returns (bytes32) {\\n        return implementation.initCodeHash(_encodeImmutableArgs(args));\\n    }\\n\\n    function _encodeImmutableArgs(PoolSettings memory args) internal view virtual returns (bytes memory) {\\n        FactorySettings memory settings = factorySettings;\\n        unchecked {\\n            return\\n                abi.encodePacked(\\n                    // forgefmt: disable-start\\n                    abi.encodePacked(args.asset, args.share, settings.feeRecipient, args.creator),\\n                    abi.encodePacked(\\n                        args.virtualAssets,\\n                        args.virtualShares,\\n                        args.maxSharePrice,\\n                        args.maxSharesOut,\\n                        args.maxAssetsIn\\n                    ),\\n                    abi.encodePacked(\\n                        uint64(settings.platformFee) * 1e14,\\n                        uint64(settings.referrerFee) * 1e14,\\n                        args.weightStart,\\n                        args.weightEnd\\n                    ),\\n                    abi.encodePacked(args.saleStart, args.saleEnd),\\n                    abi.encodePacked(args.vestCliff, args.vestEnd, uint64(settings.swapFee) * 1e14),\\n                    abi.encodePacked(args.sellingAllowed, args.whitelistMerkleRoot)\\n                ); // forgefmt: disable-end\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0xa8b2764649640c3cfc7de5f6b26989c3d79bd9db2815362414386dc30fa355e4\",\"license\":\"AGPL-3.0-only\"},\"solady/src/auth/Ownable.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.4;\\n\\n/// @notice Simple single owner authorization mixin.\\n/// @author Solady (https://github.com/vectorized/solady/blob/main/src/auth/Ownable.sol)\\n///\\n/// @dev Note:\\n/// This implementation does NOT auto-initialize the owner to `msg.sender`.\\n/// You MUST call the `_initializeOwner` in the constructor / initializer.\\n///\\n/// While the ownable portion follows\\n/// [EIP-173](https://eips.ethereum.org/EIPS/eip-173) for compatibility,\\n/// the nomenclature for the 2-step ownership handover may be unique to this codebase.\\nabstract contract Ownable {\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                       CUSTOM ERRORS                        */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev The caller is not authorized to call the function.\\n    error Unauthorized();\\n\\n    /// @dev The `newOwner` cannot be the zero address.\\n    error NewOwnerIsZeroAddress();\\n\\n    /// @dev The `pendingOwner` does not have a valid handover request.\\n    error NoHandoverRequest();\\n\\n    /// @dev Cannot double-initialize.\\n    error AlreadyInitialized();\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                           EVENTS                           */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev The ownership is transferred from `oldOwner` to `newOwner`.\\n    /// This event is intentionally kept the same as OpenZeppelin's Ownable to be\\n    /// compatible with indexers and [EIP-173](https://eips.ethereum.org/EIPS/eip-173),\\n    /// despite it not being as lightweight as a single argument event.\\n    event OwnershipTransferred(address indexed oldOwner, address indexed newOwner);\\n\\n    /// @dev An ownership handover to `pendingOwner` has been requested.\\n    event OwnershipHandoverRequested(address indexed pendingOwner);\\n\\n    /// @dev The ownership handover to `pendingOwner` has been canceled.\\n    event OwnershipHandoverCanceled(address indexed pendingOwner);\\n\\n    /// @dev `keccak256(bytes(\\\"OwnershipTransferred(address,address)\\\"))`.\\n    uint256 private constant _OWNERSHIP_TRANSFERRED_EVENT_SIGNATURE =\\n        0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0;\\n\\n    /// @dev `keccak256(bytes(\\\"OwnershipHandoverRequested(address)\\\"))`.\\n    uint256 private constant _OWNERSHIP_HANDOVER_REQUESTED_EVENT_SIGNATURE =\\n        0xdbf36a107da19e49527a7176a1babf963b4b0ff8cde35ee35d6cd8f1f9ac7e1d;\\n\\n    /// @dev `keccak256(bytes(\\\"OwnershipHandoverCanceled(address)\\\"))`.\\n    uint256 private constant _OWNERSHIP_HANDOVER_CANCELED_EVENT_SIGNATURE =\\n        0xfa7b8eab7da67f412cc9575ed43464468f9bfbae89d1675917346ca6d8fe3c92;\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                          STORAGE                           */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev The owner slot is given by:\\n    /// `bytes32(~uint256(uint32(bytes4(keccak256(\\\"_OWNER_SLOT_NOT\\\")))))`.\\n    /// It is intentionally chosen to be a high value\\n    /// to avoid collision with lower slots.\\n    /// The choice of manual storage layout is to enable compatibility\\n    /// with both regular and upgradeable contracts.\\n    bytes32 internal constant _OWNER_SLOT =\\n        0xffffffffffffffffffffffffffffffffffffffffffffffffffffffff74873927;\\n\\n    /// The ownership handover slot of `newOwner` is given by:\\n    /// ```\\n    ///     mstore(0x00, or(shl(96, user), _HANDOVER_SLOT_SEED))\\n    ///     let handoverSlot := keccak256(0x00, 0x20)\\n    /// ```\\n    /// It stores the expiry timestamp of the two-step ownership handover.\\n    uint256 private constant _HANDOVER_SLOT_SEED = 0x389a75e1;\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                     INTERNAL FUNCTIONS                     */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Override to return true to make `_initializeOwner` prevent double-initialization.\\n    function _guardInitializeOwner() internal pure virtual returns (bool guard) {}\\n\\n    /// @dev Initializes the owner directly without authorization guard.\\n    /// This function must be called upon initialization,\\n    /// regardless of whether the contract is upgradeable or not.\\n    /// This is to enable generalization to both regular and upgradeable contracts,\\n    /// and to save gas in case the initial owner is not the caller.\\n    /// For performance reasons, this function will not check if there\\n    /// is an existing owner.\\n    function _initializeOwner(address newOwner) internal virtual {\\n        if (_guardInitializeOwner()) {\\n            /// @solidity memory-safe-assembly\\n            assembly {\\n                let ownerSlot := _OWNER_SLOT\\n                if sload(ownerSlot) {\\n                    mstore(0x00, 0x0dc149f0) // `AlreadyInitialized()`.\\n                    revert(0x1c, 0x04)\\n                }\\n                // Clean the upper 96 bits.\\n                newOwner := shr(96, shl(96, newOwner))\\n                // Store the new value.\\n                sstore(ownerSlot, or(newOwner, shl(255, iszero(newOwner))))\\n                // Emit the {OwnershipTransferred} event.\\n                log3(0, 0, _OWNERSHIP_TRANSFERRED_EVENT_SIGNATURE, 0, newOwner)\\n            }\\n        } else {\\n            /// @solidity memory-safe-assembly\\n            assembly {\\n                // Clean the upper 96 bits.\\n                newOwner := shr(96, shl(96, newOwner))\\n                // Store the new value.\\n                sstore(_OWNER_SLOT, newOwner)\\n                // Emit the {OwnershipTransferred} event.\\n                log3(0, 0, _OWNERSHIP_TRANSFERRED_EVENT_SIGNATURE, 0, newOwner)\\n            }\\n        }\\n    }\\n\\n    /// @dev Sets the owner directly without authorization guard.\\n    function _setOwner(address newOwner) internal virtual {\\n        if (_guardInitializeOwner()) {\\n            /// @solidity memory-safe-assembly\\n            assembly {\\n                let ownerSlot := _OWNER_SLOT\\n                // Clean the upper 96 bits.\\n                newOwner := shr(96, shl(96, newOwner))\\n                // Emit the {OwnershipTransferred} event.\\n                log3(0, 0, _OWNERSHIP_TRANSFERRED_EVENT_SIGNATURE, sload(ownerSlot), newOwner)\\n                // Store the new value.\\n                sstore(ownerSlot, or(newOwner, shl(255, iszero(newOwner))))\\n            }\\n        } else {\\n            /// @solidity memory-safe-assembly\\n            assembly {\\n                let ownerSlot := _OWNER_SLOT\\n                // Clean the upper 96 bits.\\n                newOwner := shr(96, shl(96, newOwner))\\n                // Emit the {OwnershipTransferred} event.\\n                log3(0, 0, _OWNERSHIP_TRANSFERRED_EVENT_SIGNATURE, sload(ownerSlot), newOwner)\\n                // Store the new value.\\n                sstore(ownerSlot, newOwner)\\n            }\\n        }\\n    }\\n\\n    /// @dev Throws if the sender is not the owner.\\n    function _checkOwner() internal view virtual {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            // If the caller is not the stored owner, revert.\\n            if iszero(eq(caller(), sload(_OWNER_SLOT))) {\\n                mstore(0x00, 0x82b42900) // `Unauthorized()`.\\n                revert(0x1c, 0x04)\\n            }\\n        }\\n    }\\n\\n    /// @dev Returns how long a two-step ownership handover is valid for in seconds.\\n    /// Override to return a different value if needed.\\n    /// Made internal to conserve bytecode. Wrap it in a public function if needed.\\n    function _ownershipHandoverValidFor() internal view virtual returns (uint64) {\\n        return 48 * 3600;\\n    }\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                  PUBLIC UPDATE FUNCTIONS                   */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Allows the owner to transfer the ownership to `newOwner`.\\n    function transferOwnership(address newOwner) public payable virtual onlyOwner {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            if iszero(shl(96, newOwner)) {\\n                mstore(0x00, 0x7448fbae) // `NewOwnerIsZeroAddress()`.\\n                revert(0x1c, 0x04)\\n            }\\n        }\\n        _setOwner(newOwner);\\n    }\\n\\n    /// @dev Allows the owner to renounce their ownership.\\n    function renounceOwnership() public payable virtual onlyOwner {\\n        _setOwner(address(0));\\n    }\\n\\n    /// @dev Request a two-step ownership handover to the caller.\\n    /// The request will automatically expire in 48 hours (172800 seconds) by default.\\n    function requestOwnershipHandover() public payable virtual {\\n        unchecked {\\n            uint256 expires = block.timestamp + _ownershipHandoverValidFor();\\n            /// @solidity memory-safe-assembly\\n            assembly {\\n                // Compute and set the handover slot to `expires`.\\n                mstore(0x0c, _HANDOVER_SLOT_SEED)\\n                mstore(0x00, caller())\\n                sstore(keccak256(0x0c, 0x20), expires)\\n                // Emit the {OwnershipHandoverRequested} event.\\n                log2(0, 0, _OWNERSHIP_HANDOVER_REQUESTED_EVENT_SIGNATURE, caller())\\n            }\\n        }\\n    }\\n\\n    /// @dev Cancels the two-step ownership handover to the caller, if any.\\n    function cancelOwnershipHandover() public payable virtual {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            // Compute and set the handover slot to 0.\\n            mstore(0x0c, _HANDOVER_SLOT_SEED)\\n            mstore(0x00, caller())\\n            sstore(keccak256(0x0c, 0x20), 0)\\n            // Emit the {OwnershipHandoverCanceled} event.\\n            log2(0, 0, _OWNERSHIP_HANDOVER_CANCELED_EVENT_SIGNATURE, caller())\\n        }\\n    }\\n\\n    /// @dev Allows the owner to complete the two-step ownership handover to `pendingOwner`.\\n    /// Reverts if there is no existing ownership handover requested by `pendingOwner`.\\n    function completeOwnershipHandover(address pendingOwner) public payable virtual onlyOwner {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            // Compute and set the handover slot to 0.\\n            mstore(0x0c, _HANDOVER_SLOT_SEED)\\n            mstore(0x00, pendingOwner)\\n            let handoverSlot := keccak256(0x0c, 0x20)\\n            // If the handover does not exist, or has expired.\\n            if gt(timestamp(), sload(handoverSlot)) {\\n                mstore(0x00, 0x6f5e8818) // `NoHandoverRequest()`.\\n                revert(0x1c, 0x04)\\n            }\\n            // Set the handover slot to 0.\\n            sstore(handoverSlot, 0)\\n        }\\n        _setOwner(pendingOwner);\\n    }\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                   PUBLIC READ FUNCTIONS                    */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Returns the owner of the contract.\\n    function owner() public view virtual returns (address result) {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            result := sload(_OWNER_SLOT)\\n        }\\n    }\\n\\n    /// @dev Returns the expiry timestamp for the two-step ownership handover to `pendingOwner`.\\n    function ownershipHandoverExpiresAt(address pendingOwner)\\n        public\\n        view\\n        virtual\\n        returns (uint256 result)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            // Compute the handover slot.\\n            mstore(0x0c, _HANDOVER_SLOT_SEED)\\n            mstore(0x00, pendingOwner)\\n            // Load the handover slot.\\n            result := sload(keccak256(0x0c, 0x20))\\n        }\\n    }\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                         MODIFIERS                          */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Marks a function as only callable by the owner.\\n    modifier onlyOwner() virtual {\\n        _checkOwner();\\n        _;\\n    }\\n}\\n\",\"keccak256\":\"0xc208cdd9de02bbf4b5edad18b88e23a2be7ff56d2287d5649329dc7cda64b9a3\",\"license\":\"MIT\"},\"solady/src/utils/LibClone.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.4;\\n\\n/// @notice Minimal proxy library.\\n/// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/LibClone.sol)\\n/// @author Minimal proxy by 0age (https://github.com/0age)\\n/// @author Clones with immutable args by wighawag, zefram.eth, Saw-mon & Natalie\\n/// (https://github.com/Saw-mon-and-Natalie/clones-with-immutable-args)\\n/// @author Minimal ERC1967 proxy by jtriley-eth (https://github.com/jtriley-eth/minimum-viable-proxy)\\n///\\n/// @dev Minimal proxy:\\n/// Although the sw0nt pattern saves 5 gas over the erc-1167 pattern during runtime,\\n/// it is not supported out-of-the-box on Etherscan. Hence, we choose to use the 0age pattern,\\n/// which saves 4 gas over the erc-1167 pattern during runtime, and has the smallest bytecode.\\n///\\n/// @dev Minimal proxy (PUSH0 variant):\\n/// This is a new minimal proxy that uses the PUSH0 opcode introduced during Shanghai.\\n/// It is optimized first for minimal runtime gas, then for minimal bytecode.\\n/// The PUSH0 clone functions are intentionally postfixed with a jarring \\\"_PUSH0\\\" as\\n/// many EVM chains may not support the PUSH0 opcode in the early months after Shanghai.\\n/// Please use with caution.\\n///\\n/// @dev Clones with immutable args (CWIA):\\n/// The implementation of CWIA here implements a `receive()` method that emits the\\n/// `ReceiveETH(uint256)` event. This skips the `DELEGATECALL` when there is no calldata,\\n/// enabling us to accept hard gas-capped `sends` & `transfers` for maximum backwards\\n/// composability. The minimal proxy implementation does not offer this feature.\\n///\\n/// @dev Minimal ERC1967 proxy:\\n/// An minimal ERC1967 proxy, intended to be upgraded with UUPS.\\n/// This is NOT the same as ERC1967Factory's transparent proxy, which includes admin logic.\\nlibrary LibClone {\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                       CUSTOM ERRORS                        */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Unable to deploy the clone.\\n    error DeploymentFailed();\\n\\n    /// @dev The salt must start with either the zero address or `by`.\\n    error SaltDoesNotStartWith();\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                  MINIMAL PROXY OPERATIONS                  */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Deploys a clone of `implementation`.\\n    function clone(address implementation) internal returns (address instance) {\\n        instance = clone(0, implementation);\\n    }\\n\\n    /// @dev Deploys a clone of `implementation`.\\n    function clone(uint256 value, address implementation) internal returns (address instance) {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            /**\\n             * --------------------------------------------------------------------------+\\n             * CREATION (9 bytes)                                                        |\\n             * --------------------------------------------------------------------------|\\n             * Opcode     | Mnemonic          | Stack     | Memory                       |\\n             * --------------------------------------------------------------------------|\\n             * 60 runSize | PUSH1 runSize     | r         |                              |\\n             * 3d         | RETURNDATASIZE    | 0 r       |                              |\\n             * 81         | DUP2              | r 0 r     |                              |\\n             * 60 offset  | PUSH1 offset      | o r 0 r   |                              |\\n             * 3d         | RETURNDATASIZE    | 0 o r 0 r |                              |\\n             * 39         | CODECOPY          | 0 r       | [0..runSize): runtime code   |\\n             * f3         | RETURN            |           | [0..runSize): runtime code   |\\n             * --------------------------------------------------------------------------|\\n             * RUNTIME (44 bytes)                                                        |\\n             * --------------------------------------------------------------------------|\\n             * Opcode  | Mnemonic       | Stack                  | Memory                |\\n             * --------------------------------------------------------------------------|\\n             *                                                                           |\\n             * ::: keep some values in stack ::::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d      | RETURNDATASIZE | 0                      |                       |\\n             * 3d      | RETURNDATASIZE | 0 0                    |                       |\\n             * 3d      | RETURNDATASIZE | 0 0 0                  |                       |\\n             * 3d      | RETURNDATASIZE | 0 0 0 0                |                       |\\n             *                                                                           |\\n             * ::: copy calldata to memory ::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 36      | CALLDATASIZE   | cds 0 0 0 0            |                       |\\n             * 3d      | RETURNDATASIZE | 0 cds 0 0 0 0          |                       |\\n             * 3d      | RETURNDATASIZE | 0 0 cds 0 0 0 0        |                       |\\n             * 37      | CALLDATACOPY   | 0 0 0 0                | [0..cds): calldata    |\\n             *                                                                           |\\n             * ::: delegate call to the implementation contract :::::::::::::::::::::::: |\\n             * 36      | CALLDATASIZE   | cds 0 0 0 0            | [0..cds): calldata    |\\n             * 3d      | RETURNDATASIZE | 0 cds 0 0 0 0          | [0..cds): calldata    |\\n             * 73 addr | PUSH20 addr    | addr 0 cds 0 0 0 0     | [0..cds): calldata    |\\n             * 5a      | GAS            | gas addr 0 cds 0 0 0 0 | [0..cds): calldata    |\\n             * f4      | DELEGATECALL   | success 0 0            | [0..cds): calldata    |\\n             *                                                                           |\\n             * ::: copy return data to memory :::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d      | RETURNDATASIZE | rds success 0 0        | [0..cds): calldata    |\\n             * 3d      | RETURNDATASIZE | rds rds success 0 0    | [0..cds): calldata    |\\n             * 93      | SWAP4          | 0 rds success 0 rds    | [0..cds): calldata    |\\n             * 80      | DUP1           | 0 0 rds success 0 rds  | [0..cds): calldata    |\\n             * 3e      | RETURNDATACOPY | success 0 rds          | [0..rds): returndata  |\\n             *                                                                           |\\n             * 60 0x2a | PUSH1 0x2a     | 0x2a success 0 rds     | [0..rds): returndata  |\\n             * 57      | JUMPI          | 0 rds                  | [0..rds): returndata  |\\n             *                                                                           |\\n             * ::: revert :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * fd      | REVERT         |                        | [0..rds): returndata  |\\n             *                                                                           |\\n             * ::: return :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 5b      | JUMPDEST       | 0 rds                  | [0..rds): returndata  |\\n             * f3      | RETURN         |                        | [0..rds): returndata  |\\n             * --------------------------------------------------------------------------+\\n             */\\n\\n            mstore(0x21, 0x5af43d3d93803e602a57fd5bf3)\\n            mstore(0x14, implementation)\\n            mstore(0x00, 0x602c3d8160093d39f33d3d3d3d363d3d37363d73)\\n            instance := create(value, 0x0c, 0x35)\\n            if iszero(instance) {\\n                mstore(0x00, 0x30116425) // `DeploymentFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x21, 0) // Restore the overwritten part of the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Deploys a deterministic clone of `implementation` with `salt`.\\n    function cloneDeterministic(address implementation, bytes32 salt)\\n        internal\\n        returns (address instance)\\n    {\\n        instance = cloneDeterministic(0, implementation, salt);\\n    }\\n\\n    /// @dev Deploys a deterministic clone of `implementation` with `salt`.\\n    function cloneDeterministic(uint256 value, address implementation, bytes32 salt)\\n        internal\\n        returns (address instance)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x21, 0x5af43d3d93803e602a57fd5bf3)\\n            mstore(0x14, implementation)\\n            mstore(0x00, 0x602c3d8160093d39f33d3d3d3d363d3d37363d73)\\n            instance := create2(value, 0x0c, 0x35, salt)\\n            if iszero(instance) {\\n                mstore(0x00, 0x30116425) // `DeploymentFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x21, 0) // Restore the overwritten part of the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Returns the initialization code hash of the clone of `implementation`.\\n    /// Used for mining vanity addresses with create2crunch.\\n    function initCodeHash(address implementation) internal pure returns (bytes32 hash) {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x21, 0x5af43d3d93803e602a57fd5bf3)\\n            mstore(0x14, implementation)\\n            mstore(0x00, 0x602c3d8160093d39f33d3d3d3d363d3d37363d73)\\n            hash := keccak256(0x0c, 0x35)\\n            mstore(0x21, 0) // Restore the overwritten part of the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Returns the address of the deterministic clone of `implementation`,\\n    /// with `salt` by `deployer`.\\n    /// Note: The returned result has dirty upper 96 bits. Please clean if used in assembly.\\n    function predictDeterministicAddress(address implementation, bytes32 salt, address deployer)\\n        internal\\n        pure\\n        returns (address predicted)\\n    {\\n        bytes32 hash = initCodeHash(implementation);\\n        predicted = predictDeterministicAddress(hash, salt, deployer);\\n    }\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*          MINIMAL PROXY OPERATIONS (PUSH0 VARIANT)          */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Deploys a PUSH0 clone of `implementation`.\\n    function clone_PUSH0(address implementation) internal returns (address instance) {\\n        instance = clone_PUSH0(0, implementation);\\n    }\\n\\n    /// @dev Deploys a PUSH0 clone of `implementation`.\\n    function clone_PUSH0(uint256 value, address implementation)\\n        internal\\n        returns (address instance)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            /**\\n             * --------------------------------------------------------------------------+\\n             * CREATION (9 bytes)                                                        |\\n             * --------------------------------------------------------------------------|\\n             * Opcode     | Mnemonic          | Stack     | Memory                       |\\n             * --------------------------------------------------------------------------|\\n             * 60 runSize | PUSH1 runSize     | r         |                              |\\n             * 5f         | PUSH0             | 0 r       |                              |\\n             * 81         | DUP2              | r 0 r     |                              |\\n             * 60 offset  | PUSH1 offset      | o r 0 r   |                              |\\n             * 5f         | PUSH0             | 0 o r 0 r |                              |\\n             * 39         | CODECOPY          | 0 r       | [0..runSize): runtime code   |\\n             * f3         | RETURN            |           | [0..runSize): runtime code   |\\n             * --------------------------------------------------------------------------|\\n             * RUNTIME (45 bytes)                                                        |\\n             * --------------------------------------------------------------------------|\\n             * Opcode  | Mnemonic       | Stack                  | Memory                |\\n             * --------------------------------------------------------------------------|\\n             *                                                                           |\\n             * ::: keep some values in stack ::::::::::::::::::::::::::::::::::::::::::: |\\n             * 5f      | PUSH0          | 0                      |                       |\\n             * 5f      | PUSH0          | 0 0                    |                       |\\n             *                                                                           |\\n             * ::: copy calldata to memory ::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 36      | CALLDATASIZE   | cds 0 0                |                       |\\n             * 5f      | PUSH0          | 0 cds 0 0              |                       |\\n             * 5f      | PUSH0          | 0 0 cds 0 0            |                       |\\n             * 37      | CALLDATACOPY   | 0 0                    | [0..cds): calldata    |\\n             *                                                                           |\\n             * ::: delegate call to the implementation contract :::::::::::::::::::::::: |\\n             * 36      | CALLDATASIZE   | cds 0 0                | [0..cds): calldata    |\\n             * 5f      | PUSH0          | 0 cds 0 0              | [0..cds): calldata    |\\n             * 73 addr | PUSH20 addr    | addr 0 cds 0 0         | [0..cds): calldata    |\\n             * 5a      | GAS            | gas addr 0 cds 0 0     | [0..cds): calldata    |\\n             * f4      | DELEGATECALL   | success                | [0..cds): calldata    |\\n             *                                                                           |\\n             * ::: copy return data to memory :::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d      | RETURNDATASIZE | rds success            | [0..cds): calldata    |\\n             * 5f      | PUSH0          | 0 rds success          | [0..cds): calldata    |\\n             * 5f      | PUSH0          | 0 0 rds success        | [0..cds): calldata    |\\n             * 3e      | RETURNDATACOPY | success                | [0..rds): returndata  |\\n             *                                                                           |\\n             * 60 0x29 | PUSH1 0x29     | 0x29 success           | [0..rds): returndata  |\\n             * 57      | JUMPI          |                        | [0..rds): returndata  |\\n             *                                                                           |\\n             * ::: revert :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d      | RETURNDATASIZE | rds                    | [0..rds): returndata  |\\n             * 5f      | PUSH0          | 0 rds                  | [0..rds): returndata  |\\n             * fd      | REVERT         |                        | [0..rds): returndata  |\\n             *                                                                           |\\n             * ::: return :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 5b      | JUMPDEST       |                        | [0..rds): returndata  |\\n             * 3d      | RETURNDATASIZE | rds                    | [0..rds): returndata  |\\n             * 5f      | PUSH0          | 0 rds                  | [0..rds): returndata  |\\n             * f3      | RETURN         |                        | [0..rds): returndata  |\\n             * --------------------------------------------------------------------------+\\n             */\\n\\n            mstore(0x24, 0x5af43d5f5f3e6029573d5ffd5b3d5ff3) // 16\\n            mstore(0x14, implementation) // 20\\n            mstore(0x00, 0x602d5f8160095f39f35f5f365f5f37365f73) // 9 + 9\\n            instance := create(value, 0x0e, 0x36)\\n            if iszero(instance) {\\n                mstore(0x00, 0x30116425) // `DeploymentFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x24, 0) // Restore the overwritten part of the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Deploys a deterministic PUSH0 clone of `implementation` with `salt`.\\n    function cloneDeterministic_PUSH0(address implementation, bytes32 salt)\\n        internal\\n        returns (address instance)\\n    {\\n        instance = cloneDeterministic_PUSH0(0, implementation, salt);\\n    }\\n\\n    /// @dev Deploys a deterministic PUSH0 clone of `implementation` with `salt`.\\n    function cloneDeterministic_PUSH0(uint256 value, address implementation, bytes32 salt)\\n        internal\\n        returns (address instance)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x24, 0x5af43d5f5f3e6029573d5ffd5b3d5ff3) // 16\\n            mstore(0x14, implementation) // 20\\n            mstore(0x00, 0x602d5f8160095f39f35f5f365f5f37365f73) // 9 + 9\\n            instance := create2(value, 0x0e, 0x36, salt)\\n            if iszero(instance) {\\n                mstore(0x00, 0x30116425) // `DeploymentFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x24, 0) // Restore the overwritten part of the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Returns the initialization code hash of the PUSH0 clone of `implementation`.\\n    /// Used for mining vanity addresses with create2crunch.\\n    function initCodeHash_PUSH0(address implementation) internal pure returns (bytes32 hash) {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x24, 0x5af43d5f5f3e6029573d5ffd5b3d5ff3) // 16\\n            mstore(0x14, implementation) // 20\\n            mstore(0x00, 0x602d5f8160095f39f35f5f365f5f37365f73) // 9 + 9\\n            hash := keccak256(0x0e, 0x36)\\n            mstore(0x24, 0) // Restore the overwritten part of the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Returns the address of the deterministic PUSH0 clone of `implementation`,\\n    /// with `salt` by `deployer`.\\n    /// Note: The returned result has dirty upper 96 bits. Please clean if used in assembly.\\n    function predictDeterministicAddress_PUSH0(\\n        address implementation,\\n        bytes32 salt,\\n        address deployer\\n    ) internal pure returns (address predicted) {\\n        bytes32 hash = initCodeHash_PUSH0(implementation);\\n        predicted = predictDeterministicAddress(hash, salt, deployer);\\n    }\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*           CLONES WITH IMMUTABLE ARGS OPERATIONS            */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    // Note: This implementation of CWIA differs from the original implementation.\\n    // If the calldata is empty, it will emit a `ReceiveETH(uint256)` event and skip the `DELEGATECALL`.\\n\\n    /// @dev Deploys a clone of `implementation` with immutable arguments encoded in `data`.\\n    function clone(address implementation, bytes memory data) internal returns (address instance) {\\n        instance = clone(0, implementation, data);\\n    }\\n\\n    /// @dev Deploys a clone of `implementation` with immutable arguments encoded in `data`.\\n    function clone(uint256 value, address implementation, bytes memory data)\\n        internal\\n        returns (address instance)\\n    {\\n        assembly {\\n            // Compute the boundaries of the data and cache the memory slots around it.\\n            let mBefore3 := mload(sub(data, 0x60))\\n            let mBefore2 := mload(sub(data, 0x40))\\n            let mBefore1 := mload(sub(data, 0x20))\\n            let dataLength := mload(data)\\n            let dataEnd := add(add(data, 0x20), dataLength)\\n            let mAfter1 := mload(dataEnd)\\n\\n            // +2 bytes for telling how much data there is appended to the call.\\n            let extraLength := add(dataLength, 2)\\n            // The `creationSize` is `extraLength + 108`\\n            // The `runSize` is `creationSize - 10`.\\n\\n            /**\\n             * ---------------------------------------------------------------------------------------------------+\\n             * CREATION (10 bytes)                                                                                |\\n             * ---------------------------------------------------------------------------------------------------|\\n             * Opcode     | Mnemonic          | Stack     | Memory                                                |\\n             * ---------------------------------------------------------------------------------------------------|\\n             * 61 runSize | PUSH2 runSize     | r         |                                                       |\\n             * 3d         | RETURNDATASIZE    | 0 r       |                                                       |\\n             * 81         | DUP2              | r 0 r     |                                                       |\\n             * 60 offset  | PUSH1 offset      | o r 0 r   |                                                       |\\n             * 3d         | RETURNDATASIZE    | 0 o r 0 r |                                                       |\\n             * 39         | CODECOPY          | 0 r       | [0..runSize): runtime code                            |\\n             * f3         | RETURN            |           | [0..runSize): runtime code                            |\\n             * ---------------------------------------------------------------------------------------------------|\\n             * RUNTIME (98 bytes + extraLength)                                                                   |\\n             * ---------------------------------------------------------------------------------------------------|\\n             * Opcode   | Mnemonic       | Stack                    | Memory                                      |\\n             * ---------------------------------------------------------------------------------------------------|\\n             *                                                                                                    |\\n             * ::: if no calldata, emit event & return w/o `DELEGATECALL` ::::::::::::::::::::::::::::::::::::::: |\\n             * 36       | CALLDATASIZE   | cds                      |                                             |\\n             * 60 0x2c  | PUSH1 0x2c     | 0x2c cds                 |                                             |\\n             * 57       | JUMPI          |                          |                                             |\\n             * 34       | CALLVALUE      | cv                       |                                             |\\n             * 3d       | RETURNDATASIZE | 0 cv                     |                                             |\\n             * 52       | MSTORE         |                          | [0..0x20): callvalue                        |\\n             * 7f sig   | PUSH32 0x9e..  | sig                      | [0..0x20): callvalue                        |\\n             * 59       | MSIZE          | 0x20 sig                 | [0..0x20): callvalue                        |\\n             * 3d       | RETURNDATASIZE | 0 0x20 sig               | [0..0x20): callvalue                        |\\n             * a1       | LOG1           |                          | [0..0x20): callvalue                        |\\n             * 00       | STOP           |                          | [0..0x20): callvalue                        |\\n             * 5b       | JUMPDEST       |                          |                                             |\\n             *                                                                                                    |\\n             * ::: copy calldata to memory :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 36       | CALLDATASIZE   | cds                      |                                             |\\n             * 3d       | RETURNDATASIZE | 0 cds                    |                                             |\\n             * 3d       | RETURNDATASIZE | 0 0 cds                  |                                             |\\n             * 37       | CALLDATACOPY   |                          | [0..cds): calldata                          |\\n             *                                                                                                    |\\n             * ::: keep some values in stack :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d       | RETURNDATASIZE | 0                        | [0..cds): calldata                          |\\n             * 3d       | RETURNDATASIZE | 0 0                      | [0..cds): calldata                          |\\n             * 3d       | RETURNDATASIZE | 0 0 0                    | [0..cds): calldata                          |\\n             * 3d       | RETURNDATASIZE | 0 0 0 0                  | [0..cds): calldata                          |\\n             * 61 extra | PUSH2 extra    | e 0 0 0 0                | [0..cds): calldata                          |\\n             *                                                                                                    |\\n             * ::: copy extra data to memory :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 80       | DUP1           | e e 0 0 0 0              | [0..cds): calldata                          |\\n             * 60 0x62  | PUSH1 0x62     | 0x62 e e 0 0 0 0         | [0..cds): calldata                          |\\n             * 36       | CALLDATASIZE   | cds 0x62 e e 0 0 0 0     | [0..cds): calldata                          |\\n             * 39       | CODECOPY       | e 0 0 0 0                | [0..cds): calldata, [cds..cds+e): extraData |\\n             *                                                                                                    |\\n             * ::: delegate call to the implementation contract ::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 36       | CALLDATASIZE   | cds e 0 0 0 0            | [0..cds): calldata, [cds..cds+e): extraData |\\n             * 01       | ADD            | cds+e 0 0 0 0            | [0..cds): calldata, [cds..cds+e): extraData |\\n             * 3d       | RETURNDATASIZE | 0 cds+e 0 0 0 0          | [0..cds): calldata, [cds..cds+e): extraData |\\n             * 73 addr  | PUSH20 addr    | addr 0 cds+e 0 0 0 0     | [0..cds): calldata, [cds..cds+e): extraData |\\n             * 5a       | GAS            | gas addr 0 cds+e 0 0 0 0 | [0..cds): calldata, [cds..cds+e): extraData |\\n             * f4       | DELEGATECALL   | success 0 0              | [0..cds): calldata, [cds..cds+e): extraData |\\n             *                                                                                                    |\\n             * ::: copy return data to memory ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d       | RETURNDATASIZE | rds success 0 0          | [0..cds): calldata, [cds..cds+e): extraData |\\n             * 3d       | RETURNDATASIZE | rds rds success 0 0      | [0..cds): calldata, [cds..cds+e): extraData |\\n             * 93       | SWAP4          | 0 rds success 0 rds      | [0..cds): calldata, [cds..cds+e): extraData |\\n             * 80       | DUP1           | 0 0 rds success 0 rds    | [0..cds): calldata, [cds..cds+e): extraData |\\n             * 3e       | RETURNDATACOPY | success 0 rds            | [0..rds): returndata                        |\\n             *                                                                                                    |\\n             * 60 0x60  | PUSH1 0x60     | 0x60 success 0 rds       | [0..rds): returndata                        |\\n             * 57       | JUMPI          | 0 rds                    | [0..rds): returndata                        |\\n             *                                                                                                    |\\n             * ::: revert ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * fd       | REVERT         |                          | [0..rds): returndata                        |\\n             *                                                                                                    |\\n             * ::: return ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 5b       | JUMPDEST       | 0 rds                    | [0..rds): returndata                        |\\n             * f3       | RETURN         |                          | [0..rds): returndata                        |\\n             * ---------------------------------------------------------------------------------------------------+\\n             */\\n\\n            mstore(data, 0x5af43d3d93803e606057fd5bf3) // Write the bytecode before the data.\\n            mstore(sub(data, 0x0d), implementation) // Write the address of the implementation.\\n            // Write the rest of the bytecode.\\n            mstore(\\n                sub(data, 0x21),\\n                or(shl(0x48, extraLength), 0x593da1005b363d3d373d3d3d3d610000806062363936013d73)\\n            )\\n            // `keccak256(\\\"ReceiveETH(uint256)\\\")`\\n            mstore(\\n                sub(data, 0x3a), 0x9e4ac34f21c619cefc926c8bd93b54bf5a39c7ab2127a895af1cc0691d7e3dff\\n            )\\n            mstore(\\n                // Do a out-of-gas revert if `extraLength` is too big. 0xffff - 0x62 + 0x01 = 0xff9e.\\n                // The actual EVM limit may be smaller and may change over time.\\n                sub(data, add(0x59, lt(extraLength, 0xff9e))),\\n                or(shl(0x78, add(extraLength, 0x62)), 0xfd6100003d81600a3d39f336602c57343d527f)\\n            )\\n            mstore(dataEnd, shl(0xf0, extraLength))\\n\\n            instance := create(value, sub(data, 0x4c), add(extraLength, 0x6c))\\n            if iszero(instance) {\\n                mstore(0x00, 0x30116425) // `DeploymentFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n\\n            // Restore the overwritten memory surrounding `data`.\\n            mstore(dataEnd, mAfter1)\\n            mstore(data, dataLength)\\n            mstore(sub(data, 0x20), mBefore1)\\n            mstore(sub(data, 0x40), mBefore2)\\n            mstore(sub(data, 0x60), mBefore3)\\n        }\\n    }\\n\\n    /// @dev Deploys a deterministic clone of `implementation`\\n    /// with immutable arguments encoded in `data` and `salt`.\\n    function cloneDeterministic(address implementation, bytes memory data, bytes32 salt)\\n        internal\\n        returns (address instance)\\n    {\\n        instance = cloneDeterministic(0, implementation, data, salt);\\n    }\\n\\n    /// @dev Deploys a deterministic clone of `implementation`\\n    /// with immutable arguments encoded in `data` and `salt`.\\n    function cloneDeterministic(\\n        uint256 value,\\n        address implementation,\\n        bytes memory data,\\n        bytes32 salt\\n    ) internal returns (address instance) {\\n        assembly {\\n            // Compute the boundaries of the data and cache the memory slots around it.\\n            let mBefore3 := mload(sub(data, 0x60))\\n            let mBefore2 := mload(sub(data, 0x40))\\n            let mBefore1 := mload(sub(data, 0x20))\\n            let dataLength := mload(data)\\n            let dataEnd := add(add(data, 0x20), dataLength)\\n            let mAfter1 := mload(dataEnd)\\n\\n            // +2 bytes for telling how much data there is appended to the call.\\n            let extraLength := add(dataLength, 2)\\n\\n            mstore(data, 0x5af43d3d93803e606057fd5bf3) // Write the bytecode before the data.\\n            mstore(sub(data, 0x0d), implementation) // Write the address of the implementation.\\n            // Write the rest of the bytecode.\\n            mstore(\\n                sub(data, 0x21),\\n                or(shl(0x48, extraLength), 0x593da1005b363d3d373d3d3d3d610000806062363936013d73)\\n            )\\n            // `keccak256(\\\"ReceiveETH(uint256)\\\")`\\n            mstore(\\n                sub(data, 0x3a), 0x9e4ac34f21c619cefc926c8bd93b54bf5a39c7ab2127a895af1cc0691d7e3dff\\n            )\\n            mstore(\\n                // Do a out-of-gas revert if `extraLength` is too big. 0xffff - 0x62 + 0x01 = 0xff9e.\\n                // The actual EVM limit may be smaller and may change over time.\\n                sub(data, add(0x59, lt(extraLength, 0xff9e))),\\n                or(shl(0x78, add(extraLength, 0x62)), 0xfd6100003d81600a3d39f336602c57343d527f)\\n            )\\n            mstore(dataEnd, shl(0xf0, extraLength))\\n\\n            instance := create2(value, sub(data, 0x4c), add(extraLength, 0x6c), salt)\\n            if iszero(instance) {\\n                mstore(0x00, 0x30116425) // `DeploymentFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n\\n            // Restore the overwritten memory surrounding `data`.\\n            mstore(dataEnd, mAfter1)\\n            mstore(data, dataLength)\\n            mstore(sub(data, 0x20), mBefore1)\\n            mstore(sub(data, 0x40), mBefore2)\\n            mstore(sub(data, 0x60), mBefore3)\\n        }\\n    }\\n\\n    /// @dev Returns the initialization code hash of the clone of `implementation`\\n    /// using immutable arguments encoded in `data`.\\n    /// Used for mining vanity addresses with create2crunch.\\n    function initCodeHash(address implementation, bytes memory data)\\n        internal\\n        pure\\n        returns (bytes32 hash)\\n    {\\n        assembly {\\n            // Compute the boundaries of the data and cache the memory slots around it.\\n            let mBefore3 := mload(sub(data, 0x60))\\n            let mBefore2 := mload(sub(data, 0x40))\\n            let mBefore1 := mload(sub(data, 0x20))\\n            let dataLength := mload(data)\\n            let dataEnd := add(add(data, 0x20), dataLength)\\n            let mAfter1 := mload(dataEnd)\\n\\n            // Do a out-of-gas revert if `dataLength` is too big. 0xffff - 0x02 - 0x62 = 0xff9b.\\n            // The actual EVM limit may be smaller and may change over time.\\n            returndatacopy(returndatasize(), returndatasize(), gt(dataLength, 0xff9b))\\n\\n            // +2 bytes for telling how much data there is appended to the call.\\n            let extraLength := add(dataLength, 2)\\n\\n            mstore(data, 0x5af43d3d93803e606057fd5bf3) // Write the bytecode before the data.\\n            mstore(sub(data, 0x0d), implementation) // Write the address of the implementation.\\n            // Write the rest of the bytecode.\\n            mstore(\\n                sub(data, 0x21),\\n                or(shl(0x48, extraLength), 0x593da1005b363d3d373d3d3d3d610000806062363936013d73)\\n            )\\n            // `keccak256(\\\"ReceiveETH(uint256)\\\")`\\n            mstore(\\n                sub(data, 0x3a), 0x9e4ac34f21c619cefc926c8bd93b54bf5a39c7ab2127a895af1cc0691d7e3dff\\n            )\\n            mstore(\\n                sub(data, 0x5a),\\n                or(shl(0x78, add(extraLength, 0x62)), 0x6100003d81600a3d39f336602c57343d527f)\\n            )\\n            mstore(dataEnd, shl(0xf0, extraLength))\\n\\n            hash := keccak256(sub(data, 0x4c), add(extraLength, 0x6c))\\n\\n            // Restore the overwritten memory surrounding `data`.\\n            mstore(dataEnd, mAfter1)\\n            mstore(data, dataLength)\\n            mstore(sub(data, 0x20), mBefore1)\\n            mstore(sub(data, 0x40), mBefore2)\\n            mstore(sub(data, 0x60), mBefore3)\\n        }\\n    }\\n\\n    /// @dev Returns the address of the deterministic clone of\\n    /// `implementation` using immutable arguments encoded in `data`, with `salt`, by `deployer`.\\n    /// Note: The returned result has dirty upper 96 bits. Please clean if used in assembly.\\n    function predictDeterministicAddress(\\n        address implementation,\\n        bytes memory data,\\n        bytes32 salt,\\n        address deployer\\n    ) internal pure returns (address predicted) {\\n        bytes32 hash = initCodeHash(implementation, data);\\n        predicted = predictDeterministicAddress(hash, salt, deployer);\\n    }\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*              MINIMAL ERC1967 PROXY OPERATIONS              */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    // Note: The ERC1967 proxy here is intended to be upgraded with UUPS.\\n    // This is NOT the same as ERC1967Factory's transparent proxy, which includes admin logic.\\n\\n    /// @dev Deploys a minimal ERC1967 proxy with `implementation`.\\n    function deployERC1967(address implementation) internal returns (address instance) {\\n        instance = deployERC1967(0, implementation);\\n    }\\n\\n    /// @dev Deploys a minimal ERC1967 proxy with `implementation`.\\n    function deployERC1967(uint256 value, address implementation)\\n        internal\\n        returns (address instance)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            /**\\n             * ---------------------------------------------------------------------------------+\\n             * CREATION (34 bytes)                                                              |\\n             * ---------------------------------------------------------------------------------|\\n             * Opcode     | Mnemonic       | Stack            | Memory                          |\\n             * ---------------------------------------------------------------------------------|\\n             * 60 runSize | PUSH1 runSize  | r                |                                 |\\n             * 3d         | RETURNDATASIZE | 0 r              |                                 |\\n             * 81         | DUP2           | r 0 r            |                                 |\\n             * 60 offset  | PUSH1 offset   | o r 0 r          |                                 |\\n             * 3d         | RETURNDATASIZE | 0 o r 0 r        |                                 |\\n             * 39         | CODECOPY       | 0 r              | [0..runSize): runtime code      |\\n             * 73 impl    | PUSH20 impl    | impl 0 r         | [0..runSize): runtime code      |\\n             * 60 slotPos | PUSH1 slotPos  | slotPos impl 0 r | [0..runSize): runtime code      |\\n             * 51         | MLOAD          | slot impl 0 r    | [0..runSize): runtime code      |\\n             * 55         | SSTORE         | 0 r              | [0..runSize): runtime code      |\\n             * f3         | RETURN         |                  | [0..runSize): runtime code      |\\n             * ---------------------------------------------------------------------------------|\\n             * RUNTIME (62 bytes)                                                               |\\n             * ---------------------------------------------------------------------------------|\\n             * Opcode     | Mnemonic       | Stack            | Memory                          |\\n             * ---------------------------------------------------------------------------------|\\n             *                                                                                  |\\n             * ::: copy calldata to memory :::::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 36         | CALLDATASIZE   | cds              |                                 |\\n             * 3d         | RETURNDATASIZE | 0 cds            |                                 |\\n             * 3d         | RETURNDATASIZE | 0 0 cds          |                                 |\\n             * 37         | CALLDATACOPY   |                  | [0..calldatasize): calldata     |\\n             *                                                                                  |\\n             * ::: delegatecall to implementation ::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d         | RETURNDATASIZE | 0                |                                 |\\n             * 3d         | RETURNDATASIZE | 0 0              |                                 |\\n             * 36         | CALLDATASIZE   | cds 0 0          | [0..calldatasize): calldata     |\\n             * 3d         | RETURNDATASIZE | 0 cds 0 0        | [0..calldatasize): calldata     |\\n             * 7f slot    | PUSH32 slot    | s 0 cds 0 0      | [0..calldatasize): calldata     |\\n             * 54         | SLOAD          | i 0 cds 0 0      | [0..calldatasize): calldata     |\\n             * 5a         | GAS            | g i 0 cds 0 0    | [0..calldatasize): calldata     |\\n             * f4         | DELEGATECALL   | succ             | [0..calldatasize): calldata     |\\n             *                                                                                  |\\n             * ::: copy returndata to memory :::::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d         | RETURNDATASIZE | rds succ         | [0..calldatasize): calldata     |\\n             * 60 0x00    | PUSH1 0x00     | 0 rds succ       | [0..calldatasize): calldata     |\\n             * 80         | DUP1           | 0 0 rds succ     | [0..calldatasize): calldata     |\\n             * 3e         | RETURNDATACOPY | succ             | [0..returndatasize): returndata |\\n             *                                                                                  |\\n             * ::: branch on delegatecall status :::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 60 0x38    | PUSH1 0x38     | dest succ        | [0..returndatasize): returndata |\\n             * 57         | JUMPI          |                  | [0..returndatasize): returndata |\\n             *                                                                                  |\\n             * ::: delegatecall failed, revert :::::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 3d         | RETURNDATASIZE | rds              | [0..returndatasize): returndata |\\n             * 60 0x00    | PUSH1 0x00     | 0 rds            | [0..returndatasize): returndata |\\n             * fd         | REVERT         |                  | [0..returndatasize): returndata |\\n             *                                                                                  |\\n             * ::: delegatecall succeeded, return ::::::::::::::::::::::::::::::::::::::::::::: |\\n             * 5b         | JUMPDEST       |                  | [0..returndatasize): returndata |\\n             * 3d         | RETURNDATASIZE | rds              | [0..returndatasize): returndata |\\n             * 60 0x00    | PUSH1 0x00     | 0 rds            | [0..returndatasize): returndata |\\n             * f3         | RETURN         |                  | [0..returndatasize): returndata |\\n             * ---------------------------------------------------------------------------------+\\n             */\\n\\n            let m := mload(0x40) // Cache the free memory pointer.\\n            mstore(0x60, 0xcc3735a920a3ca505d382bbc545af43d6000803e6038573d6000fd5b3d6000f3)\\n            mstore(0x40, 0x5155f3363d3d373d3d363d7f360894a13ba1a3210667c828492db98dca3e2076)\\n            mstore(0x20, 0x6009)\\n            mstore(0x1e, implementation)\\n            mstore(0x0a, 0x603d3d8160223d3973)\\n            instance := create(value, 0x21, 0x5f)\\n            if iszero(instance) {\\n                mstore(0x00, 0x30116425) // `DeploymentFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x40, m) // Restore the free memory pointer.\\n            mstore(0x60, 0) // Restore the zero slot.\\n        }\\n    }\\n\\n    /// @dev Deploys a deterministic minimal ERC1967 proxy with `implementation` and `salt`.\\n    function deployDeterministicERC1967(address implementation, bytes32 salt)\\n        internal\\n        returns (address instance)\\n    {\\n        instance = deployDeterministicERC1967(0, implementation, salt);\\n    }\\n\\n    /// @dev Deploys a deterministic minimal ERC1967 proxy with `implementation` and `salt`.\\n    function deployDeterministicERC1967(uint256 value, address implementation, bytes32 salt)\\n        internal\\n        returns (address instance)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            let m := mload(0x40) // Cache the free memory pointer.\\n            mstore(0x60, 0xcc3735a920a3ca505d382bbc545af43d6000803e6038573d6000fd5b3d6000f3)\\n            mstore(0x40, 0x5155f3363d3d373d3d363d7f360894a13ba1a3210667c828492db98dca3e2076)\\n            mstore(0x20, 0x6009)\\n            mstore(0x1e, implementation)\\n            mstore(0x0a, 0x603d3d8160223d3973)\\n            instance := create2(value, 0x21, 0x5f, salt)\\n            if iszero(instance) {\\n                mstore(0x00, 0x30116425) // `DeploymentFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x40, m) // Restore the free memory pointer.\\n            mstore(0x60, 0) // Restore the zero slot.\\n        }\\n    }\\n\\n    /// @dev Returns the initialization code hash of the clone of `implementation`\\n    /// using immutable arguments encoded in `data`.\\n    /// Used for mining vanity addresses with create2crunch.\\n    function initCodeHashERC1967(address implementation) internal pure returns (bytes32 hash) {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            let m := mload(0x40) // Cache the free memory pointer.\\n            mstore(0x60, 0xcc3735a920a3ca505d382bbc545af43d6000803e6038573d6000fd5b3d6000f3)\\n            mstore(0x40, 0x5155f3363d3d373d3d363d7f360894a13ba1a3210667c828492db98dca3e2076)\\n            mstore(0x20, 0x6009)\\n            mstore(0x1e, implementation)\\n            mstore(0x0a, 0x603d3d8160223d3973)\\n            hash := keccak256(0x21, 0x5f)\\n            mstore(0x40, m) // Restore the free memory pointer.\\n            mstore(0x60, 0) // Restore the zero slot.\\n        }\\n    }\\n\\n    /// @dev Returns the address of the deterministic clone of\\n    /// `implementation` using immutable arguments encoded in `data`, with `salt`, by `deployer`.\\n    /// Note: The returned result has dirty upper 96 bits. Please clean if used in assembly.\\n    function predictDeterministicAddressERC1967(\\n        address implementation,\\n        bytes32 salt,\\n        address deployer\\n    ) internal pure returns (address predicted) {\\n        bytes32 hash = initCodeHashERC1967(implementation);\\n        predicted = predictDeterministicAddress(hash, salt, deployer);\\n    }\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                      OTHER OPERATIONS                      */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Returns the address when a contract with initialization code hash,\\n    /// `hash`, is deployed with `salt`, by `deployer`.\\n    /// Note: The returned result has dirty upper 96 bits. Please clean if used in assembly.\\n    function predictDeterministicAddress(bytes32 hash, bytes32 salt, address deployer)\\n        internal\\n        pure\\n        returns (address predicted)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            // Compute and store the bytecode hash.\\n            mstore8(0x00, 0xff) // Write the prefix.\\n            mstore(0x35, hash)\\n            mstore(0x01, shl(96, deployer))\\n            mstore(0x15, salt)\\n            predicted := keccak256(0x00, 0x55)\\n            mstore(0x35, 0) // Restore the overwritten part of the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Requires that `salt` starts with either the zero address or `by`.\\n    function checkStartsWith(bytes32 salt, address by) internal pure {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            // If the salt does not start with the zero address or `by`.\\n            if iszero(or(iszero(shr(96, salt)), eq(shr(96, shl(96, by)), shr(96, salt)))) {\\n                mstore(0x00, 0x0c4549ef) // `SaltDoesNotStartWith()`.\\n                revert(0x1c, 0x04)\\n            }\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0xb96c1039376369a3f58574a9f37840bfd0365de40238b40bc527003d4e6e64c7\",\"license\":\"MIT\"},\"solady/src/utils/SafeTransferLib.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.4;\\n\\n/// @notice Safe ETH and ERC20 transfer library that gracefully handles missing return values.\\n/// @author Solady (https://github.com/vectorized/solady/blob/main/src/utils/SafeTransferLib.sol)\\n/// @author Modified from Solmate (https://github.com/transmissions11/solmate/blob/main/src/utils/SafeTransferLib.sol)\\n///\\n/// @dev Note:\\n/// - For ETH transfers, please use `forceSafeTransferETH` for DoS protection.\\n/// - For ERC20s, this implementation won't check that a token has code,\\n///   responsibility is delegated to the caller.\\nlibrary SafeTransferLib {\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                       CUSTOM ERRORS                        */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev The ETH transfer has failed.\\n    error ETHTransferFailed();\\n\\n    /// @dev The ERC20 `transferFrom` has failed.\\n    error TransferFromFailed();\\n\\n    /// @dev The ERC20 `transfer` has failed.\\n    error TransferFailed();\\n\\n    /// @dev The ERC20 `approve` has failed.\\n    error ApproveFailed();\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                         CONSTANTS                          */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Suggested gas stipend for contract receiving ETH that disallows any storage writes.\\n    uint256 internal constant GAS_STIPEND_NO_STORAGE_WRITES = 2300;\\n\\n    /// @dev Suggested gas stipend for contract receiving ETH to perform a few\\n    /// storage reads and writes, but low enough to prevent griefing.\\n    uint256 internal constant GAS_STIPEND_NO_GRIEF = 100000;\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                       ETH OPERATIONS                       */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    // If the ETH transfer MUST succeed with a reasonable gas budget, use the force variants.\\n    //\\n    // The regular variants:\\n    // - Forwards all remaining gas to the target.\\n    // - Reverts if the target reverts.\\n    // - Reverts if the current contract has insufficient balance.\\n    //\\n    // The force variants:\\n    // - Forwards with an optional gas stipend\\n    //   (defaults to `GAS_STIPEND_NO_GRIEF`, which is sufficient for most cases).\\n    // - If the target reverts, or if the gas stipend is exhausted,\\n    //   creates a temporary contract to force send the ETH via `SELFDESTRUCT`.\\n    //   Future compatible with `SENDALL`: https://eips.ethereum.org/EIPS/eip-4758.\\n    // - Reverts if the current contract has insufficient balance.\\n    //\\n    // The try variants:\\n    // - Forwards with a mandatory gas stipend.\\n    // - Instead of reverting, returns whether the transfer succeeded.\\n\\n    /// @dev Sends `amount` (in wei) ETH to `to`.\\n    function safeTransferETH(address to, uint256 amount) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            if iszero(call(gas(), to, amount, codesize(), 0x00, codesize(), 0x00)) {\\n                mstore(0x00, 0xb12d13eb) // `ETHTransferFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n        }\\n    }\\n\\n    /// @dev Sends all the ETH in the current contract to `to`.\\n    function safeTransferAllETH(address to) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            // Transfer all the ETH and check if it succeeded or not.\\n            if iszero(call(gas(), to, selfbalance(), codesize(), 0x00, codesize(), 0x00)) {\\n                mstore(0x00, 0xb12d13eb) // `ETHTransferFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n        }\\n    }\\n\\n    /// @dev Force sends `amount` (in wei) ETH to `to`, with a `gasStipend`.\\n    function forceSafeTransferETH(address to, uint256 amount, uint256 gasStipend) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            if lt(selfbalance(), amount) {\\n                mstore(0x00, 0xb12d13eb) // `ETHTransferFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            if iszero(call(gasStipend, to, amount, codesize(), 0x00, codesize(), 0x00)) {\\n                mstore(0x00, to) // Store the address in scratch space.\\n                mstore8(0x0b, 0x73) // Opcode `PUSH20`.\\n                mstore8(0x20, 0xff) // Opcode `SELFDESTRUCT`.\\n                if iszero(create(amount, 0x0b, 0x16)) { revert(codesize(), codesize()) } // For gas estimation.\\n            }\\n        }\\n    }\\n\\n    /// @dev Force sends all the ETH in the current contract to `to`, with a `gasStipend`.\\n    function forceSafeTransferAllETH(address to, uint256 gasStipend) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            if iszero(call(gasStipend, to, selfbalance(), codesize(), 0x00, codesize(), 0x00)) {\\n                mstore(0x00, to) // Store the address in scratch space.\\n                mstore8(0x0b, 0x73) // Opcode `PUSH20`.\\n                mstore8(0x20, 0xff) // Opcode `SELFDESTRUCT`.\\n                if iszero(create(selfbalance(), 0x0b, 0x16)) { revert(codesize(), codesize()) } // For gas estimation.\\n            }\\n        }\\n    }\\n\\n    /// @dev Force sends `amount` (in wei) ETH to `to`, with `GAS_STIPEND_NO_GRIEF`.\\n    function forceSafeTransferETH(address to, uint256 amount) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            if lt(selfbalance(), amount) {\\n                mstore(0x00, 0xb12d13eb) // `ETHTransferFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            if iszero(call(GAS_STIPEND_NO_GRIEF, to, amount, codesize(), 0x00, codesize(), 0x00)) {\\n                mstore(0x00, to) // Store the address in scratch space.\\n                mstore8(0x0b, 0x73) // Opcode `PUSH20`.\\n                mstore8(0x20, 0xff) // Opcode `SELFDESTRUCT`.\\n                if iszero(create(amount, 0x0b, 0x16)) { revert(codesize(), codesize()) } // For gas estimation.\\n            }\\n        }\\n    }\\n\\n    /// @dev Force sends all the ETH in the current contract to `to`, with `GAS_STIPEND_NO_GRIEF`.\\n    function forceSafeTransferAllETH(address to) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            // forgefmt: disable-next-item\\n            if iszero(call(GAS_STIPEND_NO_GRIEF, to, selfbalance(), codesize(), 0x00, codesize(), 0x00)) {\\n                mstore(0x00, to) // Store the address in scratch space.\\n                mstore8(0x0b, 0x73) // Opcode `PUSH20`.\\n                mstore8(0x20, 0xff) // Opcode `SELFDESTRUCT`.\\n                if iszero(create(selfbalance(), 0x0b, 0x16)) { revert(codesize(), codesize()) } // For gas estimation.\\n            }\\n        }\\n    }\\n\\n    /// @dev Sends `amount` (in wei) ETH to `to`, with a `gasStipend`.\\n    function trySafeTransferETH(address to, uint256 amount, uint256 gasStipend)\\n        internal\\n        returns (bool success)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            success := call(gasStipend, to, amount, codesize(), 0x00, codesize(), 0x00)\\n        }\\n    }\\n\\n    /// @dev Sends all the ETH in the current contract to `to`, with a `gasStipend`.\\n    function trySafeTransferAllETH(address to, uint256 gasStipend)\\n        internal\\n        returns (bool success)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            success := call(gasStipend, to, selfbalance(), codesize(), 0x00, codesize(), 0x00)\\n        }\\n    }\\n\\n    /*\\u00b4:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0\\u2022.*\\u2022\\u00b4.*:\\u02da.\\u00b0*.\\u02da\\u2022\\u00b4.\\u00b0:\\u00b0\\u2022.\\u00b0+.*\\u2022\\u00b4.*:*/\\n    /*                      ERC20 OPERATIONS                      */\\n    /*.\\u2022\\u00b0:\\u00b0.\\u00b4+\\u02da.*\\u00b0.\\u02da:*.\\u00b4\\u2022*.+\\u00b0.\\u2022\\u00b0:\\u00b4*.\\u00b4\\u2022*.\\u2022\\u00b0.\\u2022\\u00b0:\\u00b0.\\u00b4:\\u2022\\u02da\\u00b0.*\\u00b0.\\u02da:*.\\u00b4+\\u00b0.\\u2022*/\\n\\n    /// @dev Sends `amount` of ERC20 `token` from `from` to `to`.\\n    /// Reverts upon failure.\\n    ///\\n    /// The `from` account must have at least `amount` approved for\\n    /// the current contract to manage.\\n    function safeTransferFrom(address token, address from, address to, uint256 amount) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            let m := mload(0x40) // Cache the free memory pointer.\\n            mstore(0x60, amount) // Store the `amount` argument.\\n            mstore(0x40, to) // Store the `to` argument.\\n            mstore(0x2c, shl(96, from)) // Store the `from` argument.\\n            mstore(0x0c, 0x23b872dd000000000000000000000000) // `transferFrom(address,address,uint256)`.\\n            // Perform the transfer, reverting upon failure.\\n            if iszero(\\n                and( // The arguments of `and` are evaluated from right to left.\\n                    or(eq(mload(0x00), 1), iszero(returndatasize())), // Returned 1 or nothing.\\n                    call(gas(), token, 0, 0x1c, 0x64, 0x00, 0x20)\\n                )\\n            ) {\\n                mstore(0x00, 0x7939f424) // `TransferFromFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x60, 0) // Restore the zero slot to zero.\\n            mstore(0x40, m) // Restore the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Sends all of ERC20 `token` from `from` to `to`.\\n    /// Reverts upon failure.\\n    ///\\n    /// The `from` account must have their entire balance approved for\\n    /// the current contract to manage.\\n    function safeTransferAllFrom(address token, address from, address to)\\n        internal\\n        returns (uint256 amount)\\n    {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            let m := mload(0x40) // Cache the free memory pointer.\\n            mstore(0x40, to) // Store the `to` argument.\\n            mstore(0x2c, shl(96, from)) // Store the `from` argument.\\n            mstore(0x0c, 0x70a08231000000000000000000000000) // `balanceOf(address)`.\\n            // Read the balance, reverting upon failure.\\n            if iszero(\\n                and( // The arguments of `and` are evaluated from right to left.\\n                    gt(returndatasize(), 0x1f), // At least 32 bytes returned.\\n                    staticcall(gas(), token, 0x1c, 0x24, 0x60, 0x20)\\n                )\\n            ) {\\n                mstore(0x00, 0x7939f424) // `TransferFromFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x00, 0x23b872dd) // `transferFrom(address,address,uint256)`.\\n            amount := mload(0x60) // The `amount` is already at 0x60. We'll need to return it.\\n            // Perform the transfer, reverting upon failure.\\n            if iszero(\\n                and( // The arguments of `and` are evaluated from right to left.\\n                    or(eq(mload(0x00), 1), iszero(returndatasize())), // Returned 1 or nothing.\\n                    call(gas(), token, 0, 0x1c, 0x64, 0x00, 0x20)\\n                )\\n            ) {\\n                mstore(0x00, 0x7939f424) // `TransferFromFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x60, 0) // Restore the zero slot to zero.\\n            mstore(0x40, m) // Restore the free memory pointer.\\n        }\\n    }\\n\\n    /// @dev Sends `amount` of ERC20 `token` from the current contract to `to`.\\n    /// Reverts upon failure.\\n    function safeTransfer(address token, address to, uint256 amount) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x14, to) // Store the `to` argument.\\n            mstore(0x34, amount) // Store the `amount` argument.\\n            mstore(0x00, 0xa9059cbb000000000000000000000000) // `transfer(address,uint256)`.\\n            // Perform the transfer, reverting upon failure.\\n            if iszero(\\n                and( // The arguments of `and` are evaluated from right to left.\\n                    or(eq(mload(0x00), 1), iszero(returndatasize())), // Returned 1 or nothing.\\n                    call(gas(), token, 0, 0x10, 0x44, 0x00, 0x20)\\n                )\\n            ) {\\n                mstore(0x00, 0x90b8ec18) // `TransferFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x34, 0) // Restore the part of the free memory pointer that was overwritten.\\n        }\\n    }\\n\\n    /// @dev Sends all of ERC20 `token` from the current contract to `to`.\\n    /// Reverts upon failure.\\n    function safeTransferAll(address token, address to) internal returns (uint256 amount) {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x00, 0x70a08231) // Store the function selector of `balanceOf(address)`.\\n            mstore(0x20, address()) // Store the address of the current contract.\\n            // Read the balance, reverting upon failure.\\n            if iszero(\\n                and( // The arguments of `and` are evaluated from right to left.\\n                    gt(returndatasize(), 0x1f), // At least 32 bytes returned.\\n                    staticcall(gas(), token, 0x1c, 0x24, 0x34, 0x20)\\n                )\\n            ) {\\n                mstore(0x00, 0x90b8ec18) // `TransferFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x14, to) // Store the `to` argument.\\n            amount := mload(0x34) // The `amount` is already at 0x34. We'll need to return it.\\n            mstore(0x00, 0xa9059cbb000000000000000000000000) // `transfer(address,uint256)`.\\n            // Perform the transfer, reverting upon failure.\\n            if iszero(\\n                and( // The arguments of `and` are evaluated from right to left.\\n                    or(eq(mload(0x00), 1), iszero(returndatasize())), // Returned 1 or nothing.\\n                    call(gas(), token, 0, 0x10, 0x44, 0x00, 0x20)\\n                )\\n            ) {\\n                mstore(0x00, 0x90b8ec18) // `TransferFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x34, 0) // Restore the part of the free memory pointer that was overwritten.\\n        }\\n    }\\n\\n    /// @dev Sets `amount` of ERC20 `token` for `to` to manage on behalf of the current contract.\\n    /// Reverts upon failure.\\n    function safeApprove(address token, address to, uint256 amount) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x14, to) // Store the `to` argument.\\n            mstore(0x34, amount) // Store the `amount` argument.\\n            mstore(0x00, 0x095ea7b3000000000000000000000000) // `approve(address,uint256)`.\\n            // Perform the approval, reverting upon failure.\\n            if iszero(\\n                and( // The arguments of `and` are evaluated from right to left.\\n                    or(eq(mload(0x00), 1), iszero(returndatasize())), // Returned 1 or nothing.\\n                    call(gas(), token, 0, 0x10, 0x44, 0x00, 0x20)\\n                )\\n            ) {\\n                mstore(0x00, 0x3e3f8f73) // `ApproveFailed()`.\\n                revert(0x1c, 0x04)\\n            }\\n            mstore(0x34, 0) // Restore the part of the free memory pointer that was overwritten.\\n        }\\n    }\\n\\n    /// @dev Sets `amount` of ERC20 `token` for `to` to manage on behalf of the current contract.\\n    /// If the initial attempt to approve fails, attempts to reset the approved amount to zero,\\n    /// then retries the approval again (some tokens, e.g. USDT, requires this).\\n    /// Reverts upon failure.\\n    function safeApproveWithRetry(address token, address to, uint256 amount) internal {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x14, to) // Store the `to` argument.\\n            mstore(0x34, amount) // Store the `amount` argument.\\n            mstore(0x00, 0x095ea7b3000000000000000000000000) // `approve(address,uint256)`.\\n            // Perform the approval, retrying upon failure.\\n            if iszero(\\n                and( // The arguments of `and` are evaluated from right to left.\\n                    or(eq(mload(0x00), 1), iszero(returndatasize())), // Returned 1 or nothing.\\n                    call(gas(), token, 0, 0x10, 0x44, 0x00, 0x20)\\n                )\\n            ) {\\n                mstore(0x34, 0) // Store 0 for the `amount`.\\n                mstore(0x00, 0x095ea7b3000000000000000000000000) // `approve(address,uint256)`.\\n                pop(call(gas(), token, 0, 0x10, 0x44, codesize(), 0x00)) // Reset the approval.\\n                mstore(0x34, amount) // Store back the original `amount`.\\n                // Retry the approval, reverting upon failure.\\n                if iszero(\\n                    and(\\n                        or(eq(mload(0x00), 1), iszero(returndatasize())), // Returned 1 or nothing.\\n                        call(gas(), token, 0, 0x10, 0x44, 0x00, 0x20)\\n                    )\\n                ) {\\n                    mstore(0x00, 0x3e3f8f73) // `ApproveFailed()`.\\n                    revert(0x1c, 0x04)\\n                }\\n            }\\n            mstore(0x34, 0) // Restore the part of the free memory pointer that was overwritten.\\n        }\\n    }\\n\\n    /// @dev Returns the amount of ERC20 `token` owned by `account`.\\n    /// Returns zero if the `token` does not exist.\\n    function balanceOf(address token, address account) internal view returns (uint256 amount) {\\n        /// @solidity memory-safe-assembly\\n        assembly {\\n            mstore(0x14, account) // Store the `account` argument.\\n            mstore(0x00, 0x70a08231000000000000000000000000) // `balanceOf(address)`.\\n            amount :=\\n                mul(\\n                    mload(0x20),\\n                    and( // The arguments of `and` are evaluated from right to left.\\n                        gt(returndatasize(), 0x1f), // At least 32 bytes returned.\\n                        staticcall(gas(), token, 0x10, 0x24, 0x20, 0x20)\\n                    )\\n                )\\n        }\\n    }\\n}\\n\",\"keccak256\":\"0xf98506fade18a92e3d8d0a0ca0bdaeaa099d7620aac2a9d76b5f3d0bcd10691c\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x60a06040523480156200001157600080fd5b5060405162001e4d38038062001e4d8339810160408190526200003491620002ab565b6103e88365ffffffffffff161115620000605760405163f4df6ae560e01b815260040160405180910390fd5b6103e88265ffffffffffff1611156200008c5760405163f4df6ae560e01b815260040160405180910390fd5b6103e88165ffffffffffff161115620000b85760405163f4df6ae560e01b815260040160405180910390fd5b620000c3856200023b565b6001600160a01b03868116608090815260408051918201815291861680825265ffffffffffff86811660208085018290528783168587018190529287166060909501859052600080546001600160d01b0319168517600160a01b909302929092176001600160d01b0316600160d01b9093029290921790556001805465ffffffffffff191690931790925591519182527fbf9a9534339a9d6b81696e05dcfb614b7dc518a31d48be3cfb757988381fb323910160405180910390a160405165ffffffffffff841681527fdc4e4be378c228e1b7b13787e1d0620609304c2f71ed3a6ee69e4aae99d58cd99060200160405180910390a160405165ffffffffffff831681527f11388023ce3c3ee3995ef04b4ad33102dab6bed131ac79d8531163e61a34f93b9060200160405180910390a160405165ffffffffffff821681527f4cc356a4f0cf9460d4d6f22c6c58a7cb56a92755a9d27d92b2dff03c5b3e94389060200160405180910390a15050505050506200032c565b6001600160a01b0316638b78c6d8198190558060007f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e08180a350565b80516001600160a01b03811681146200028f57600080fd5b919050565b805165ffffffffffff811681146200028f57600080fd5b60008060008060008060c08789031215620002c557600080fd5b620002d08762000277565b9550620002e06020880162000277565b9450620002f06040880162000277565b9350620003006060880162000294565b9250620003106080880162000294565b91506200032060a0880162000294565b90509295509295509295565b608051611af762000356600039600081816108dc015281816109db0152610ce30152611af76000f3fe6080604052600436106100f35760003560e01c8063a034d11b1161008a578063e74b981b11610059578063e74b981b14610319578063f04e283e14610339578063f2fde38b1461034c578063fee81cf41461035f57600080fd5b8063a034d11b146101fe578063a781d2081461021e578063d4522b3c146102d9578063dce92425146102f957600080fd5b806357e94d32116100c657806357e94d321461014a578063715018a6146101945780638054480b1461019c5780638da5cb5b146101ca57600080fd5b80630d4dfc21146100f8578063256929621461011a57806354bba6071461012257806354d1f13d14610142575b600080fd5b34801561010457600080fd5b506101186101133660046116d6565b610392565b005b610118610464565b34801561012e57600080fd5b5061011861013d3660046116d6565b6104b4565b61011861057f565b34801561015657600080fd5b5061016a6101653660046118ee565b6105bb565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020015b60405180910390f35b6101186109a2565b3480156101a857600080fd5b506101bc6101b736600461192c565b6109b6565b60405190815260200161018b565b3480156101d657600080fd5b507fffffffffffffffffffffffffffffffffffffffffffffffffffffffff748739275461016a565b34801561020a57600080fd5b50610118610219366004611949565b610a07565b34801561022a57600080fd5b506000546001546102949173ffffffffffffffffffffffffffffffffffffffff81169165ffffffffffff7401000000000000000000000000000000000000000083048116927a01000000000000000000000000000000000000000000000000000090048116911684565b6040805173ffffffffffffffffffffffffffffffffffffffff909516855265ffffffffffff93841660208601529183169184019190915216606082015260800161018b565b3480156102e557600080fd5b5061016a6102f436600461199d565b610cbe565b34801561030557600080fd5b506101186103143660046116d6565b610d12565b34801561032557600080fd5b506101186103343660046119ca565b610dc3565b6101186103473660046119ca565b610e3e565b61011861035a3660046119ca565b610e7e565b34801561036b57600080fd5b506101bc61037a3660046119ca565b63389a75e1600c908152600091909152602090205490565b61039a610ea5565b6103e88165ffffffffffff1611156103de576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000805479ffffffffffffffffffffffffffffffffffffffffffffffffffff167a01000000000000000000000000000000000000000000000000000065ffffffffffff8416908102919091179091556040519081527f11388023ce3c3ee3995ef04b4ad33102dab6bed131ac79d8531163e61a34f93b906020015b60405180910390a150565b60006202a30067ffffffffffffffff164201905063389a75e1600c5233600052806020600c2055337fdbf36a107da19e49527a7176a1babf963b4b0ff8cde35ee35d6cd8f1f9ac7e1d600080a250565b6104bc610ea5565b6103e88165ffffffffffff161115610500576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080547fffffffffffff000000000000ffffffffffffffffffffffffffffffffffffffff167401000000000000000000000000000000000000000065ffffffffffff8416908102919091179091556040519081527fdc4e4be378c228e1b7b13787e1d0620609304c2f71ed3a6ee69e4aae99d58cd990602001610459565b63389a75e1600c523360005260006020600c2055337ffa7b8eab7da67f412cc9575ed43464468f9bfbae89d1675917346ca6d8fe3c92600080a2565b6000846000015173ffffffffffffffffffffffffffffffffffffffff16856020015173ffffffffffffffffffffffffffffffffffffffff1614806106175750602085015173ffffffffffffffffffffffffffffffffffffffff16155b806106375750845173ffffffffffffffffffffffffffffffffffffffff16155b1561066e576040517f98d3f40b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61016085015164ffffffffff166106884262015180611a14565b64ffffffffff1611806106b9575061014085015161016086015162015180916106b091611a27565b64ffffffffff16105b156106f0576040517f5e0c84c800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b846101a0015164ffffffffff1685610160015164ffffffffff1610156107b35784610180015164ffffffffff1685610160015164ffffffffff161115610762576040517fd651d50e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b846101a0015164ffffffffff1685610180015164ffffffffff16106107b3576040517fd75478aa00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b662386f26fc1000085610100015167ffffffffffffffff1610806107ed5750670dbd2fc137a3000085610100015167ffffffffffffffff16115b8061080e5750670dbd2fc137a3000085610120015167ffffffffffffffff16115b8061082e5750662386f26fc1000085610120015167ffffffffffffffff16105b15610865576040517f31c93d5600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b82158015610882575060608501516affffffffffffffffffffff16155b156108b9576040517f3b70778100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6109036108c586610edb565b73ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000169084611287565b602086015190915061092d9073ffffffffffffffffffffffffffffffffffffffff1633838761129e565b84516109519073ffffffffffffffffffffffffffffffffffffffff1633838661129e565b60405173ffffffffffffffffffffffffffffffffffffffff821681527f83a48fbcfc991335314e74d0496aab6a1987e992ddc85dddbcc4d6dd6ef2e9fc9060200160405180910390a1949350505050565b6109aa610ea5565b6109b460006112fb565b565b6000610a016109c483610edb565b73ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001690611361565b92915050565b610a0f610ea5565b6103e88365ffffffffffff161115610a53576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6103e88265ffffffffffff161115610a97576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6103e88165ffffffffffff161115610adb576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6040805160808101825273ffffffffffffffffffffffffffffffffffffffff861680825265ffffffffffff86811660208085018290528783168587018190529287166060909501859052600080547fffffffffffff0000000000000000000000000000000000000000000000000000168517740100000000000000000000000000000000000000009093029290921779ffffffffffffffffffffffffffffffffffffffffffffffffffff167a010000000000000000000000000000000000000000000000000000909302929092179055600180547fffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000001690931790925591519182527fbf9a9534339a9d6b81696e05dcfb614b7dc518a31d48be3cfb757988381fb323910160405180910390a160405165ffffffffffff841681527fdc4e4be378c228e1b7b13787e1d0620609304c2f71ed3a6ee69e4aae99d58cd99060200160405180910390a160405165ffffffffffff831681527f11388023ce3c3ee3995ef04b4ad33102dab6bed131ac79d8531163e61a34f93b9060200160405180910390a160405165ffffffffffff821681527f4cc356a4f0cf9460d4d6f22c6c58a7cb56a92755a9d27d92b2dff03c5b3e94389060200160405180910390a150505050565b6000610d0b610ccc84610edb565b73ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001690843061152d565b9392505050565b610d1a610ea5565b6103e88165ffffffffffff161115610d5e576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600180547fffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000001665ffffffffffff83169081179091556040519081527f4cc356a4f0cf9460d4d6f22c6c58a7cb56a92755a9d27d92b2dff03c5b3e943890602001610459565b610dcb610ea5565b600080547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff83169081179091556040519081527fbf9a9534339a9d6b81696e05dcfb614b7dc518a31d48be3cfb757988381fb32390602001610459565b610e46610ea5565b63389a75e1600c52806000526020600c208054421115610e6e57636f5e88186000526004601cfd5b60009055610e7b816112fb565b50565b610e86610ea5565b8060601b610e9c57637448fbae6000526004601cfd5b610e7b816112fb565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffff748739275433146109b4576382b429006000526004601cfd5b604080516080808201835260005473ffffffffffffffffffffffffffffffffffffffff8116835265ffffffffffff740100000000000000000000000000000000000000008204811660208086019182527a01000000000000000000000000000000000000000000000000000084048316868801908152600154841660608089019190915289518a8401518b8b01518b5192841b7fffffffffffffffffffffffffffffffffffffffff0000000000000000000000009081169684019690965290831b8516603483015296821b8416604882015295811b909216605c8601528751808603605001815260708601895289830151968a015160a08b015160c0808d015160e08e01517fffffffffffffffffffffff00000000000000000000000000000000000000000060a89c8d1b811660908d0152948c1b8516609b8c0152928b1b841660a68b01528a1b831660b18a0152981b1660bc870152885180870360a701815260c78701909952925190516101008a01516101208b0151928616655af3107a4000908102891b7fffffffffffffffff00000000000000000000000000000000000000000000000090811660e78a015292909616909502871b811660ef87015293861b841660f786015290941b90911660ff83015291939061010701604080517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0818403018152908290526101408701516101608801517fffffffffff00000000000000000000000000000000000000000000000000000060d892831b81166020860152911b16602583015290602a01604080518083037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0018152908290526101808801516101a0890151606088015160d892831b7fffffffffff00000000000000000000000000000000000000000000000000000090811660208701529190921b16602584015265ffffffffffff16655af3107a40000260c01b7fffffffffffffffff00000000000000000000000000000000000000000000000016602a83015290603201604080517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0818403018152908290526101c08901516101e08a015190151560f81b6020840152602183015290604101604080517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe081840301815290829052611270969594939291602001611a7c565b604051602081830303815290604052915050919050565b60006112966000858585611551565b949350505050565b60405181606052826040528360601b602c526f23b872dd000000000000000000000000600c52602060006064601c6000895af13d1560016000511417166112ed57637939f4246000526004601cfd5b600060605260405250505050565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffff74873927805473ffffffffffffffffffffffffffffffffffffffff9092169182907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0600080a355565b60006060820351604083035160208403518451806020870101805161ff9b83113d3d3e6c5af43d3d93803e606057fd5bf388527ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff388019890985260028201604881901b78593da1005b363d3d373d3d3d3d610000806062363936013d73177fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdf8901527f9e4ac34f21c619cefc926c8bd93b54bf5a39c7ab2127a895af1cc0691d7e3dff7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc68901526064830160781b716100003d81600a3d39f336602c57343d527f177fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa689015260f01b8152606e82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffb488012097905285527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08501527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc08401527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa0909201919091525090565b60008061153a8686611361565b9050611547818585611699565b9695505050505050565b600060608303516040840351602085035185518060208801018051600283016c5af43d3d93803e606057fd5bf38a528a600d8b035278593da1005b363d3d373d3d3d3d610000806062363936013d738160481b1760218b03527f9e4ac34f21c619cefc926c8bd93b54bf5a39c7ab2127a895af1cc0691d7e3dff603a8b035272fd6100003d81600a3d39f336602c57343d527f6062820160781b1761ff9e82106059018b03528060f01b835288606c8201604c8c038ef59750508661161e5763301164256000526004601cfd5b905286527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08601527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc08501527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa0909301929092525092915050565b600060ff60005350603592835260601b60015260155260556000908120915290565b803565ffffffffffff811681146116d157600080fd5b919050565b6000602082840312156116e857600080fd5b610d0b826116bb565b604051610200810167ffffffffffffffff8111828210171561173c577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b60405290565b803573ffffffffffffffffffffffffffffffffffffffff811681146116d157600080fd5b80356affffffffffffffffffffff811681146116d157600080fd5b803567ffffffffffffffff811681146116d157600080fd5b803564ffffffffff811681146116d157600080fd5b803580151581146116d157600080fd5b600061020082840312156117d157600080fd5b6117d96116f1565b90506117e482611742565b81526117f260208301611742565b602082015261180360408301611742565b604082015261181460608301611766565b606082015261182560808301611766565b608082015261183660a08301611766565b60a082015261184760c08301611766565b60c082015261185860e08301611766565b60e082015261010061186b818401611781565b9082015261012061187d838201611781565b9082015261014061188f838201611799565b908201526101606118a1838201611799565b908201526101806118b3838201611799565b908201526101a06118c5838201611799565b908201526101c06118d78382016117ae565b81830152506101e080830135818301525092915050565b600080600080610260858703121561190557600080fd5b61190f86866117be565b966102008601359650610220860135956102400135945092505050565b6000610200828403121561193f57600080fd5b610d0b83836117be565b6000806000806080858703121561195f57600080fd5b61196885611742565b9350611976602086016116bb565b9250611984604086016116bb565b9150611992606086016116bb565b905092959194509250565b60008061022083850312156119b157600080fd5b6119bb84846117be565b94610200939093013593505050565b6000602082840312156119dc57600080fd5b610d0b82611742565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b80820180821115610a0157610a016119e5565b64ffffffffff828116828216039080821115611a4557611a456119e5565b5092915050565b6000815160005b81811015611a6d5760208185018101518683015201611a53565b50600093019283525090919050565b6000611ab5611aaf611aa9611aa3611a9d611a97878e611a4c565b8c611a4c565b8a611a4c565b88611a4c565b86611a4c565b84611a4c565b9897505050505050505056fea264697066735822122051d030752108406b4f8cfb84f2eaab38a9fbda47111db746743c74d92c97849964736f6c63430008170033",
+  "deployedBytecode": "0x6080604052600436106100f35760003560e01c8063a034d11b1161008a578063e74b981b11610059578063e74b981b14610319578063f04e283e14610339578063f2fde38b1461034c578063fee81cf41461035f57600080fd5b8063a034d11b146101fe578063a781d2081461021e578063d4522b3c146102d9578063dce92425146102f957600080fd5b806357e94d32116100c657806357e94d321461014a578063715018a6146101945780638054480b1461019c5780638da5cb5b146101ca57600080fd5b80630d4dfc21146100f8578063256929621461011a57806354bba6071461012257806354d1f13d14610142575b600080fd5b34801561010457600080fd5b506101186101133660046116d6565b610392565b005b610118610464565b34801561012e57600080fd5b5061011861013d3660046116d6565b6104b4565b61011861057f565b34801561015657600080fd5b5061016a6101653660046118ee565b6105bb565b60405173ffffffffffffffffffffffffffffffffffffffff90911681526020015b60405180910390f35b6101186109a2565b3480156101a857600080fd5b506101bc6101b736600461192c565b6109b6565b60405190815260200161018b565b3480156101d657600080fd5b507fffffffffffffffffffffffffffffffffffffffffffffffffffffffff748739275461016a565b34801561020a57600080fd5b50610118610219366004611949565b610a07565b34801561022a57600080fd5b506000546001546102949173ffffffffffffffffffffffffffffffffffffffff81169165ffffffffffff7401000000000000000000000000000000000000000083048116927a01000000000000000000000000000000000000000000000000000090048116911684565b6040805173ffffffffffffffffffffffffffffffffffffffff909516855265ffffffffffff93841660208601529183169184019190915216606082015260800161018b565b3480156102e557600080fd5b5061016a6102f436600461199d565b610cbe565b34801561030557600080fd5b506101186103143660046116d6565b610d12565b34801561032557600080fd5b506101186103343660046119ca565b610dc3565b6101186103473660046119ca565b610e3e565b61011861035a3660046119ca565b610e7e565b34801561036b57600080fd5b506101bc61037a3660046119ca565b63389a75e1600c908152600091909152602090205490565b61039a610ea5565b6103e88165ffffffffffff1611156103de576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6000805479ffffffffffffffffffffffffffffffffffffffffffffffffffff167a01000000000000000000000000000000000000000000000000000065ffffffffffff8416908102919091179091556040519081527f11388023ce3c3ee3995ef04b4ad33102dab6bed131ac79d8531163e61a34f93b906020015b60405180910390a150565b60006202a30067ffffffffffffffff164201905063389a75e1600c5233600052806020600c2055337fdbf36a107da19e49527a7176a1babf963b4b0ff8cde35ee35d6cd8f1f9ac7e1d600080a250565b6104bc610ea5565b6103e88165ffffffffffff161115610500576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600080547fffffffffffff000000000000ffffffffffffffffffffffffffffffffffffffff167401000000000000000000000000000000000000000065ffffffffffff8416908102919091179091556040519081527fdc4e4be378c228e1b7b13787e1d0620609304c2f71ed3a6ee69e4aae99d58cd990602001610459565b63389a75e1600c523360005260006020600c2055337ffa7b8eab7da67f412cc9575ed43464468f9bfbae89d1675917346ca6d8fe3c92600080a2565b6000846000015173ffffffffffffffffffffffffffffffffffffffff16856020015173ffffffffffffffffffffffffffffffffffffffff1614806106175750602085015173ffffffffffffffffffffffffffffffffffffffff16155b806106375750845173ffffffffffffffffffffffffffffffffffffffff16155b1561066e576040517f98d3f40b00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61016085015164ffffffffff166106884262015180611a14565b64ffffffffff1611806106b9575061014085015161016086015162015180916106b091611a27565b64ffffffffff16105b156106f0576040517f5e0c84c800000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b846101a0015164ffffffffff1685610160015164ffffffffff1610156107b35784610180015164ffffffffff1685610160015164ffffffffff161115610762576040517fd651d50e00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b846101a0015164ffffffffff1685610180015164ffffffffff16106107b3576040517fd75478aa00000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b662386f26fc1000085610100015167ffffffffffffffff1610806107ed5750670dbd2fc137a3000085610100015167ffffffffffffffff16115b8061080e5750670dbd2fc137a3000085610120015167ffffffffffffffff16115b8061082e5750662386f26fc1000085610120015167ffffffffffffffff16105b15610865576040517f31c93d5600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b82158015610882575060608501516affffffffffffffffffffff16155b156108b9576040517f3b70778100000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6109036108c586610edb565b73ffffffffffffffffffffffffffffffffffffffff7f0000000000000000000000000000000000000000000000000000000000000000169084611287565b602086015190915061092d9073ffffffffffffffffffffffffffffffffffffffff1633838761129e565b84516109519073ffffffffffffffffffffffffffffffffffffffff1633838661129e565b60405173ffffffffffffffffffffffffffffffffffffffff821681527f83a48fbcfc991335314e74d0496aab6a1987e992ddc85dddbcc4d6dd6ef2e9fc9060200160405180910390a1949350505050565b6109aa610ea5565b6109b460006112fb565b565b6000610a016109c483610edb565b73ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001690611361565b92915050565b610a0f610ea5565b6103e88365ffffffffffff161115610a53576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6103e88265ffffffffffff161115610a97576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6103e88165ffffffffffff161115610adb576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6040805160808101825273ffffffffffffffffffffffffffffffffffffffff861680825265ffffffffffff86811660208085018290528783168587018190529287166060909501859052600080547fffffffffffff0000000000000000000000000000000000000000000000000000168517740100000000000000000000000000000000000000009093029290921779ffffffffffffffffffffffffffffffffffffffffffffffffffff167a010000000000000000000000000000000000000000000000000000909302929092179055600180547fffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000001690931790925591519182527fbf9a9534339a9d6b81696e05dcfb614b7dc518a31d48be3cfb757988381fb323910160405180910390a160405165ffffffffffff841681527fdc4e4be378c228e1b7b13787e1d0620609304c2f71ed3a6ee69e4aae99d58cd99060200160405180910390a160405165ffffffffffff831681527f11388023ce3c3ee3995ef04b4ad33102dab6bed131ac79d8531163e61a34f93b9060200160405180910390a160405165ffffffffffff821681527f4cc356a4f0cf9460d4d6f22c6c58a7cb56a92755a9d27d92b2dff03c5b3e94389060200160405180910390a150505050565b6000610d0b610ccc84610edb565b73ffffffffffffffffffffffffffffffffffffffff7f00000000000000000000000000000000000000000000000000000000000000001690843061152d565b9392505050565b610d1a610ea5565b6103e88165ffffffffffff161115610d5e576040517ff4df6ae500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b600180547fffffffffffffffffffffffffffffffffffffffffffffffffffff0000000000001665ffffffffffff83169081179091556040519081527f4cc356a4f0cf9460d4d6f22c6c58a7cb56a92755a9d27d92b2dff03c5b3e943890602001610459565b610dcb610ea5565b600080547fffffffffffffffffffffffff00000000000000000000000000000000000000001673ffffffffffffffffffffffffffffffffffffffff83169081179091556040519081527fbf9a9534339a9d6b81696e05dcfb614b7dc518a31d48be3cfb757988381fb32390602001610459565b610e46610ea5565b63389a75e1600c52806000526020600c208054421115610e6e57636f5e88186000526004601cfd5b60009055610e7b816112fb565b50565b610e86610ea5565b8060601b610e9c57637448fbae6000526004601cfd5b610e7b816112fb565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffff748739275433146109b4576382b429006000526004601cfd5b604080516080808201835260005473ffffffffffffffffffffffffffffffffffffffff8116835265ffffffffffff740100000000000000000000000000000000000000008204811660208086019182527a01000000000000000000000000000000000000000000000000000084048316868801908152600154841660608089019190915289518a8401518b8b01518b5192841b7fffffffffffffffffffffffffffffffffffffffff0000000000000000000000009081169684019690965290831b8516603483015296821b8416604882015295811b909216605c8601528751808603605001815260708601895289830151968a015160a08b015160c0808d015160e08e01517fffffffffffffffffffffff00000000000000000000000000000000000000000060a89c8d1b811660908d0152948c1b8516609b8c0152928b1b841660a68b01528a1b831660b18a0152981b1660bc870152885180870360a701815260c78701909952925190516101008a01516101208b0151928616655af3107a4000908102891b7fffffffffffffffff00000000000000000000000000000000000000000000000090811660e78a015292909616909502871b811660ef87015293861b841660f786015290941b90911660ff83015291939061010701604080517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0818403018152908290526101408701516101608801517fffffffffff00000000000000000000000000000000000000000000000000000060d892831b81166020860152911b16602583015290602a01604080518083037fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0018152908290526101808801516101a0890151606088015160d892831b7fffffffffff00000000000000000000000000000000000000000000000000000090811660208701529190921b16602584015265ffffffffffff16655af3107a40000260c01b7fffffffffffffffff00000000000000000000000000000000000000000000000016602a83015290603201604080517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0818403018152908290526101c08901516101e08a015190151560f81b6020840152602183015290604101604080517fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe081840301815290829052611270969594939291602001611a7c565b604051602081830303815290604052915050919050565b60006112966000858585611551565b949350505050565b60405181606052826040528360601b602c526f23b872dd000000000000000000000000600c52602060006064601c6000895af13d1560016000511417166112ed57637939f4246000526004601cfd5b600060605260405250505050565b7fffffffffffffffffffffffffffffffffffffffffffffffffffffffff74873927805473ffffffffffffffffffffffffffffffffffffffff9092169182907f8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0600080a355565b60006060820351604083035160208403518451806020870101805161ff9b83113d3d3e6c5af43d3d93803e606057fd5bf388527ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff388019890985260028201604881901b78593da1005b363d3d373d3d3d3d610000806062363936013d73177fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdf8901527f9e4ac34f21c619cefc926c8bd93b54bf5a39c7ab2127a895af1cc0691d7e3dff7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc68901526064830160781b716100003d81600a3d39f336602c57343d527f177fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa689015260f01b8152606e82017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffb488012097905285527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08501527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc08401527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa0909201919091525090565b60008061153a8686611361565b9050611547818585611699565b9695505050505050565b600060608303516040840351602085035185518060208801018051600283016c5af43d3d93803e606057fd5bf38a528a600d8b035278593da1005b363d3d373d3d3d3d610000806062363936013d738160481b1760218b03527f9e4ac34f21c619cefc926c8bd93b54bf5a39c7ab2127a895af1cc0691d7e3dff603a8b035272fd6100003d81600a3d39f336602c57343d527f6062820160781b1761ff9e82106059018b03528060f01b835288606c8201604c8c038ef59750508661161e5763301164256000526004601cfd5b905286527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08601527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc08501527fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffa0909301929092525092915050565b600060ff60005350603592835260601b60015260155260556000908120915290565b803565ffffffffffff811681146116d157600080fd5b919050565b6000602082840312156116e857600080fd5b610d0b826116bb565b604051610200810167ffffffffffffffff8111828210171561173c577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b60405290565b803573ffffffffffffffffffffffffffffffffffffffff811681146116d157600080fd5b80356affffffffffffffffffffff811681146116d157600080fd5b803567ffffffffffffffff811681146116d157600080fd5b803564ffffffffff811681146116d157600080fd5b803580151581146116d157600080fd5b600061020082840312156117d157600080fd5b6117d96116f1565b90506117e482611742565b81526117f260208301611742565b602082015261180360408301611742565b604082015261181460608301611766565b606082015261182560808301611766565b608082015261183660a08301611766565b60a082015261184760c08301611766565b60c082015261185860e08301611766565b60e082015261010061186b818401611781565b9082015261012061187d838201611781565b9082015261014061188f838201611799565b908201526101606118a1838201611799565b908201526101806118b3838201611799565b908201526101a06118c5838201611799565b908201526101c06118d78382016117ae565b81830152506101e080830135818301525092915050565b600080600080610260858703121561190557600080fd5b61190f86866117be565b966102008601359650610220860135956102400135945092505050565b6000610200828403121561193f57600080fd5b610d0b83836117be565b6000806000806080858703121561195f57600080fd5b61196885611742565b9350611976602086016116bb565b9250611984604086016116bb565b9150611992606086016116bb565b905092959194509250565b60008061022083850312156119b157600080fd5b6119bb84846117be565b94610200939093013593505050565b6000602082840312156119dc57600080fd5b610d0b82611742565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b80820180821115610a0157610a016119e5565b64ffffffffff828116828216039080821115611a4557611a456119e5565b5092915050565b6000815160005b81811015611a6d5760208185018101518683015201611a53565b50600093019283525090919050565b6000611ab5611aaf611aa9611aa3611a9d611a97878e611a4c565b8c611a4c565b8a611a4c565b88611a4c565b86611a4c565b84611a4c565b9897505050505050505056fea264697066735822122051d030752108406b4f8cfb84f2eaab38a9fbda47111db746743c74d92c97849964736f6c63430008170033",
+  "devdoc": {
+    "errors": {
+      "AlreadyInitialized()": [
+        {
+          "details": "Cannot double-initialize."
+        }
+      ],
+      "InvalidAssetOrShare()": [
+        {
+          "details": "Error thrown when the asset or share address is invalid."
+        }
+      ],
+      "InvalidAssetValue()": [
+        {
+          "details": "Error thrown when the asset value is 0."
+        }
+      ],
+      "InvalidVestCliff()": [
+        {
+          "details": "Error thrown when the vestCliff is less than saleEnd."
+        }
+      ],
+      "InvalidVestEnd()": [
+        {
+          "details": "Error thrown when the vestCliff is greater or equal to vestEnd."
+        }
+      ],
+      "InvalidWeightConfig()": [
+        {
+          "details": "Error thrown when the weight config is not correct."
+        }
+      ],
+      "MaxFeeExceeded()": [
+        {
+          "details": "Error thrown when the maximum fee is exceeded."
+        }
+      ],
+      "NewOwnerIsZeroAddress()": [
+        {
+          "details": "The `newOwner` cannot be the zero address."
+        }
+      ],
+      "NoHandoverRequest()": [
+        {
+          "details": "The `pendingOwner` does not have a valid handover request."
+        }
+      ],
+      "SalePeriodLow()": [
+        {
+          "details": "Error thrown when the sale period is too low."
+        }
+      ],
+      "Unauthorized()": [
+        {
+          "details": "The caller is not authorized to call the function."
+        }
+      ]
+    },
+    "events": {
+      "FeeRecipientSet(address)": {
+        "details": "Emitted when the fee recipient address is updated.",
+        "params": {
+          "recipient": "The new fee recipient address."
+        }
+      },
+      "OwnershipHandoverCanceled(address)": {
+        "details": "The ownership handover to `pendingOwner` has been canceled."
+      },
+      "OwnershipHandoverRequested(address)": {
+        "details": "An ownership handover to `pendingOwner` has been requested."
+      },
+      "OwnershipTransferred(address,address)": {
+        "details": "The ownership is transferred from `oldOwner` to `newOwner`. This event is intentionally kept the same as OpenZeppelin's Ownable to be compatible with indexers and [EIP-173](https://eips.ethereum.org/EIPS/eip-173), despite it not being as lightweight as a single argument event."
+      },
+      "PlatformFeeSet(uint256)": {
+        "details": "Emitted when the platform fee is updated.",
+        "params": {
+          "fee": "The new platform fee value."
+        }
+      },
+      "PoolCreated(address)": {
+        "details": "Emitted when a new Liquidity Bootstrap Pool is created.",
+        "params": {
+          "pool": "The address of the newly created Liquidity Bootstrap Pool."
+        }
+      },
+      "ReferrerFeeSet(uint256)": {
+        "details": "Emitted when the referrer fee is updated.",
+        "params": {
+          "fee": "The new referrer fee value."
+        }
+      },
+      "SwapFeeSet(uint256)": {
+        "details": "Emitted when the swap fee is updated.",
+        "params": {
+          "fee": "The new swap fee value."
+        }
+      }
+    },
+    "kind": "dev",
+    "methods": {
+      "cancelOwnershipHandover()": {
+        "details": "Cancels the two-step ownership handover to the caller, if any."
+      },
+      "completeOwnershipHandover(address)": {
+        "details": "Allows the owner to complete the two-step ownership handover to `pendingOwner`. Reverts if there is no existing ownership handover requested by `pendingOwner`."
+      },
+      "constructor": {
+        "params": {
+          "_feeRecipient": "The address that will receive platform and referrer fees.",
+          "_implementation": "The address of the Liquidity Bootstrap Pool implementation contract.",
+          "_owner": "The owner of the factory contract.",
+          "_platformFee": "The platform fee, represented as a fraction with a denominator of 10,000.",
+          "_referrerFee": "The referrer fee, represented as a fraction with a denominator of 10,000.",
+          "_swapFee": "The referrer fee, represented as a fraction with a denominator of 10,000."
+        }
+      },
+      "createLiquidityBootstrapPool((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32),uint256,uint256,bytes32)": {
+        "params": {
+          "args": "The PoolSettings struct containing pool-specific parameters.",
+          "salt": "The salt value for deterministic pool creation.",
+          "shares": "The number of shares to transfer to the newly created pool."
+        },
+        "returns": {
+          "pool": "The address of the newly created Liquidity Bootstrap Pool."
+        }
+      },
+      "modifySettings(address,uint48,uint48,uint48)": {
+        "params": {
+          "feeRecipient": "The new fee recipient address.",
+          "platformFee": "The new platform fee value, represented as a fraction with a denominator of 10,000.",
+          "referrerFee": "The new referrer fee value, represented as a fraction with a denominator of 10,000.",
+          "swapFee": "The new swap fee value, represented as a fraction with a denominator of 10,000."
+        }
+      },
+      "owner()": {
+        "details": "Returns the owner of the contract."
+      },
+      "ownershipHandoverExpiresAt(address)": {
+        "details": "Returns the expiry timestamp for the two-step ownership handover to `pendingOwner`."
+      },
+      "predictDeterministicAddress((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32),bytes32)": {
+        "params": {
+          "args": "The PoolSettings struct containing pool-specific parameters.",
+          "salt": "The salt value for deterministic pool creation."
+        },
+        "returns": {
+          "_0": "The deterministic address of the pool."
+        }
+      },
+      "predictInitCodeHash((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32))": {
+        "params": {
+          "args": "The PoolSettings struct containing pool-specific parameters."
+        },
+        "returns": {
+          "_0": "The init code hash of the pool."
+        }
+      },
+      "renounceOwnership()": {
+        "details": "Allows the owner to renounce their ownership."
+      },
+      "requestOwnershipHandover()": {
+        "details": "Request a two-step ownership handover to the caller. The request will automatically expire in 48 hours (172800 seconds) by default."
+      },
+      "setFeeRecipient(address)": {
+        "params": {
+          "recipient": "The new fee recipient address."
+        }
+      },
+      "setPlatformFee(uint48)": {
+        "params": {
+          "fee": "The new platform fee value, represented as a fraction with a denominator of 10,000."
+        }
+      },
+      "setReferrerFee(uint48)": {
+        "params": {
+          "fee": "The new referrer fee value, represented as a fraction with a denominator of 10,000."
+        }
+      },
+      "setSwapFee(uint48)": {
+        "params": {
+          "fee": "The new swap fee value, represented as a fraction with a denominator of 10,000."
+        }
+      },
+      "transferOwnership(address)": {
+        "details": "Allows the owner to transfer the ownership to `newOwner`."
+      }
+    },
+    "stateVariables": {
+      "implementation": {
+        "details": "Immutable storage for the implementation address of Liquidity Bootstrap Pools."
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {
+      "createLiquidityBootstrapPool((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32),uint256,uint256,bytes32)": {
+        "notice": "Creates a new Liquidity Bootstrap Pool with the provided settings and parameters."
+      },
+      "factorySettings()": {
+        "notice": "Storage for factory-specific settings."
+      },
+      "modifySettings(address,uint48,uint48,uint48)": {
+        "notice": "Modifies multiple factory settings at once."
+      },
+      "predictDeterministicAddress((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32),bytes32)": {
+        "notice": "Predicts the deterministic address of a Liquidity Bootstrap Pool."
+      },
+      "predictInitCodeHash((address,address,address,uint88,uint88,uint88,uint88,uint88,uint64,uint64,uint40,uint40,uint40,uint40,bool,bytes32))": {
+        "notice": "Predicts the init code hash for a Liquidity Bootstrap Pool."
+      },
+      "setFeeRecipient(address)": {
+        "notice": "Sets the fee recipient address."
+      },
+      "setPlatformFee(uint48)": {
+        "notice": "Sets the platform fee percentage."
+      },
+      "setReferrerFee(uint48)": {
+        "notice": "Sets the referrer fee percentage."
+      },
+      "setSwapFee(uint48)": {
+        "notice": "Sets the swap fee percentage."
+      }
+    },
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 18542,
+        "contract": "contracts/src/fjordFork/LiquidityBootstrapPoolFactory.sol:LiquidityBootstrapPoolFactory",
+        "label": "factorySettings",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_struct(FactorySettings)18483_storage"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_struct(FactorySettings)18483_storage": {
+        "encoding": "inplace",
+        "label": "struct FactorySettings",
+        "members": [
+          {
+            "astId": 18476,
+            "contract": "contracts/src/fjordFork/LiquidityBootstrapPoolFactory.sol:LiquidityBootstrapPoolFactory",
+            "label": "feeRecipient",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 18478,
+            "contract": "contracts/src/fjordFork/LiquidityBootstrapPoolFactory.sol:LiquidityBootstrapPoolFactory",
+            "label": "platformFee",
+            "offset": 20,
+            "slot": "0",
+            "type": "t_uint48"
+          },
+          {
+            "astId": 18480,
+            "contract": "contracts/src/fjordFork/LiquidityBootstrapPoolFactory.sol:LiquidityBootstrapPoolFactory",
+            "label": "referrerFee",
+            "offset": 26,
+            "slot": "0",
+            "type": "t_uint48"
+          },
+          {
+            "astId": 18482,
+            "contract": "contracts/src/fjordFork/LiquidityBootstrapPoolFactory.sol:LiquidityBootstrapPoolFactory",
+            "label": "swapFee",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_uint48"
+          }
+        ],
+        "numberOfBytes": "64"
+      },
+      "t_uint48": {
+        "encoding": "inplace",
+        "label": "uint48",
+        "numberOfBytes": "6"
+      }
+    }
+  }
+}
