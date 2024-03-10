@@ -27,4 +27,46 @@ contract MDBLTest is Test {
 
         testMDBL = MDBL(proxy);
     }
+
+    function testGetOwnerAndPendingOwner() public {
+        assertEq(testMDBL.owner(), initialOwner);
+        assertEq(testMDBL.pendingOwner(), address(0));
+    }
+
+    function testPauseAndUnpause() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        testMDBL.pause();
+        testMDBL.unpause();
+    }
+
+    function testFail_PauseAndUnpauseNotOwner() external {
+        testMDBL.pause();
+        testMDBL.unpause();
+    }
+
+    function testTransferOwnership() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        testMDBL.transferOwnership(initialOwner);
+        assertEq(testMDBL.pendingOwner(), initialOwner);
+
+        testMDBL.acceptOwnership();
+        assertEq(testMDBL.pendingOwner(), address(0));
+    }
+
+    function testFail_TransferOwnershipNotOwner() external {
+        testMDBL.transferOwnership(initialOwner);
+    }
+
+    function testFail_TransferOwnershipNotPendingOwner() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        testMDBL.transferOwnership(initialOwner);
+        assertEq(testMDBL.pendingOwner(), initialOwner);
+
+        vm.stopPrank();
+
+        testMDBL.acceptOwnership();
+    }
 }
