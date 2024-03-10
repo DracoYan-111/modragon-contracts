@@ -69,4 +69,35 @@ contract MDBLTest is Test {
 
         testMDBL.acceptOwnership();
     }
+
+    function testMint() public {
+        vm.startPrank(initialOwner, initialOwner);
+
+        testMDBL.mint(initialOwner, 10000 ether);
+        assertEq(testMDBL.balanceOf(initialOwner), 10000 ether);
+    }
+
+    function testFail_MintNotOwner() external {
+        testMDBL.mint(initialOwner, 10000 ether);
+    }
+
+    function testBurn() external {
+        testMint();
+
+        testMDBL.burn(1 ether);
+        assertEq(testMDBL.balanceOf(initialOwner), 9999 ether);
+        assertEq(testMDBL.totalSupply(), 9999 ether);
+    }
+
+    function testBurnFrom() external {
+        testMint();
+
+        testMDBL.approve(address(this), 1 ether);
+        vm.stopPrank();
+
+        testMDBL.burnFrom(initialOwner, 1 ether);
+
+        assertEq(testMDBL.balanceOf(initialOwner), 9999 ether);
+        assertEq(testMDBL.totalSupply(), 9999 ether);
+    }
 }
