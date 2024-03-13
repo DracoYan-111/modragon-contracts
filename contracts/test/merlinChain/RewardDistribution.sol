@@ -10,7 +10,7 @@ import {TestNFT, IERC721} from "../../src/testToken/TestNFT.sol";
 
 import {RewardDistribution} from "../../src/merlinChain/RewardDistribution.sol";
 
-contract DragonBallBurnTest is Test {
+contract RewardDistributionTest is Test {
     TestNFT public testNFT;
     RewardDistribution public rewardDistribution;
 
@@ -42,7 +42,24 @@ contract DragonBallBurnTest is Test {
         rewardDistribution = RewardDistribution(proxy);
     }
 
-    function testGetOwner() public {
+    function testGetOwnerAndPendingOwner() public {
+        assertEq(rewardDistribution.owner(), initialOwner);
+        assertEq(rewardDistribution.pendingOwner(), address(0));
+    }
+
+    function testPauseAndUnpause() external {
+        vm.startPrank(initialOwner, initialOwner);
+
+        rewardDistribution.pause();
+        rewardDistribution.unpause();
+    }
+
+    function testFail_PauseAndUnpauseNotOwner() external {
+        rewardDistribution.pause();
+        rewardDistribution.unpause();
+    }
+
+    function testClaim() public {
         vm.startPrank(initialOwner, initialOwner);
 
         for (uint256 i; i < 10; ++i) {
@@ -51,17 +68,16 @@ contract DragonBallBurnTest is Test {
 
         vm.startPrank(0x70997970C51812dc3A010C7d01b50e0d17dc79C8, 0x70997970C51812dc3A010C7d01b50e0d17dc79C8);
 
-        uint256[] memory sss = new uint256[](4);
-        sss[0] = 1;
-        sss[1] = 2;
-        sss[2] = 3;
-        sss[3] = 4;
-        bytes32[] memory aaa = new bytes32[](2);
-        aaa[0] = 0x17e170678287a9644a243e899337b495d40729a7a0f0d66b7fb297843c24968b;
-        aaa[1] = 0x82b925d1fd548cda7094be410987c1474937d0781df40346b722978b9df8e563;
+        uint256[] memory tokenIDs = new uint256[](4);
+        tokenIDs[0] = 1;
+        tokenIDs[1] = 2;
+        tokenIDs[2] = 3;
+        tokenIDs[3] = 4;
+        bytes32[] memory proof = new bytes32[](2);
+        proof[0] = 0x17e170678287a9644a243e899337b495d40729a7a0f0d66b7fb297843c24968b;
+        proof[1] = 0x82b925d1fd548cda7094be410987c1474937d0781df40346b722978b9df8e563;
 
-        console.logBytes32(keccak256(abi.encode(uint256(keccak256("RewardDistributionStorage")) - 1)) & ~bytes32(uint256(0xff)));
-        rewardDistribution.claim(0, sss, aaa);
-        rewardDistribution.claim(0, sss, aaa);
+        rewardDistribution.claim(0, tokenIDs, proof);
+        assertEq(rewardDistribution.isClaimed(0x70997970C51812dc3A010C7d01b50e0d17dc79C8,0), true);
     }
 }
