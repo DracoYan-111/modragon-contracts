@@ -145,7 +145,11 @@ contract RewardDistribution is
      * @param tokenIds  Array of NFT IDs to be collected
      * @param merkleProof Merkle proof
      */
-    function claim(uint256 opt, uint256[] calldata tokenIds, bytes32[] calldata merkleProof) external nonReentrant {
+    function claim(
+        uint256 opt,
+        uint256[] calldata tokenIds,
+        bytes32[] calldata merkleProof
+    ) external nonReentrant whenNotPaused {
         RewardDistributionStorage storage $ = _getRewardDistributionStorage();
 
         if (isClaimed(msg.sender, opt)) revert AlreadyReceived();
@@ -157,8 +161,8 @@ contract RewardDistribution is
 
         // Update user receive
         opt == 0
-            ? $.userReceiveBluebox.setTo(uint256(uint160(msg.sender)), true)
-            : $.userReceiveMusicbox.setTo(uint256(uint160(msg.sender)), true);
+            ? $.userReceiveBluebox.set(uint256(uint160(msg.sender)))
+            : $.userReceiveMusicbox.set(uint256(uint160(msg.sender)));
 
         // Transfer NFT
         IERC721 transferNFT = opt == 0 ? $.blueboxAddr : $.musicboxAddr;
