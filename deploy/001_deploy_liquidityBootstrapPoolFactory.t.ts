@@ -5,6 +5,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy } = hre.deployments;
   const { deployer } = await hre.getNamedAccounts();
 
+  let manager = deployer;
+
   let liquidityBootstrapPoolContract = await deploy("LiquidityBootstrapPool", {
     from: deployer,
     log: true,
@@ -19,8 +21,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   /// @param _swapFee The referrer fee, represented as a fraction with a denominator of 10,000.
   const args = [
     liquidityBootstrapPoolContract.address,
-    deployer,
-    deployer,
+    manager,
+    manager,
     0,
     0,
     0,
