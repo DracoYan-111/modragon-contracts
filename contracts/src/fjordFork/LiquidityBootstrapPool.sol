@@ -487,9 +487,15 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         if (referrer != address(0) && referrerFee() != 0) {
             uint256 assetsReferred = assetsIn.mulWad(referrerFee());
 
-            totalReferred += assetsReferred;
+            uint256 checkTotalReferred;
+            unchecked {
+                checkTotalReferred = totalReferred + assetsReferred;
+            }
+            if (checkTotalReferred >= totalReferred) {
+                totalReferred += assetsReferred;
 
-            referredAssets[referrer] = referredAssets[referrer].rawAdd(assetsReferred);
+                referredAssets[referrer] = referredAssets[referrer].rawAdd(assetsReferred);
+            }
         }
 
         emit Buy(recipient, assetsIn, sharesOut, swapFees);
