@@ -69,6 +69,9 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
     /// @dev  Error thrown when the total fee is too large.
     error TotalFeeTooLarge();
+
+    /// @dev  Error thrown when the not hava shares to redeem.
+    error NoSharesToRedeem();
     /// -----------------------------------------------------------------------
     /// Events
     /// -----------------------------------------------------------------------
@@ -461,14 +464,13 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
     function _swapAssetsForShares(
         address recipient,
-        address ,
+        address,
         uint256 assetsIn,
         uint256 sharesOut,
         uint256,
         uint256 shares,
         uint256 swapFees
     ) internal virtual recipientIsSender(recipient) {
-
         if (swapFee() + referrerFee() >= 1 ether) revert TotalFeeTooLarge();
 
         asset().safeTransferFrom(msg.sender, address(this), assetsIn);
@@ -662,13 +664,12 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// redeem all of them.
     /// @param recipient The address to receive redeemed shares and assets.
     /// @return shares The number of shares redeemed.
-    function redeem(
-        address recipient,
-        bool 
-    ) external virtual recipientIsSender(recipient) returns (uint256 shares) {
+    function redeem(address recipient, bool) external virtual recipientIsSender(recipient) returns (uint256 shares) {
         if (!closed || block.timestamp < vestEnd()) revert RedeemingDisallowed();
 
         shares = purchasedShares[msg.sender];
+
+        if (shares == 0) revert NoSharesToRedeem();
 
         delete purchasedShares[msg.sender];
 
@@ -682,9 +683,9 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         //     asset().safeTransfer(recipient, assets);
         // }
 
-        if (shares != 0) {
-            emit Redeem(msg.sender, block.timestamp, shares);
-        }
+        // if (shares != 0) {
+        emit Redeem(msg.sender, block.timestamp, shares);
+        // }
     }
 
     /// -----------------------------------------------------------------------
