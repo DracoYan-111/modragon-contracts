@@ -72,6 +72,9 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
     /// @dev  Error thrown when the not hava shares to redeem.
     error NoSharesToRedeem();
+
+    /// @dev  Error thrown when the transfer amount is zero.
+    error ZeroAmount();
     /// -----------------------------------------------------------------------
     /// Events
     /// -----------------------------------------------------------------------
@@ -473,6 +476,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     ) internal virtual recipientIsSender(recipient) {
         if (swapFee() + referrerFee() >= 1 ether) revert TotalFeeTooLarge();
 
+        if (assetsIn == 0) revert ZeroAmount();
         asset().safeTransferFrom(msg.sender, address(this), assetsIn);
 
         uint256 totalPurchasedAfter = totalPurchased + sharesOut;
