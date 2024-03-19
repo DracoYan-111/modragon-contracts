@@ -469,7 +469,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         uint256 swapFees
     ) internal virtual recipientIsSender(recipient) {
 
-        if (swapFee() + referrerFee() >= 1e18) revert TotalFeeTooLarge();
+        if (swapFee() + referrerFee() >= 1 ether) revert TotalFeeTooLarge();
 
         asset().safeTransferFrom(msg.sender, address(this), assetsIn);
 
