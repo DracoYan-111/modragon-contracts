@@ -689,9 +689,9 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         share().safeTransfer(msg.sender, shares);
 
         if (referred && referrerFee() != 0) {
-            uint256 assets = referredAssets[msg.sender];
+            uint256 assets = referredAssets[recipient];
 
-            delete referredAssets[msg.sender];
+            delete referredAssets[recipient];
 
             asset().safeTransfer(recipient, assets);
         }
