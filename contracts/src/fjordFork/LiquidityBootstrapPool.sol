@@ -67,11 +67,11 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// @dev Error thrown when the sender is not the recipient.
     error RecipientNotSender();
 
+   /// @dev  Error thrown when the not hava shares to redeem.
+    error NoSharesToRedeem();
+
     /// @dev  Error thrown when the total fee is too large.
     error TotalFeeTooLarge();
-
-    /// @dev  Error thrown when the not hava shares to redeem.
-    error NoSharesToRedeem();
 
     /// @dev  Error thrown when the transfer amount is zero.
     error ZeroAmount();
@@ -680,7 +680,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     ) external virtual recipientIsSender(recipient) whenNotRedeemOpen returns (uint256 shares) {
         if (!closed) revert RedeemingDisallowed();
 
-        shares = purchasedShares[msg.sender];
+        shares = purchasedShares[msg.sender];    
 
         if (shares == 0) revert NoSharesToRedeem();
 
@@ -695,7 +695,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
             asset().safeTransfer(recipient, assets);
         }
-
+    
         emit Redeem(msg.sender, block.timestamp, shares);
 
     }
