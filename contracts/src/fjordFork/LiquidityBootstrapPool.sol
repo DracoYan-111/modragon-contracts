@@ -109,17 +109,8 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// @notice Mapping to track the purchased shares for each address.
     mapping(address => uint256) public purchasedShares;
 
-    /// @notice Mapping to track the assets referred by each address.
-    // mapping(address => uint256) public referredAssets;
-
-    /// @notice Mapping to track the redeemed shares for each address.
-    mapping(address => uint256) public redeemedShares;
-
     /// @notice The total number of purchased shares in the pool.
     uint256 public totalPurchased;
-
-    /// @notice The total amount of assets referred in the pool.
-    uint256 public totalReferred;
 
     /// @notice The total swap fee amount in asset charged to users.
     uint256 public totalSwapFeesAsset;
@@ -296,7 +287,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// @dev This modifier checks if the caller's address is whitelisted using a Merkle proof.
     modifier onlyWhitelisted(bytes32[] memory proof) virtual {
         if (whitelisted()) {
-            if (!proof.verify(whitelistMerkleRoot(), keccak256(abi.encodePacked(msg.sender)))) {
+            if (proof.length != 0 && !proof.verify(whitelistMerkleRoot(), keccak256(abi.encodePacked(msg.sender)))) {
                 revert WhitelistProof();
             }
         }
@@ -476,7 +467,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     ) internal virtual recipientIsSender(recipient) {
         if (swapFee() + referrerFee() >= 1 ether) revert TotalFeeTooLarge();
 
-        if (assetsIn == 0) revert ZeroAmount();
+        if (assetsIn == 0 || sharesOut == 0) revert ZeroAmount();
         asset().safeTransferFrom(msg.sender, address(this), assetsIn);
 
         uint256 totalPurchasedAfter = totalPurchased + sharesOut;
@@ -486,14 +477,6 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         totalPurchased = totalPurchasedAfter;
 
         purchasedShares[recipient] = purchasedShares[recipient].rawAdd(sharesOut);
-
-        // if (referrer != address(0) && referrerFee() != 0) {
-        //     uint256 assetsReferred = assetsIn.mulWad(referrerFee());
-
-        //     totalReferred += assetsReferred;
-
-        //     referredAssets[referrer] = referredAssets[referrer].rawAdd(assetsReferred);
-        // }
 
         emit Buy(msg.sender, assetsIn, sharesOut, swapFees);
     }
@@ -610,6 +593,8 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         uint256 shares,
         uint256 swapFees
     ) internal virtual recipientIsSender(recipient) {
+        if (sharesIn == 0 || assetsOut == 0) revert ZeroAmount();
+
         uint256 totalPurchasedBefore = totalPurchased;
 
         if (totalPurchasedBefore >= shares) revert SharesOutExceeded();
@@ -637,7 +622,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
         uint256 totalAssets = asset().balanceOf(address(this)).rawAdd(totalSwapFeesAsset);
         uint256 platformFees = totalAssets.mulWad(platformFee());
-        uint256 totalAssetsMinusFees = totalAssets.rawAdd(platformFees).rawAdd(totalReferred);
+        uint256 totalAssetsMinusFees = totalAssets.rawAdd(platformFees);
 
         if (totalAssets != 0) {
             // Transfer asset
@@ -682,17 +667,8 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
         share().safeTransfer(msg.sender, shares);
 
-        // if (referred && referrerFee() != 0) {
-        //     uint256 assets = referredAssets[msg.sender];
-
-        //     delete referredAssets[msg.sender];
-
-        //     asset().safeTransfer(recipient, assets);
-        // }
-
-        // if (shares != 0) {
         emit Redeem(msg.sender, block.timestamp, shares);
-        // }
+
     }
 
     /// -----------------------------------------------------------------------
