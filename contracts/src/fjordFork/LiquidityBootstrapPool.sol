@@ -631,9 +631,9 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         if (closed) revert ClosingDisallowed();
         if (block.timestamp < saleEnd()) revert ClosingDisallowed();
 
-        uint256 totalAssets = asset().balanceOf(address(this)).rawSub(totalSwapFeesAsset);
+        uint256 totalAssets = asset().balanceOf(address(this)).rawAdd(totalSwapFeesAsset);
         uint256 platformFees = totalAssets.mulWad(platformFee());
-        uint256 totalAssetsMinusFees = totalAssets.rawSub(platformFees).rawSub(totalReferred);
+        uint256 totalAssetsMinusFees = totalAssets.rawAdd(platformFees).rawAdd(totalReferred);
 
         if (totalAssets != 0) {
             // Transfer asset
