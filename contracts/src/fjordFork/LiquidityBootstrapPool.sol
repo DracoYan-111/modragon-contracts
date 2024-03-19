@@ -104,7 +104,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     mapping(address => uint256) public purchasedShares;
 
     /// @notice Mapping to track the assets referred by each address.
-    mapping(address => uint256) public referredAssets;
+    // mapping(address => uint256) public referredAssets;
 
     /// @notice Mapping to track the redeemed shares for each address.
     mapping(address => uint256) public redeemedShares;
@@ -461,7 +461,7 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
     function _swapAssetsForShares(
         address recipient,
-        address referrer,
+        address ,
         uint256 assetsIn,
         uint256 sharesOut,
         uint256,
@@ -481,13 +481,13 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
         purchasedShares[recipient] = purchasedShares[recipient].rawAdd(sharesOut);
 
-        if (referrer != address(0) && referrerFee() != 0) {
-            uint256 assetsReferred = assetsIn.mulWad(referrerFee());
+        // if (referrer != address(0) && referrerFee() != 0) {
+        //     uint256 assetsReferred = assetsIn.mulWad(referrerFee());
 
-            totalReferred += assetsReferred;
+        //     totalReferred += assetsReferred;
 
-            referredAssets[referrer] = referredAssets[referrer].rawAdd(assetsReferred);
-        }
+        //     referredAssets[referrer] = referredAssets[referrer].rawAdd(assetsReferred);
+        // }
 
         emit Buy(msg.sender, assetsIn, sharesOut, swapFees);
     }
@@ -661,11 +661,10 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// vested shares at any time. Once shares are fully vested, the user can
     /// redeem all of them.
     /// @param recipient The address to receive redeemed shares and assets.
-    /// @param referred A boolean indicating whether the user has been referred.
     /// @return shares The number of shares redeemed.
     function redeem(
         address recipient,
-        bool referred
+        bool 
     ) external virtual recipientIsSender(recipient) returns (uint256 shares) {
         if (!closed || block.timestamp < vestEnd()) revert RedeemingDisallowed();
 
@@ -675,13 +674,13 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
 
         share().safeTransfer(msg.sender, shares);
 
-        if (referred && referrerFee() != 0) {
-            uint256 assets = referredAssets[msg.sender];
+        // if (referred && referrerFee() != 0) {
+        //     uint256 assets = referredAssets[msg.sender];
 
-            delete referredAssets[msg.sender];
+        //     delete referredAssets[msg.sender];
 
-            asset().safeTransfer(recipient, assets);
-        }
+        //     asset().safeTransfer(recipient, assets);
+        // }
 
         if (shares != 0) {
             emit Redeem(msg.sender, block.timestamp, shares);
