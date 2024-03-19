@@ -8,17 +8,23 @@ abstract contract Pausable {
 
     event Paused(bool);
 
+    event RedeemOpen(bool);
+
     /// -----------------------------------------------------------------------
     /// Custom Errors
     /// -----------------------------------------------------------------------
 
     error EnforcedPause();
 
+    error EnforcedRedeemNotOpen();
+
     /// -----------------------------------------------------------------------
     /// Mutable Storage
     /// -----------------------------------------------------------------------
 
     bool public paused;
+
+    bool public redeemOpen;
 
     /// -----------------------------------------------------------------------
     /// Modifiers
@@ -29,11 +35,20 @@ abstract contract Pausable {
         _;
     }
 
+    modifier whenNotRedeemOpen() {
+        if (!redeemOpen) revert EnforcedRedeemNotOpen();
+        _;
+    }
+
     /// -----------------------------------------------------------------------
     /// Internal Logic
     /// -----------------------------------------------------------------------
 
     function _togglePause() internal virtual {
         emit Paused(paused = !paused);
+    }
+
+    function _toggleRedeemOpen() internal virtual {
+        emit RedeemOpen(redeemOpen = !redeemOpen);
     }
 }
