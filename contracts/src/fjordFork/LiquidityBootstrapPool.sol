@@ -67,6 +67,8 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// @dev Error thrown when the sender is not the recipient.
     error RecipientNotSender();
 
+    /// @dev  Error thrown when the total fee is too large.
+    error TotalFeeTooLarge();
     /// -----------------------------------------------------------------------
     /// Events
     /// -----------------------------------------------------------------------
@@ -467,6 +469,8 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         uint256 swapFees
     ) internal virtual recipientIsSender(recipient) {
 
+        if (swapFee() + referrerFee() >= 1e18) revert TotalFeeTooLarge();
+
         asset().safeTransferFrom(msg.sender, address(this), assetsIn);
 
         uint256 totalPurchasedAfter = totalPurchased + sharesOut;
@@ -600,7 +604,6 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         uint256 shares,
         uint256 swapFees
     ) internal virtual recipientIsSender(recipient) {
-
         uint256 totalPurchasedBefore = totalPurchased;
 
         if (totalPurchasedBefore >= shares) revert SharesOutExceeded();
