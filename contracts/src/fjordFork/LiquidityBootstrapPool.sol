@@ -732,6 +732,18 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         asset().safeTransfer(recipient, asset().balanceOf(address(this)));
     }
 
+    /// @notice Get the remaining Fees in the contract.
+    /// @dev This method is used by project parties to receive Fees.
+    /// @param recipient The address to receive redeemed shares and assets.
+    function withdrawalFee(address recipient) external {
+        if (msg.sender != manager()) {
+            revert CallerDisallowed();
+        }
+        if (!closed) revert RedeemingDisallowed();
+
+        asset().safeTransfer(recipient, share().balanceOf(address(this)));
+    }
+
     /// -----------------------------------------------------------------------
     /// Swap Helper Logic
     /// -----------------------------------------------------------------------
