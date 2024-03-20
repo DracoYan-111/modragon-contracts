@@ -1,38 +1,29 @@
-import { ethers } from "ethers-v5";
-import { MerkleTree } from "merkletreejs";
+import fs from "fs";
+import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 
-const RESET = "\x1b[0m";
-const GREEN = "\x1b[32m";
+// ============== Building a Tree ==============
+const values = require("./airdrop.json");
 
-const inputs = [
-  {
-    address: "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
-    quantity: [1, 2, 3, 4],
-  },
-  {
-    address: "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
-    quantity: [5, 6, 7],
-  },
-  {
-    address: "0x90F79bf6EB2c4f870365E785982E1f101E93b906",
-    quantity: [8, 9],
-  },
-];
+const tree = StandardMerkleTree.of(values, ["uint256", "address", "uint256[]", "uint256[]"]);
+
+const treeDataWithRoot = {
+  root: tree.root,
+  tree: tree.dump()
+};
+
+// write to file
+require("fs").writeFileSync("./tree.json", JSON.stringify(treeDataWithRoot));
 
 
-const leaves = inputs.map((x) =>
-  ethers.utils.solidityKeccak256(
-    ["address", "uint256[]"],
-    [x.address, x.quantity],
-  ),
-);
 
-// create a Merkle Tree using keccak256 hash function
-const tree = new MerkleTree(leaves, ethers.utils.keccak256, { sort: true });
+// ============== Obtaining a Proof ==============
+const trees = StandardMerkleTree.load(JSON.parse(fs.readFileSync("./tree.json", "utf8")).tree);
 
-// get the root
-const root = tree.getHexRoot();
-const proofs = leaves.map((leaf) => tree.getHexProof(leaf));
-
-console.log(`Merkle Root:${GREEN}${root}${RESET}\n`);
-console.log(proofs);
+const checkUserAddress = '0x4B20993Bc481177ec7E8f571ceCaE8A9e22C02db'
+for (const [i, v] of trees.entries()) {
+  if (v[1] === checkUserAddress) {
+    const proof = trees.getProof(i);
+    console.log('Value:', v);
+    console.log('Proof:', proof);
+  }
+}
