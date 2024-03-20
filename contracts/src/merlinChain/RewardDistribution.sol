@@ -31,10 +31,8 @@ contract RewardDistribution is
     struct RewardDistributionStorage {
         IERC721 blueboxAddr;
         IERC721 musicboxAddr;
-        bytes32 blueboxRoot;
-        bytes32 musicboxRoot;
-        BitMaps.BitMap userReceiveBluebox;
-        BitMaps.BitMap userReceiveMusicbox;
+        bytes32 receiveRoot;
+        BitMaps.BitMap userReceive;
     }
 
     constructor() {
@@ -45,15 +43,13 @@ contract RewardDistribution is
         address _initialOwner,
         IERC721 _blueboxAddr,
         IERC721 _musicboxAddr,
-        bytes32 _blueboxRoot,
-        bytes32 _musicboxRoot
+        bytes32 _receiveRoot
     ) public initializer {
         RewardDistributionStorage storage $ = _getRewardDistributionStorage();
 
         $.blueboxAddr = _blueboxAddr;
         $.musicboxAddr = _musicboxAddr;
-        $.blueboxRoot = _blueboxRoot;
-        $.musicboxRoot = _musicboxRoot;
+        $.receiveRoot = _receiveRoot;
 
         __Ownable_init(_initialOwner);
         __UUPSUpgradeable_init();
@@ -71,19 +67,14 @@ contract RewardDistribution is
 
     /**
      * @dev Update merkle root data only owner
-     * @param merkleRootOpt 0 is blueboxRoot else is musicboxRoot
      * @param merkleRoot Merkle root data
      */
-    function updateMerkleRoot(uint256 merkleRootOpt, bytes32 merkleRoot) external onlyOwner {
+    function updateMerkleRoot(bytes32 merkleRoot) external onlyOwner {
         RewardDistributionStorage storage $ = _getRewardDistributionStorage();
 
-        if (merkleRootOpt == 0) {
-            $.blueboxRoot = merkleRoot;
-        } else {
-            $.musicboxRoot = merkleRoot;
-        }
+        $.receiveRoot = merkleRoot;
 
-        emit SetMerkleRootInformation(merkleRootOpt, merkleRoot);
+        emit SetMerkleRootInformation(merkleRoot);
     }
 
     /**
@@ -126,54 +117,59 @@ contract RewardDistribution is
     }
 
     /**
-     * @dev Check whether the user has received the token represented by opt
-     * @param userAddresss User address
-     * @param opt 0 is bluebox else is musicbox
+     * @dev Check whether the index corresponding to the user is used
+     * @param inedx User address
      */
-    function isClaimed(address userAddresss, uint256 opt) public view returns (bool) {
+    function isClaimed(uint256 inedx) public view returns (bool) {
         RewardDistributionStorage storage $ = _getRewardDistributionStorage();
 
-        return
-            opt == 0
-                ? $.userReceiveBluebox.get(uint256(uint160(userAddresss)))
-                : $.userReceiveMusicbox.get(uint256(uint160(userAddresss)));
+        return $.userReceive.get(inedx);
     }
 
     /**
      * @dev Claim NFT
-     * @param opt 0 is bluebox else is musicbox
-     * @param tokenIds  Array of NFT IDs to be collected
+     * @param index 0 is bluebox else is musicbox
+     * @param blueboxTokenIds  Array of NFT IDs to be collected
+     * @param musicboxTokenIds  Array of NFT IDs to be collected
      * @param merkleProof Merkle proof
      */
     function claim(
-        uint256 opt,
-        uint256[] calldata tokenIds,
+        uint256 index,
+        uint256[] calldata blueboxTokenIds,
+        uint256[] calldata musicboxTokenIds,
         bytes32[] calldata merkleProof
     ) external nonReentrant whenNotPaused {
         RewardDistributionStorage storage $ = _getRewardDistributionStorage();
 
-        if (isClaimed(msg.sender, opt)) revert AlreadyReceived();
+        if (isClaimed(index)) revert AlreadyReceived();
 
         // Verify the merkle proof.
-        bytes32 NFTMerkleRoot = opt == 0 ? $.blueboxRoot : $.musicboxRoot;
-        bytes32 leaf = keccak256(abi.encodePacked(msg.sender, tokenIds));
-        if (!MerkleProof.verify(merkleProof, NFTMerkleRoot, leaf)) revert VerificationFailed();
+        bytes32 leaf = keccak256(
+            bytes.concat(keccak256(abi.encode(index, msg.sender, blueboxTokenIds, musicboxTokenIds)))
+        );
+        if (!MerkleProof.verify(merkleProof, $.receiveRoot, leaf)) revert VerificationFailed();
 
         // Update user receive
-        opt == 0
-            ? $.userReceiveBluebox.set(uint256(uint160(msg.sender)))
-            : $.userReceiveMusicbox.set(uint256(uint160(msg.sender)));
+        $.userReceive.set(index);
 
         // Transfer NFT
-        IERC721 transferNFT = opt == 0 ? $.blueboxAddr : $.musicboxAddr;
-        for (uint256 i; i < tokenIds.length; ) {
-            transferNFT.safeTransferFrom(address(this), msg.sender, tokenIds[i]);
+        for (uint256 i; i < 2; ) {
+            IERC721 transferNFT = i == 0 ? $.blueboxAddr : $.musicboxAddr;
+            uint256[] memory tokenIds = i == 0 ? blueboxTokenIds : musicboxTokenIds;
+
+            for (uint256 j; j < tokenIds.length; ) {
+                transferNFT.safeTransferFrom(address(this), msg.sender, tokenIds[j]);
+                unchecked {
+                    ++j;
+                }
+            }
+
+            emit Claimed(msg.sender, tokenIds);
+
             unchecked {
                 ++i;
             }
         }
-
-        emit Claimed(msg.sender, tokenIds);
     }
 
     function _getRewardDistributionStorage() private pure returns (RewardDistributionStorage storage $) {

@@ -7,9 +7,8 @@ interface IRewardDistributionDef {
 
     event Claimed(address, uint256[]);
     event SetTokenAddress(uint256, address);
-    event SetMerkleRootInformation(uint256, bytes32);
-    event UserBurnNft(uint256 burnAmount, address targetAddress);
-    event OwnerWithdraw(address tokenAddress, uint256[] tokenAmount, address recipientAddr);
+    event SetMerkleRootInformation(bytes32);
+    event OwnerWithdraw(address, uint256[], address);
 }
 
 interface IRewardDistribution is IRewardDistributionDef {}
