@@ -1,0 +1,69 @@
+import { HardhatRuntimeEnvironment } from "hardhat/types";
+import { DeployFunction } from "hardhat-deploy/types";
+import { keccak256, stringToBytes, encodeFunctionData } from "viem";
+
+function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  const { deploy } = hre.deployments;
+  const { deployer } = await hre.getNamedAccounts();
+
+  console.log(deployer)
+  /**
+        address _initialOwner,
+        IERC721 _blueboxAddr,
+        IERC721 _musicboxAddr,
+        bytes32 _receiveRoot
+   */
+  const args = [
+    deployer,
+    "0xB9a1A8B7b37AD0178BF3b660C1DbF379BaCF8ab5",
+    "0xc9B637e79995407f002d5C99a35267DE0acB31bc",
+    "0x0000000000000000000000000000000000000000000000000000000000000000"
+  ];
+
+  let contract = await deploy('RewardDistribution', {
+    from: deployer,
+    log: true,
+    autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
+    proxy: {
+      checkProxyAdmin:false,
+      proxyContract: 'ERC1967Proxy',
+      proxyArgs: ['{implementation}', '{data}'],
+      upgradeFunction: {
+        methodName: "upgradeToAndCall",
+        upgradeArgs: ['{implementation}', '{data}']
+      },
+      execute: {
+        init: {
+          methodName: 'initialize',
+          args: args,
+        },
+      },
+    },
+    deterministicDeployment: keccak256(stringToBytes('RewardDistribution_PROD')),
+  });
+
+  // TODO If you want to cancel "verification", please enable comments
+  // console.log(
+  //   "Waiting 30 seconds before beginning the contract verification to allow the block explorer to index the contract...\n",
+  // );
+
+  // await delay(30000); // Wait for 30 seconds before verifying the contract
+
+  // const data = encodeFunctionData({
+  //   abi: contractData.abi,
+  //   functionName: 'initialize',
+  //   args: args
+  // })
+
+  // await hre.run("verify:verify", {
+  //   address: contract.address,
+  //   constructorArguments: [contract.address, data],
+  // });
+};
+export default func;
+func.id = "001_deploy_rewardDistribution"; // id required to prevent reexecution
+func.tags = ["RewardDistribution"];
