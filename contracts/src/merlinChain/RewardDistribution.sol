@@ -118,17 +118,17 @@ contract RewardDistribution is
 
     /**
      * @dev Check whether the index corresponding to the user is used
-     * @param inedx User address
+     * @param index Index corresponding to user address
      */
-    function isClaimed(uint256 inedx) public view returns (bool) {
+    function isClaimed(uint256 index) public view returns (bool) {
         RewardDistributionStorage storage $ = _getRewardDistributionStorage();
 
-        return $.userReceive.get(inedx);
+        return $.userReceive.get(index);
     }
 
     /**
      * @dev Claim NFT
-     * @param index 0 is bluebox else is musicbox
+     * @param index Index corresponding to user address
      * @param blueboxTokenIds  Array of NFT IDs to be collected
      * @param musicboxTokenIds  Array of NFT IDs to be collected
      * @param merkleProof Merkle proof
