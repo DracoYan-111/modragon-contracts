@@ -112,6 +112,9 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
     /// @notice Mapping to track the assets referred by each address.
     mapping(address => uint256) public referredAssets;
 
+    /// @notice Mapping to track the shares received by each address.
+    mapping(address => uint256) public receivedShares;
+
     /// @notice The total number of purchased shares in the pool.
     uint256 public totalPurchased;
 
@@ -687,6 +690,8 @@ contract LiquidityBootstrapPool is Pausable, Clone, ReentrancyGuard {
         delete purchasedShares[msg.sender];
 
         share().safeTransfer(msg.sender, shares);
+
+        receivedShares[msg.sender] = shares;
 
         if (referred && referrerFee() != 0) {
             uint256 assets = referredAssets[recipient];
