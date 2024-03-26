@@ -7,6 +7,8 @@ import {ERC20Upgradeable, Initializable} from "@openzeppelin/contracts-upgradeab
 import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
+error MaxTokenLimitExceeded();
+
 contract MDBL is
     Initializable,
     ERC20Upgradeable,
@@ -15,11 +17,14 @@ contract MDBL is
     Ownable2StepUpgradeable,
     UUPSUpgradeable
 {
+    uint256 public constant MAX_TOKEN_LIMIT = 2100000000 ether;
+
     constructor() {
         _disableInitializers();
     }
 
     function initialize(address initialOwner) public initializer {
+        _mint(initialOwner, MAX_TOKEN_LIMIT);
         __ERC20_init("MDBL", "MDBL");
         __ERC20Burnable_init();
         __ERC20Pausable_init();
@@ -36,6 +41,8 @@ contract MDBL is
     }
 
     function mint(address to, uint256 amount) public onlyOwner {
+        if (super.totalSupply() + amount > MAX_TOKEN_LIMIT) revert MaxTokenLimitExceeded();
+        
         _mint(to, amount);
     }
 
