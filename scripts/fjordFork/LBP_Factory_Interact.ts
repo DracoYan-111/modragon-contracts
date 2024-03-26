@@ -8,17 +8,33 @@ const RESET = "\x1b[0m";
 const GREEN = "\x1b[32m";
 
 async function main() {
-  const address = "0x0bE448bF9f50690DDAb1a6A7D9A6D937dC2DA19c";
-  const liquidityBootstrapPoolFactory = await hre.ethers.getContractAt(
-    "LiquidityBootstrapPoolFactory",
-    address,
-  );
+  // ========== Need to check data ==========
+  // 0x9e101C58B10dFf2Ff6e4509D774849c1A296a65a new
+  // 0x9b1904202C0EED6104cb92F61e990d384144277C old
+  // 0x6E25b942c4536451512C8d3fCFCa390Efb7d1B33 MBTC
+  // 0xa1e8312144A51aDc8413082D2703c86E0cAA04f7 MDBL
+  const factoryAddress = "0x9e101C58B10dFf2Ff6e4509D774849c1A296a65a";
+
+  const MBTCAddress = "0x6E25b942c4536451512C8d3fCFCa390Efb7d1B33";
+  const MDBLAddress = "0xa1e8312144A51aDc8413082D2703c86E0cAA04f7";
+  const manager = "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003";
+  const startTime = 1711358400;
+  const endTime = startTime + (86400 * 10);
+
+  const MDBLAmount = ethers.parseEther("1449000000");
+  const MBTCAmount = ethers.parseEther("2.5");
+  // ================================
 
   console.log("================= Create =================");
+  const liquidityBootstrapPoolFactory = await hre.ethers.getContractAt(
+    "LiquidityBootstrapPoolFactory",
+    factoryAddress,
+  );
+
   const pool: PoolSettingsStruct = {
-    asset: "0x3c6585b5DCA5FDb13D47762E0E1F6A89f21d47F4",
-    share: "0x916Ea155AE62f7EC989506e0e257959BFe006c07",
-    creator: "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003",
+    asset: MBTCAddress,
+    share: MDBLAddress,
+    creator: manager,
     virtualAssets: 0,
     virtualShares: 0,
     maxSharePrice: "309485009821345068724781055",
@@ -26,10 +42,10 @@ async function main() {
     maxAssetsIn: "309485009821345068724781055",
     weightStart: ethers.parseEther("0.05"),
     weightEnd: ethers.parseEther("0.5"),
-    saleStart: Date.parse(new Date().toString()) / 1000,
-    saleEnd: Date.parse(new Date().toString()) / 1000 + 86400 * 2,
-    vestCliff: Date.parse(new Date().toString()) / 1000 + 86400 * 2,
-    vestEnd: Date.parse(new Date().toString()) / 1000 + 86400 * 2 + 31000,
+    saleStart: startTime,
+    saleEnd: endTime,
+    vestCliff: 0,
+    vestEnd: 0,
     sellingAllowed: true,
     whitelistMerkleRoot:
       "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -38,8 +54,8 @@ async function main() {
   const createPoolTx =
     await liquidityBootstrapPoolFactory.createLiquidityBootstrapPool(
       pool,
-      ethers.parseEther("2100000000"),
-      ethers.parseEther("3"),
+      MDBLAmount,
+      MBTCAmount,
       utils.solidityKeccak256(["string"], [pool]),
     );
 
@@ -48,10 +64,12 @@ async function main() {
       `${GREEN}https://testnet-scan.merlinchain.io/tx/${createPoolTx.hash}${RESET}\n`,
   );
   console.log("Waiting until the transaction is confirmed...\n");
+
   const buyReceipt = await createPoolTx.wait();
+
   console.log(
     "The transaction returned the following transaction receipt:\n",
-    buyReceipt?.blockNumber,
+    buyReceipt?.logs,
   );
 }
 
