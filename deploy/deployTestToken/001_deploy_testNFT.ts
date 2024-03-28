@@ -15,6 +15,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
      */
     const args = [
          deployer,
+         "MBOX"
         ];
 
 	let contract = await deploy('TestNFT', {
