@@ -13,18 +13,12 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(deployer)
   /**
         address _initialOwner,
-        IERC721 _blueboxAddr,
-        IERC721 _musicboxAddr,
-        bytes32 _receiveRoot
    */
   const args = [
-    deployer,
-    "0x0000000000000000000000000000000000000000",
-    "0x0000000000000000000000000000000000000000",
-    "0x0000000000000000000000000000000000000000000000000000000000000000"
+    "0x6F003a7A0f8a2D1b6154e77960AEd19dee103328"
   ];
 
-  let contract = await deploy('RewardDistribution', {
+  let contract = await deploy('MDBL', {
     from: deployer,
     log: true,
     autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
@@ -43,7 +37,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         },
       },
     },
-    deterministicDeployment: keccak256(stringToBytes('RewardDistribution_PROD')),
+    deterministicDeployment: keccak256(stringToBytes('MDBL_PROD')),
   });
 
   // TODO If you want to cancel "verification", please enable comments
@@ -65,5 +59,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // });
 };
 export default func;
-func.id = "001_deploy_rewardDistribution"; // id required to prevent reexecution
-func.tags = ["RewardDistribution"];
+func.id = "001_deploy_mdbl"; // id required to prevent reexecution
+func.tags = ["MDBL"];

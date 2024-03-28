@@ -5,7 +5,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deploy } = hre.deployments;
   const { deployer } = await hre.getNamedAccounts();
 
-  let manager = deployer;
+  let manager = "0x6F003a7A0f8a2D1b6154e77960AEd19dee103328";
 
   let liquidityBootstrapPoolContract = await deploy("LiquidityBootstrapPool", {
     from: deployer,
