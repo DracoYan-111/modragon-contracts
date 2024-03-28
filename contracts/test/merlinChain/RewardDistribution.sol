@@ -23,19 +23,13 @@ contract RewardDistributionTest is Test {
     function setUp() external {
         initialOwner = vm.addr(INITIALOWNERKEY);
 
-        testNFT = new TestNFT(initialOwner);
+        testNFT = new TestNFT(initialOwner, "TestNFT");
 
         address rewardDistributions = address(new RewardDistribution());
 
         bytes memory data = abi.encodeCall(
             RewardDistribution.initialize,
-            (
-                initialOwner,
-                testNFT,
-                testNFT,
-                0xaa78a00191152ba8b1e0ebe5831950ff7ec12b295c38c26aeaceced2e4478cb8,
-                0xaa78a00191152ba8b1e0ebe5831950ff7ec12b295c38c26aeaceced2e4478cb8
-            )
+            (initialOwner, testNFT, testNFT, 0xaa78a00191152ba8b1e0ebe5831950ff7ec12b295c38c26aeaceced2e4478cb8)
         );
         address proxy = address(new ERC1967Proxy(rewardDistributions, data));
 
@@ -77,7 +71,7 @@ contract RewardDistributionTest is Test {
         proof[0] = 0x17e170678287a9644a243e899337b495d40729a7a0f0d66b7fb297843c24968b;
         proof[1] = 0x82b925d1fd548cda7094be410987c1474937d0781df40346b722978b9df8e563;
 
-        rewardDistribution.claim(0, tokenIDs, proof);
-        assertEq(rewardDistribution.isClaimed(0x70997970C51812dc3A010C7d01b50e0d17dc79C8,0), true);
+        rewardDistribution.claim(0, tokenIDs, tokenIDs, proof);
+        assertEq(rewardDistribution.isClaimed(0), true);
     }
 }

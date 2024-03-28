@@ -22,7 +22,7 @@ contract DragonBallBurnTest is Test {
     function setUp() external {
         initialOwner = vm.addr(INITIALOWNERKEY);
 
-        testNFT = new TestNFT(initialOwner);
+        testNFT = new TestNFT(initialOwner,"TestNFT");
 
         address dragonBallBurns = address(new DragonBallBurn());
 
