@@ -214,7 +214,7 @@ const config: HardhatUserConfig = {
       ledgerAccounts,
     },
     merlinMain: {
-      chainId: 686868,
+      chainId: 4200,
       url: vars.get("MERLIN_MAINNET_URL", "") || process.env.MERLIN_MAINNET_URL,
       accounts,
       ledgerAccounts,
@@ -336,6 +336,9 @@ const config: HardhatUserConfig = {
       // For BSC testnet & mainnet
       bsc: vars.get("BSC_API_KEY", process.env.BSC_API_KEY),
       bscTestnet: vars.get("BSC_API_KEY", process.env.BSC_API_KEY),
+      // For Merlin testnet & mainnet
+      merlin: vars.get("MERLIN_API_KEY", process.env.MERLIN_API_KEY),
+      merlinTestnet: vars.get("BSC_API_KEY", ""),
       // For Heco mainnet
       heco: vars.get("HECO_API_KEY", ""),
       // For Optimism testnets & mainnet
@@ -712,6 +715,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: "https://explorer-test.arthera.net/api",
           browserURL: "https://explorer-test.arthera.net",
+        },
+      },
+      {
+        network: "merlin",
+        chainId: 4200,
+        urls: {
+          apiURL: "https://swagger.l2scan.co/api",
+          browserURL: "https://swagger.l2scan.co",
         },
       },
     ],
