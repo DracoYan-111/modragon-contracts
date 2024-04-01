@@ -1,7 +1,6 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
 import { keccak256, stringToBytes, encodeFunctionData } from 'viem';
-import * as contractData from '../artifacts/contracts/src/MoboxGovernForge/MoboxGovernForgeV2.sol/MoboxGovernForgeV2.json';
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
