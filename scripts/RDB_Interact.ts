@@ -6,9 +6,9 @@ const RESET = "\x1b[0m";
 const GREEN = "\x1b[32m";
 
 const userAddress = "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003";
-const contractAddress = "0xD326432566134Eb668Ed5EFE616438335187fBC5";
-const BBOXAddress = "0x003a214F228A9755c296F7814B53e9b264ce40a2";
-const MBOXAddress = "0xAE8c3B84BeB09d3Fa6b83e77dEF359775cF27599";
+const contractAddress = "0x37Ce49600B3c2EFDAb159aA2F229f70c10711CaF";
+const BBOXAddress = "0xB2edf746382d433Af3f03761f0E31597d2A8d82b";
+const MBOXAddress = "0xED6826316a80097eEa9bcC7dD0B6fc9028B2d26d";
 let rewardDistribution: any;
 let BBOX: any;
 let MBOX: any;
@@ -39,8 +39,8 @@ async function setTokenAddress(opt: any, address: any) {
 //   );
 // }
 async function getContracts() {
-    // MBTC = await hre.ethers.getContractAt("TestNFT", MBTCAddress);
-    // MDBL = await hre.ethers.getContractAt("TestNFT", MDBLAddress);
+    BBOX = await hre.ethers.getContractAt("TestNFT", BBOXAddress);
+    MBOX = await hre.ethers.getContractAt("TestNFT", MBOXAddress);
     rewardDistribution = await hre.ethers.getContractAt(
         "RewardDistribution",
         contractAddress,
@@ -49,15 +49,19 @@ async function getContracts() {
 
 async function main() {
     await getContracts();
-    // console.log("================= Approve =================");
-    // const MBTCapprove = await MBTC.approve(poolAddress, ethers.parseEther("999999999"));
-    // console.log("The transaction hash is: " + `${GREEN}https://testnet-scan.merlinchain.io/tx/${MBTCapprove.hash}${RESET}\n`);
-    // const MDBLapprove = await MDBL.approve(poolAddress, ethers.parseEther("999999999"));
-    // console.log("The transaction hash is: " + `${GREEN}https://testnet-scan.merlinchain.io/tx/${MDBLapprove.hash}${RESET}\n`);
+    // console.log("================= Mint =================");
+    // for (let i = 0; i < 4; ++i) {
+    //     const MBTCapprove = await BBOX.batchSafeMint(contractAddress, 100);
+    //     console.log("The transaction hash is: " + `${GREEN}https://testnet-scan.merlinchain.io/tx/${MBTCapprove.hash}${RESET}\n`);
 
-    console.log("================= View =================");
+    //     const MDBLapprove = await MBOX.batchSafeMint(contractAddress, 100);
+    //     console.log("The transaction hash is: " + `${GREEN}https://testnet-scan.merlinchain.io/tx/${MDBLapprove.hash}${RESET}\n`);
 
-    console.log(await rewardDistribution.isClaimed(1));
+    // }
+
+    // console.log("================= View =================");
+
+    // console.log(await rewardDistribution.isClaimed(1));
     // console.log(await liquidityBootstrapPool.previewSharesOut(100000));
     // console.log(await rewardDistribution.reservesAndWeights());
     // const MDBLPrice = await liquidityBootstrapPool.previewAssetsIn(
@@ -71,12 +75,12 @@ async function main() {
     //   await setTokenAddress(0, BBOXAddress);
     //   await setTokenAddress(1, MBOXAddress);
 
-      console.log("================= Set root =================");
-      const updateMerkleRootTx = await rewardDistribution.updateMerkleRoot("0x9e51e7e511c23ac3830b4887aff7f2781b07445b3a8b3ccc1c7f4e886f318e40");
-      console.log(
+    console.log("================= Set root =================");
+    const updateMerkleRootTx = await rewardDistribution.updateMerkleRoot("0xcd823f04eda1d6350794d1962457ec929ad14a447078ec88a8d64a2924a7f7c5");
+    console.log(
         "The transaction hash is: " +
-          `${GREEN}https://testnet-scan.merlinchain.io/tx/${updateMerkleRootTx.hash}${RESET}\n`,
-      );
+        `${GREEN}https://testnet-scan.merlinchain.io/tx/${updateMerkleRootTx.hash}${RESET}\n`,
+    );
 
     // console.log("================= Close =================");
 

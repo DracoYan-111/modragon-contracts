@@ -6,10 +6,10 @@ import { ethers } from "hardhat";
 const RESET = "\x1b[0m";
 const GREEN = "\x1b[32m";
 
-const userAddress = "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003";
+const userAddress = "0x657A6F007d5233488fD3B475D27a73E08BFa12eD";
 //0xDD3c55F135891da82Ae8Fcd6A845618fc075eA11 今天7.30
 //0x43Aa91e0008dC9B15CCc2CB9447e2111bc3Af447 48小时
-const poolAddress = "0x632C64e633330D2aBe7A4BcF7eE11daB380F127C";
+const poolAddress = "0xDe7F454f021DBF7ECe47fe2E625e7c6706c596C0";
 const MBTCAddress = "0x3c6585b5DCA5FDb13D47762E0E1F6A89f21d47F4";
 const MDBLAddress = "0x916Ea155AE62f7EC989506e0e257959BFe006c07";
 let liquidityBootstrapPool: any;
@@ -17,11 +17,12 @@ let MBTC: any;
 let MDBL: any;
 
 async function callBuy() {
-  console.log(await liquidityBootstrapPool.totalPurchased());
+  const shares = await liquidityBootstrapPool.previewSharesOut(ethers.parseEther("0.004"))
+  const assetsIn = await liquidityBootstrapPool.previewAssetsIn(shares);
 
-  const buyTx = await liquidityBootstrapPool.swapExactAssetsForShares(
-    ethers.parseEther("0.5"),
-    0,
+  const buyTx = await liquidityBootstrapPool.swapAssetsForExactShares(
+    shares,
+    assetsIn + 100000n,
     userAddress,
   );
   console.log(
@@ -31,25 +32,26 @@ async function callBuy() {
 }
 
 async function callSell() {
-  const userAmout = ethers.parseEther("1");
-  console.log(userAmout);
+  const userAmout = await liquidityBootstrapPool.purchasedShares(userAddress);
 
   const sellAmout = await liquidityBootstrapPool.previewAssetsOut(userAmout);
   console.log(sellAmout);
 
-  const sellTx = await liquidityBootstrapPool.swapExactSharesForAssets(
-    userAmout,
-    sellAmout,
-    userAddress,
-  );
-  console.log(
-    "The transaction hash is: " +
-      `${GREEN}https://testnet-scan.merlinchain.io/tx/${sellTx.hash}${RESET}\n`,
-  );
+  // console.log(sellAmout);
+
+  // const sellTx = await liquidityBootstrapPool.swapExactSharesForAssets(
+  //   userAmout,
+  //   sellAmout,
+  //   userAddress,
+  // );
+  // console.log(
+  //   "The transaction hash is: " +
+  //     `${GREEN}https://testnet-scan.merlinchain.io/tx/${sellTx.hash}${RESET}\n`,
+  // );
 }
 async function getContracts() {
-  MBTC = await hre.ethers.getContractAt("TestNFT", MBTCAddress);
-  MDBL = await hre.ethers.getContractAt("TestNFT", MDBLAddress);
+  // MBTC = await hre.ethers.getContractAt("TestNFT", MBTCAddress);
+  // MDBL = await hre.ethers.getContractAt("TestNFT", MDBLAddress);
   liquidityBootstrapPool = await hre.ethers.getContractAt(
     "LiquidityBootstrapPool",
     poolAddress,
@@ -64,12 +66,13 @@ async function main() {
   // const MDBLapprove = await MDBL.approve(poolAddress, ethers.parseEther("999999999"));
   // console.log("The transaction hash is: " + `${GREEN}https://testnet-scan.merlinchain.io/tx/${MDBLapprove.hash}${RESET}\n`);
 
-  // console.log("================= View =================");
+   console.log("================= View =================");
   // for (let i = 0; i < 30; i++) {
   //   console.log(await liquidityBootstrapPool.args());
   // }
 
-  // console.log(await liquidityBootstrapPool.previewSharesOut(100000));
+  // console.log(await liquidityBootstrapPool.purchasedShares(userAddress));
+
   // console.log(await liquidityBootstrapPool.reservesAndWeights());
   // const MDBLPrice = await liquidityBootstrapPool.previewAssetsIn(
   //   ethers.parseEther("5"),
@@ -82,12 +85,12 @@ async function main() {
   // for (let i = 0; i < 5; i++) {
   //   console.log(
   //     await liquidityBootstrapPool.totalReferred());
-  //   await callBuy();
+     // await callBuy();
   // }
 
   // console.log("================= Sell =================");
   // for (let i = 0; i < 1; i++) {
-  //   await callSell();
+    await callSell();
   // }
 
   // console.log("================= Close =================");
@@ -133,18 +136,18 @@ async function main() {
   //   redeemReceipt,
   // );
 
-  console.log("================= Pause =================");
-  const pauseTx = await liquidityBootstrapPool.togglePause();
-  console.log(
-    "The transaction hash is: " +
-      `${GREEN}https://testnet-scan.merlinchain.io/tx/${pauseTx.hash}${RESET}\n`,
-  );
-  console.log("Waiting until the transaction is confirmed...\n");
-  const pauseTxReceipt = await pauseTx.wait();
-  console.log(
-    "The transaction returned the following transaction receipt:\n",
-    pauseTxReceipt,
-  );
+  // console.log("================= Pause =================");
+  // const pauseTx = await liquidityBootstrapPool.togglePause();
+  // console.log(
+  //   "The transaction hash is: " +
+  //     `${GREEN}https://testnet-scan.merlinchain.io/tx/${pauseTx.hash}${RESET}\n`,
+  // );
+  // console.log("Waiting until the transaction is confirmed...\n");
+  // const pauseTxReceipt = await pauseTx.wait();
+  // console.log(
+  //   "The transaction returned the following transaction receipt:\n",
+  //   pauseTxReceipt,
+  // );
 
   // console.log("================= Test =================");
 }

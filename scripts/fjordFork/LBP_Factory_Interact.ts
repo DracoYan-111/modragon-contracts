@@ -18,11 +18,11 @@ async function main() {
   const MBTCAddress = "0x6E25b942c4536451512C8d3fCFCa390Efb7d1B33";
   const MDBLAddress = "0xa1e8312144A51aDc8413082D2703c86E0cAA04f7";
   const manager = "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003";
-  const startTime = 1711358400;
+  const startTime = 1711682637;
   const endTime = startTime + (86400 * 10);
 
   const MDBLAmount = ethers.parseEther("1449000000");
-  const MBTCAmount = ethers.parseEther("2.5");
+  const MBTCAmount = ethers.parseEther("3");
   // ================================
 
   console.log("================= Create =================");
