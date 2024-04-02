@@ -6,9 +6,9 @@ import {Test} from "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
 
 
-import {LiquidityBootstrapPool, FixedPointMathLib, WeightedMathLib} from "../../src/fjordFork/LiquidityBootstrapPool.sol";
-import {LiquidityBootstrapPoolFactory, PoolSettings} from "../../src/fjordFork/LiquidityBootstrapPoolFactory.sol";
-import {LiquidityBootstrapLib, Pool} from "../../src/fjordFork/utils/LiquidityBootstrapLib.sol";
+import {LiquidityBootstrapPool, FixedPointMathLib, WeightedMathLib} from "../../src/mdblLBP/LiquidityBootstrapPool.sol";
+import {LiquidityBootstrapPoolFactory, PoolSettings} from "../../src/mdblLBP/LiquidityBootstrapPoolFactory.sol";
+import {LiquidityBootstrapLib, Pool} from "../../src/mdblLBP/utils/LiquidityBootstrapLib.sol";
 import {TestToken} from "../../src/testToken/TestToken.sol";
 
 contract LiquidityBootstrapPoolFactoryTest is Test {
