@@ -10,6 +10,7 @@ interface IeMDBLDef {
     error NoMintLimitAvailable();
     error NotEnoughAvailableAmount();
 
+    event UpdateSigner(address signer);
     event UserSwapEMDBL(address user, uint256 amount);
     event PermitMintToken(address user, uint256 amount);
     event RedemptionStarted(address user, uint256 index);
