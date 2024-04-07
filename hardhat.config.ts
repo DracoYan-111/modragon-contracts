@@ -140,7 +140,8 @@ const config: HardhatUserConfig = {
       merlinTestnet:deployer,
       merlinMain:deployer,
       arbitrumGoerli:deployer,
-      arbitrumMain:deployer
+      arbitrumMain:deployer,
+      p12Test:deployer
     },
   },
   networks: {
@@ -168,6 +169,12 @@ const config: HardhatUserConfig = {
     tenderly: {
       // Add your own Tenderly fork ID
       url: `https://rpc.tenderly.co/fork/${vars.get("TENDERLY_FORK_ID", "") || process.env.TENDERLY_FORK_ID}`,
+      ledgerAccounts,
+    },
+    p12Test:{
+      chainId: 121212,
+      url: "https://rpc.tenderly.co/fork/324315d5-cc09-44d4-baff-55b1599f5207",
+      accounts,
       ledgerAccounts,
     },
     goerli: {
