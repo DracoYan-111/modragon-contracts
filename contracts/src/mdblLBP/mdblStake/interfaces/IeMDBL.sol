@@ -13,9 +13,9 @@ interface IeMDBLDef {
     event UpdateSigner(address signer);
     event UserSwapEMDBL(address user, uint256 amount);
     event PermitMintToken(address user, uint256 amount);
-    event RedemptionStarted(address user, uint256 index);
+    event RedemptionStarted(address user, uint256 duration, uint256 timestamp, uint256 amount, uint256 index);
     event RedemptionCancelled(address user, uint256 index);
-    event RedemptionCompleted(address user, uint256 amount);
+    event RedemptionCompleted(address user, uint256 index);
 }
 
 interface IeMDBL is IeMDBLDef {}

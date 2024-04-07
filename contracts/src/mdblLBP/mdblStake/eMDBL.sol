@@ -40,6 +40,7 @@ contract eMDBL is
         address[] transferWhitelist;
         mapping(address => uint256) userQuantityInLock;
         mapping(address => RedemptionRequestExt[]) _extRedemptionRequests;
+        mapping(address => uint256) userHasUsedPermitQuota;
     }
 
     struct RedemptionRequestExt {
@@ -89,21 +90,24 @@ contract eMDBL is
         _checkAmountMint(to, amount);
     }
 
-    function permitMint(address to, uint256 amount, uint256 deadline, uint8 v, bytes32 r, bytes32 s) public {
+    function permitMint(address to, uint256 totalAmount, uint256 deadline, uint8 v, bytes32 r, bytes32 s) public {
         EMDBLStorage storage $ = _getEMDBLStorage();
 
         if (block.timestamp > deadline) revert ERC2612ExpiredSignature(deadline);
 
-        bytes32 structHash = keccak256(abi.encode(PERMIT_TYPEHASH, to, amount, _useNonce(to), deadline));
+        bytes32 structHash = keccak256(abi.encode(PERMIT_TYPEHASH, to, totalAmount, _useNonce(to), deadline));
 
         bytes32 hash = _hashTypedDataV4(structHash);
 
         address signer = ECDSA.recover(hash, v, r, s);
         if (signer != $.signer) revert ERC2612InvalidSigner(signer, $.signer);
 
-        _checkAmountMint(to, amount);
+        uint256 hasUsedPermitQuota = $.userHasUsedPermitQuota[to];
+        $.userHasUsedPermitQuota[to] = totalAmount;
 
-        emit PermitMintToken(to, amount);
+        _checkAmountMint(to, totalAmount - hasUsedPermitQuota);
+
+        emit PermitMintToken(to, totalAmount - hasUsedPermitQuota);
     }
 
     /**
@@ -140,6 +144,7 @@ contract eMDBL is
 
         $.MDBLAddress.transfer(recipient, $.totalDeductedMDBL);
     }
+
     /**
      * @dev Function modifies existing singer.
      */
@@ -155,7 +160,7 @@ contract eMDBL is
      * @dev Function to convert MDBL to eMDBL.
      * @param amount The amount of eMDBL to redeem.
      */
-    function swapEMDBL(uint256 amount) external {
+    function swapEMDBL(uint256 amount) external whenNotPaused {
         EMDBLStorage storage $ = _getEMDBLStorage();
 
         if (amount < 0.1 ether) revert InvalidAmount();
@@ -185,7 +190,13 @@ contract eMDBL is
             RedemptionRequestExt(amount, block.timestamp, duration, 0, false, false, [uint256(0), 0, 0, 0, 0])
         );
 
-        emit RedemptionStarted(msg.sender, $._extRedemptionRequests[msg.sender].length - 1);
+        emit RedemptionStarted(
+            msg.sender,
+            duration,
+            block.timestamp,
+            amount,
+            $._extRedemptionRequests[msg.sender].length - 1
+        );
     }
 
     /**
@@ -240,7 +251,7 @@ contract eMDBL is
 
         $.MDBLAddress.transfer(msg.sender, MDBLAmount);
 
-        emit RedemptionCompleted(msg.sender, MDBLAmount);
+        emit RedemptionCompleted(msg.sender, index);
     }
 
     /**
