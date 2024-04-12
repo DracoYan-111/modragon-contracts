@@ -41,6 +41,7 @@ contract eMDBL is
         mapping(address => uint256) userQuantityInLock;
         mapping(address => RedemptionRequestExt[]) _extRedemptionRequests;
         mapping(address => uint256) userHasUsedPermitQuota;
+        mapping(address => uint256) userSwapEMDBLIndex;
     }
 
     struct RedemptionRequestExt {
@@ -168,7 +169,7 @@ contract eMDBL is
         $.MDBLAddress.transferFrom(msg.sender, address(this), amount);
         _checkAmountMint(msg.sender, amount);
 
-        emit UserSwapEMDBL(msg.sender, amount);
+        emit UserSwapEMDBL(msg.sender, amount, block.timestamp, ++$.userSwapEMDBLIndex[msg.sender]);
     }
 
     /**
@@ -181,7 +182,8 @@ contract eMDBL is
 
         if (amount < 0.1 ether) revert InvalidAmount();
         if (getUserCanRedemptionBalance(msg.sender) < amount) revert NotEnoughAvailableAmount();
-        if (duration != 15 days && duration != 90 days && duration != 180 days) revert InvalidDuration();
+        if (duration != 15 days && duration != 30 days && duration != 90 days && duration != 180 days)
+            revert InvalidDuration();
 
         $.userQuantityInLock[msg.sender] += amount;
 
@@ -233,6 +235,8 @@ contract eMDBL is
         uint256 ratio = 1 ether;
         if (request.duration == 15 days) {
             ratio = 0.25 ether;
+        } else if (request.duration == 30 days) {
+            ratio = 0.35 ether;
         } else if (request.duration == 90 days) {
             ratio = 0.625 ether;
         }
@@ -245,7 +249,7 @@ contract eMDBL is
         request.endTime = block.timestamp;
 
         // Burn the eMDBL tokens
-        _burn(msg.sender, request.amount);
+        super._update(msg.sender, address(0), request.amount);
 
         $.userQuantityInLock[msg.sender] -= request.amount;
 
