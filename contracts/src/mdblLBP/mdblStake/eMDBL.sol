@@ -157,6 +157,12 @@ contract eMDBL is
         emit UpdateSigner(newSigner);
     }
 
+    function setMDBLAddress(IERC20 newMDBLAddress) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        EMDBLStorage storage $ = _getEMDBLStorage();
+
+        $.MDBLAddress = newMDBLAddress;
+    }
+
     /**
      * @dev Function to convert MDBL to eMDBL.
      * @param amount The amount of eMDBL to redeem.
@@ -277,6 +283,17 @@ contract eMDBL is
         EMDBLStorage storage $ = _getEMDBLStorage();
 
         return $._extRedemptionRequests[account];
+    }
+
+    /**
+     * @dev Function to get Permit Quota that the current user has received
+     * @param account The address to query.
+     * @return User has received.
+     */
+    function getUserHasUsedPermitQuota(address account) public view returns (uint256) {
+        EMDBLStorage storage $ = _getEMDBLStorage();
+
+        return $.userHasUsedPermitQuota[account];
     }
 
     /**
