@@ -7,7 +7,6 @@ import {ERC20PermitUpgradeable, ECDSA} from "@openzeppelin/contracts-upgradeable
 import {ERC20Upgradeable, Initializable, IERC20} from "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
 import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import {FixedPointMathLib} from "solady/src/utils/FixedPointMathLib.sol";
 
 import {IeMDBL} from "./interfaces/IeMDBL.sol";
 
