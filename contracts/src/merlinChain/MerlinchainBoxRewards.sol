@@ -9,15 +9,15 @@ import {UUPSUpgradeable} from "@openzeppelin/contracts-upgradeable/proxy/utils/U
 import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {ReentrancyGuardUpgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 
-import {IMerlinchainDBALRewards} from "./interfaces/IMerlinchainDBALRewards.sol";
+import {IMerlinchainBoxRewards} from "./interfaces/IMerlinchainBoxRewards.sol";
 
-contract MerlinchainDBALRewards is
+contract MerlinchainBoxRewards is
     Initializable,
     UUPSUpgradeable,
     PausableUpgradeable,
     ReentrancyGuardUpgradeable,
     Ownable2StepUpgradeable,
-    IMerlinchainDBALRewards
+    IMerlinchainBoxRewards
 {
     using SafeERC20 for IERC20;
     using MerkleProof for bytes32;

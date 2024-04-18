@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.23;
 
-contract IMerlinchainDBALRewardsDef {
+contract IMerlinchainBoxRewardsDef {
     error EventIsClosed();
     error UserHasReceived();
     error MerkleVerifiFailed();
@@ -18,4 +18,4 @@ contract IMerlinchainDBALRewardsDef {
     event SetMerkleRootInformation(uint256 functionName, bytes32 merkleRoot);
 }
 
-contract IMerlinchainDBALRewards is IMerlinchainDBALRewardsDef {}
+contract IMerlinchainBoxRewards is IMerlinchainBoxRewardsDef {}
