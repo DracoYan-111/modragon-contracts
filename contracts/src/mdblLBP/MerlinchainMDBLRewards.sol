@@ -81,10 +81,10 @@ contract MerlinchainMDBLRewards is
     }
 
     /**
-     * @dev Owner withdraw NFTs
+     * @dev Owner withdraw tokens
      * @param recipientAddr Recipient address
      */
-    function withdrawNfts(address recipientAddr) external onlyOwner {
+    function withdrawTokens(address recipientAddr) external onlyOwner {
         RewardDistributionStorage storage $ = _getRewardDistributionStorage();
 
         $.MDBLAddress.transfer(recipientAddr, $.MDBLAddress.balanceOf(address(this)));
