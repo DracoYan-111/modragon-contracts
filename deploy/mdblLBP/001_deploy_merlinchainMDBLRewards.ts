@@ -12,19 +12,18 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   console.log(deployer)
   /**
-    address _initialOwner,
-    IERC20 _MUSDTAddress,
-    uint128 _MBTCQuantityCharged,
-    uint128 _MUSDTQuantityCharged
+    address _initialOwner, 
+    IERC20 _MDBLAddress, 
+    bytes32 _receiveRoot
    */
   const args = [
     deployer,
-    "0x91d18e54DAf4F677cB28167158d6dd21F6aB3921",
-    "100000000000000000",// 0.1ETH
-    "100000000000000000" // 0.1ETH
+    "0xa1e8312144A51aDc8413082D2703c86E0cAA04f7",
+    "0x5b1048a091656c6650b7f810aec5b67f67978d1a58b2e0efe2d6a012e4a830a0",//
   ];
 
-  let contract = await deploy('MerlinchainDBALRewards', {
+  let contract = await deploy('MerlinchainMDBLRewards', {
+    gasPrice:"100000000",
     from: deployer,
     log: true,
     autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
@@ -45,7 +44,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         },
       },
     },
-    deterministicDeployment: keccak256(stringToBytes('MerlinchainDBALRewards_PROD')),
+    deterministicDeployment: keccak256(stringToBytes('MerlinchainMDBLRewards_PROD')),
   });
 
   // TODO If you want to cancel "verification", please enable comments
@@ -67,5 +66,5 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   // });
 };
 export default func;
-func.id = "001_deploy_merlinchainDBALRewards"; // id required to prevent reexecution
-func.tags = ["MerlinchainDBALRewards"];
+func.id = "001_deploy_merlinchainMDBLRewards"; // id required to prevent reexecution
+func.tags = ["MerlinchainMDBLRewards"];
