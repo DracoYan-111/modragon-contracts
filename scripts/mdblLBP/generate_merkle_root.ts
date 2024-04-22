@@ -15,11 +15,10 @@ const treeDataWithRoot = {
 require("fs").writeFileSync("./tree.json", JSON.stringify(treeDataWithRoot));
 
 
-
 // ============== Obtaining a Proof ==============
 const trees = StandardMerkleTree.load(JSON.parse(fs.readFileSync("./tree.json", "utf8")).tree);
 
-const checkUserAddress = '0x005d4441d0fb3624DaaA372b5bfBF5eD348e49dB'
+const checkUserAddress = '0x3777dcF930932467b442B555dd1562808c868245'
 for (const [i, v] of trees.entries()) {
   if (v[1] === checkUserAddress) {
     const proof = trees.getProof(i);
