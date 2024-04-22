@@ -13,11 +13,13 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   console.log(deployer)
   /**
     address _defaultAdmin, 
+    address _upgraderAdmin
     IERC20 _MDBLAddress, 
     address _signer
    */
   const args = [
     "0x6F003a7A0f8a2D1b6154e77960AEd19dee103328",
+    deployer,
     "0x8Aed42735027aa6d97023D8196B084eCFbA701af",
     "0x84439355541fBC7dA8f465D60Ae5ce3606A81caF"
   ];
@@ -27,7 +29,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
     autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
     proxy: {
-      checkProxyAdmin:false,
+      checkProxyAdmin: false,
       proxyContract: 'ERC1967Proxy',
       proxyArgs: ['{implementation}', '{data}'],
       upgradeFunction: {
