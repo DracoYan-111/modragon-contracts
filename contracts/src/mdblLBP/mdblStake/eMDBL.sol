@@ -187,7 +187,7 @@ contract eMDBL is
 
         if (amount < 0.1 ether) revert InvalidAmount();
         if (getUserCanRedemptionBalance(msg.sender) < amount) revert NotEnoughAvailableAmount();
-        if (duration != 15 days && duration != 30 days && duration != 90 days && duration != 180 days)
+        if (duration != 15 days && duration != 30 days && duration != 90 days && duration != 120 days)
             revert InvalidDuration();
 
         $.userQuantityInLock[msg.sender] += amount;
