@@ -57,7 +57,7 @@ contract eMDBL is
         _disableInitializers();
     }
 
-    function initialize(address _defaultAdmin, IERC20 _MDBLAddress, address _signer) public initializer {
+    function initialize(address _defaultAdmin, address _upgraderAdmin,IERC20 _MDBLAddress, address _signer) public initializer {
         EMDBLStorage storage $ = _getEMDBLStorage();
 
         $.signer = _signer;
@@ -74,7 +74,7 @@ contract eMDBL is
         _grantRole(PAUSER_ROLE, _defaultAdmin);
         _grantRole(MINTER_ROLE, address(this));
         _grantRole(MINTER_ROLE, _defaultAdmin);
-        _grantRole(UPGRADER_ROLE, _defaultAdmin);
+        _grantRole(UPGRADER_ROLE, _upgraderAdmin);
         _grantRole(TRANSFER_ROLE, _defaultAdmin);
     }
 
@@ -187,7 +187,7 @@ contract eMDBL is
 
         if (amount < 0.1 ether) revert InvalidAmount();
         if (getUserCanRedemptionBalance(msg.sender) < amount) revert NotEnoughAvailableAmount();
-        if (duration != 15 days && duration != 30 days && duration != 90 days && duration != 120 days)
+        if (duration != 15 days && duration != 30 days && duration != 60 days && duration != 120 days)
             revert InvalidDuration();
 
         $.userQuantityInLock[msg.sender] += amount;
@@ -242,8 +242,8 @@ contract eMDBL is
             ratio = 0.25 ether;
         } else if (request.duration == 30 days) {
             ratio = 0.35 ether;
-        } else if (request.duration == 90 days) {
-            ratio = 0.625 ether;
+        } else if (request.duration == 60 days) {
+            ratio = 0.5 ether;
         }
 
         uint256 MDBLAmount = _mulWad(request.amount, ratio);
