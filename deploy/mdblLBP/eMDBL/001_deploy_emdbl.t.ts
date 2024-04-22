@@ -12,14 +12,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   console.log(deployer)
   /**
-    address initialOwner_, 
-    IERC721 burnNFTAddress_, 
-    uint128 checkChainId_
+    address _defaultAdmin, 
+    IERC20 _MDBLAddress, 
+    address _signer
    */
   const args = [
-    deployer,
-    "0xC8d0f5dBE3c2907B2166512aCc01532F647d36F5",
-    "0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199"
+    "0x6F003a7A0f8a2D1b6154e77960AEd19dee103328",
+    "0x8Aed42735027aa6d97023D8196B084eCFbA701af",
+    "0x84439355541fBC7dA8f465D60Ae5ce3606A81caF"
   ];
 
   let contract = await deploy('eMDBL', {
@@ -41,7 +41,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         },
       },
     },
-    deterministicDeployment: keccak256(stringToBytes('eMDBL_PROD')),
+    deterministicDeployment: keccak256(stringToBytes('eMDBL')),
   });
 
   // TODO If you want to cancel "verification", please enable comments
