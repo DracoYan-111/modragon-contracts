@@ -43,7 +43,10 @@ contract eMDBLTest is Test {
 
         address eMDBLTestAddress = address(new eMDBL());
 
-        bytes memory data = abi.encodeCall(eMDBL.initialize, (initialOwner, testToken1,vm.addr(SIGNERPRIVATEKEY)));
+        bytes memory data = abi.encodeCall(
+            eMDBL.initialize,
+            (initialOwner, initialOwner, testToken1, vm.addr(SIGNERPRIVATEKEY))
+        );
         address proxy = address(new ERC1967Proxy(eMDBLTestAddress, data));
 
         eMDBLTestAddr = eMDBL(proxy);
@@ -127,7 +130,7 @@ contract eMDBLTest is Test {
     }
 
     function testPermitMint() public {
-        uint256 deadline =  1712399874;
+        uint256 deadline = 1712399874;
         uint256 amount = 100 ether;
 
         bytes32 typedDataHash = getTypedDataHash(deadline, amount);
@@ -148,13 +151,7 @@ contract eMDBLTest is Test {
 
     function getTypedDataHash(uint256 deadline, uint256 amount) private pure returns (bytes32 typedDataHash) {
         bytes32 structHash = keccak256(
-            abi.encode(
-                PERMIT_TYPEHASH,
-                0x657A6F007d5233488fD3B475D27a73E08BFa12eD,
-                amount,
-                0,
-                deadline
-            )
+            abi.encode(PERMIT_TYPEHASH, 0x657A6F007d5233488fD3B475D27a73E08BFa12eD, amount, 0, deadline)
         );
 
         typedDataHash = MessageHashUtils.toTypedDataHash(
