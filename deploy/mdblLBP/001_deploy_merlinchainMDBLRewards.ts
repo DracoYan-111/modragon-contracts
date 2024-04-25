@@ -18,12 +18,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
    */
   const args = [
     deployer,
-    "0xa1e8312144A51aDc8413082D2703c86E0cAA04f7",
-    "0x5b1048a091656c6650b7f810aec5b67f67978d1a58b2e0efe2d6a012e4a830a0",//
+    "0x8Aed42735027aa6d97023D8196B084eCFbA701af",
+    "0xb0b5be6637cbb40bdf9d0528e1ab6100eed4b538f439e54d329c7cc85667f975",//
   ];
 
   let contract = await deploy('MerlinchainMDBLRewards', {
-    gasPrice:"100000000",
     from: deployer,
     log: true,
     autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks

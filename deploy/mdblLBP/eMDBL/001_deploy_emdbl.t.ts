@@ -43,7 +43,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         },
       },
     },
-    deterministicDeployment: keccak256(stringToBytes('eMDBL')),
+    deterministicDeployment: keccak256(stringToBytes('eMDBL_PROD')),
   });
 
   // TODO If you want to cancel "verification", please enable comments
