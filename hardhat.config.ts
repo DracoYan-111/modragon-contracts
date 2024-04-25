@@ -724,13 +724,13 @@ const config: HardhatUserConfig = {
           browserURL: "https://explorer-test.arthera.net",
         },
       },
-      {
-        network: "merlin",
-        chainId: 4200,
-        urls: {
-          apiURL: "https://swagger.l2scan.co/api",
-          browserURL: "https://swagger.l2scan.co",
-        },
+        {
+          network: "merlin",
+          chainId: 4200,
+          urls: {
+              apiURL: "https://scan.merlinchain.io/api",
+              browserURL: "https://scan.merlinchain.io",
+          },
       },
     ],
   },
