@@ -31,6 +31,8 @@ contract RewardDistribution is
     struct RewardDistributionStorage {
         IERC721 blueboxAddr;
         IERC721 musicboxAddr;
+        address blueboxOwner;
+        address musicboxOwner;
         bytes32 receiveRoot;
         BitMaps.BitMap userReceive;
     }
@@ -43,12 +45,16 @@ contract RewardDistribution is
         address _initialOwner,
         IERC721 _blueboxAddr,
         IERC721 _musicboxAddr,
+        address _blueboxOwner,
+        address _musicboxOwner,
         bytes32 _receiveRoot
     ) public initializer {
         RewardDistributionStorage storage $ = _getRewardDistributionStorage();
 
         $.blueboxAddr = _blueboxAddr;
         $.musicboxAddr = _musicboxAddr;
+        $.blueboxOwner = _blueboxOwner;
+        $.musicboxOwner = _musicboxOwner;
         $.receiveRoot = _receiveRoot;
 
         __Ownable_init(_initialOwner);
@@ -92,6 +98,21 @@ contract RewardDistribution is
         }
 
         emit SetTokenAddress(erc721TokenOpt, address(newTokenAddress));
+    }
+
+    /**
+     * @dev Owner withdraw NFTs
+     * @param opt 0 is bluebox else is musicbox
+     * @param newOwnerAddr Recipient address
+     */
+    function updateNftsOwner(uint256 opt, address newOwnerAddr) external onlyOwner {
+        RewardDistributionStorage storage $ = _getRewardDistributionStorage();
+
+        if (opt == 0) {
+            $.blueboxOwner = newOwnerAddr;
+        } else {
+            $.musicboxOwner = newOwnerAddr;
+        }
     }
 
     /**
@@ -144,9 +165,11 @@ contract RewardDistribution is
         if (isClaimed(index)) revert AlreadyReceived();
 
         // Verify the merkle proof.
+
         bytes32 leaf = keccak256(
             bytes.concat(keccak256(abi.encode(index, msg.sender, blueboxTokenIds, musicboxTokenIds)))
         );
+
         if (!MerkleProof.verify(merkleProof, $.receiveRoot, leaf)) revert VerificationFailed();
 
         // Update user receive
@@ -155,21 +178,21 @@ contract RewardDistribution is
         // Transfer NFT
         for (uint256 i; i < 2; ) {
             IERC721 transferNFT = i == 0 ? $.blueboxAddr : $.musicboxAddr;
+            address ownerAddress = i == 0 ? $.blueboxOwner : $.musicboxOwner;
             uint256[] memory tokenIds = i == 0 ? blueboxTokenIds : musicboxTokenIds;
 
             for (uint256 j; j < tokenIds.length; ) {
-                transferNFT.safeTransferFrom(address(this), msg.sender, tokenIds[j]);
+                transferNFT.safeTransferFrom(ownerAddress, msg.sender, tokenIds[j]);
                 unchecked {
                     ++j;
                 }
             }
-
-            emit Claimed(msg.sender, tokenIds);
-
             unchecked {
                 ++i;
             }
         }
+        
+        emit Claimed(msg.sender, blueboxTokenIds, musicboxTokenIds);
     }
 
     function _getRewardDistributionStorage() private pure returns (RewardDistributionStorage storage $) {

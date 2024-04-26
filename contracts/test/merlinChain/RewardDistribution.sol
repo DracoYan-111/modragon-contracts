@@ -29,7 +29,7 @@ contract RewardDistributionTest is Test {
 
         bytes memory data = abi.encodeCall(
             RewardDistribution.initialize,
-            (initialOwner, testNFT, testNFT, 0xaa78a00191152ba8b1e0ebe5831950ff7ec12b295c38c26aeaceced2e4478cb8)
+            (initialOwner, testNFT, testNFT, initialOwner,initialOwner,0xaa78a00191152ba8b1e0ebe5831950ff7ec12b295c38c26aeaceced2e4478cb8)
         );
         address proxy = address(new ERC1967Proxy(rewardDistributions, data));
 

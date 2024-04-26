@@ -5,7 +5,7 @@ interface IRewardDistributionDef {
     error AlreadyReceived();
     error VerificationFailed();
 
-    event Claimed(address, uint256[]);
+    event Claimed(address, uint256[], uint256[]);
     event SetTokenAddress(uint256, address);
     event SetMerkleRootInformation(bytes32);
     event OwnerWithdraw(address, uint256[], address);
