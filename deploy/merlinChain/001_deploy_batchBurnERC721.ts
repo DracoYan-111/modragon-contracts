@@ -12,8 +12,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
    *IERC721 _erc721Address
    */
   const args = [
-    0x3e8B6e286f78B13C35E11d567935c3aFEECb9003,
-    0x84AfCd5406365368A41e269CD6467CD1B8D96F13,
+    "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003",
+    "0xe538E196aB19Fd7611D64f60f3b06dd31EF71DB3",
+    "21000000000000000000000000"
   ];
 
   let contract = await deploy('BatchBurnERC721', {
@@ -21,7 +22,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
     autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
     proxy: {
-      //checkProxyAdmin:false,
+      checkProxyAdmin: false,
       proxyContract: 'ERC1967Proxy',
       proxyArgs: ['{implementation}', '{data}'],
       upgradeFunction: {
