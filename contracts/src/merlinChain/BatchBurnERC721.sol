@@ -51,7 +51,7 @@ contract BatchBurnERC721 is
 
         $.erc721Address = erc721Address_;
         $.totaleMDBLReward = totaleMDBLReward_;
-        
+
         __Pausable_init();
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
@@ -177,7 +177,7 @@ contract BatchBurnERC721 is
      * @param userAddress User address
      * @return User burn token amount
      */
-    function getUserBurnLength(address userAddress) external view returns (uint256) {
+    function getUserBurnLength(address userAddress) public view returns (uint256) {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
         return $.userBurnIndex[userAddress].length;
@@ -197,12 +197,12 @@ contract BatchBurnERC721 is
     ) public view returns (uint256, uint256, uint256, uint256, uint256) {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
-        uint256 userShare = divWad($.userBurnIndex[userAddress].length, $.totalBurnAmount);
+        uint256 userShare = divWad(getUserBurnLength(userAddress), getTotalBurnAmount());
 
         return (
             $.totaleMDBLReward,
-            $.userBurnIndex[userAddress].length,
-            $.totalBurnAmount,
+            getUserBurnLength(userAddress),
+            getTotalBurnAmount(),
             userShare,
             mulWad(userShare, $.totaleMDBLReward)
         );
