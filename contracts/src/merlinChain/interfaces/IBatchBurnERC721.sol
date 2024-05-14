@@ -8,6 +8,8 @@ interface IeMDBL {
 interface IBatchBurnERC721Def {
     error DivWadFailed();
     error MulWadFailed();
+    error RewardsAreOpen();
+    error RewardsAreNotOpen();
     error AlreadyReceived();
     error VerificationFailed();
     error CallerNotTheTokenOwner();

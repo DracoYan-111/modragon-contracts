@@ -29,6 +29,7 @@ contract BatchBurnERC721 is
         0x873ce42bb11da2a877551a94a0d3c475f2712498a6c230654f29ac5df3ca2400;
 
     struct BatchBurnERC721Storage {
+        bool receiveOpen;
         bytes32 receiveRoot;
         IeMDBL eMDBLAddress;
         IERC20 MERLAddress;
@@ -94,12 +95,21 @@ contract BatchBurnERC721 is
         $.totaleMDBLReward = newTokenReward;
     }
 
+    
+    function setReceiveOpen() external onlyOwner {
+        BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
+
+        $.receiveOpen = true;
+    }
+
     /**
      * @dev User burn token
      * @param tokenIds User burn token id list
      */
     function batchBurn(uint256[] calldata tokenIds) external nonReentrant whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
+
+        if(!$.receiveOpen) revert RewardsAreOpen();
 
         for (uint256 i = 0; i < tokenIds.length; ) {
             if (
@@ -126,6 +136,9 @@ contract BatchBurnERC721 is
      */
     function usersReceiveeMDBLRewards() external whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
+
+        if($.receiveOpen) revert RewardsAreNotOpen();
+
         if (isClaimed(msg.sender, 0)) revert AlreadyReceived();
 
         $.userReceiveeMDBL.set(uint160(msg.sender));
@@ -149,6 +162,8 @@ contract BatchBurnERC721 is
     ) external whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
+        if($.receiveOpen) revert RewardsAreNotOpen();
+        
         if (isClaimed(msg.sender, 1)) revert AlreadyReceived();
 
         // Verify the merkle proof.
