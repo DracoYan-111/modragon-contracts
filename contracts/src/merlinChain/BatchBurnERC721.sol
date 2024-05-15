@@ -94,7 +94,6 @@ contract BatchBurnERC721 is
 
         $.totaleMDBLReward = newTokenReward;
     }
-
     
     function setReceiveOpen() external onlyOwner {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
@@ -109,7 +108,7 @@ contract BatchBurnERC721 is
     function batchBurn(uint256[] calldata tokenIds) external nonReentrant whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
-        if(!$.receiveOpen) revert RewardsAreOpen();
+        if($.receiveOpen) revert RewardsAreOpen();
 
         for (uint256 i = 0; i < tokenIds.length; ) {
             if (
@@ -137,7 +136,7 @@ contract BatchBurnERC721 is
     function usersReceiveeMDBLRewards() external whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
-        if($.receiveOpen) revert RewardsAreNotOpen();
+        if(!$.receiveOpen) revert RewardsAreNotOpen();
 
         if (isClaimed(msg.sender, 0)) revert AlreadyReceived();
 
@@ -162,8 +161,8 @@ contract BatchBurnERC721 is
     ) external whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
-        if($.receiveOpen) revert RewardsAreNotOpen();
-        
+        if(!$.receiveOpen) revert RewardsAreNotOpen();
+
         if (isClaimed(msg.sender, 1)) revert AlreadyReceived();
 
         // Verify the merkle proof.
@@ -230,6 +229,16 @@ contract BatchBurnERC721 is
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
         return $.totalBurnAmount;
+    }
+
+    /**
+     * @dev Check whether reward collection is enabled
+     * @return Whether reward collection is enabled
+     */
+    function getReceiveOpen() public view returns (bool) {
+        BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
+
+        return $.receiveOpen;
     }
 
     /**
