@@ -153,7 +153,7 @@ contract BatchBurnERC721Test is Test {
         assertEq(testToken.balanceOf(0x000D21da4B478B0406E5EAe9c61615Be5177Fa0B), 390000000000000000000);
     }
 
-        function testFail_UsersReceiveMERLRewardsNotSetReceiveRoot() public {
+    function testFail_UsersReceiveMERLRewardsNotSetReceiveRoot() public {
         vm.startPrank(initialOwner, initialOwner);
 
         testToken.mint(address(batchBurnERC721), 10000000 ether);
@@ -235,6 +235,19 @@ contract BatchBurnERC721Test is Test {
         batchBurnERC721.usersReceiveMERLRewards(1, 390000000000000000000, rootList);
 
         assertEq(testToken.balanceOf(0x000D21da4B478B0406E5EAe9c61615Be5177Fa0B), 390000000000000000000);
+    }
+
+    function testGetUserTokenIdList() public {
+        vm.startPrank(initialOwner, initialOwner);
+
+        testNFT.batchSafeMint(initialOwner, 4);
+        assertEq(testNFT.balanceOf(initialOwner), 4);
+
+        testNFT.setApprovalForAll(address(batchBurnERC721), true);
+
+        uint256[] memory tokenIdList = batchBurnERC721.getUserTokenIdList(initialOwner);
+
+        assertEq(batchBurnERC721.getUserTokenIdList(initialOwner).length, 4);
     }
 }
 
