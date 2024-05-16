@@ -2,10 +2,10 @@
 pragma solidity ^0.8.23;
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {IERC721} from "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import {BitMaps} from "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
+import {IERC721Enumerable, IERC721} from "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 import {Ownable2StepUpgradeable} from "@openzeppelin/contracts-upgradeable/access/Ownable2StepUpgradeable.sol";
 import {UUPSUpgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import {ReentrancyGuardUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
@@ -89,12 +89,18 @@ contract BatchBurnERC721 is
         }
     }
 
+    function setErc721Address(IERC721 newErc721Address) external onlyOwner {
+        BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
+        
+        $.erc721Address = newErc721Address;
+    }
+
     function setTokenReward(uint256 newTokenReward) external onlyOwner {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
         $.totaleMDBLReward = newTokenReward;
     }
-    
+
     function setReceiveOpen() external onlyOwner {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
@@ -108,7 +114,7 @@ contract BatchBurnERC721 is
     function batchBurn(uint256[] calldata tokenIds) external nonReentrant whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
-        if($.receiveOpen) revert RewardsAreOpen();
+        if ($.receiveOpen) revert RewardsAreOpen();
 
         for (uint256 i = 0; i < tokenIds.length; ) {
             if (
@@ -136,7 +142,7 @@ contract BatchBurnERC721 is
     function usersReceiveeMDBLRewards() external whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
-        if(!$.receiveOpen) revert RewardsAreNotOpen();
+        if (!$.receiveOpen) revert RewardsAreNotOpen();
 
         if (isClaimed(msg.sender, 0)) revert AlreadyReceived();
 
@@ -161,7 +167,7 @@ contract BatchBurnERC721 is
     ) external whenNotPaused {
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
-        if(!$.receiveOpen) revert RewardsAreNotOpen();
+        if (!$.receiveOpen) revert RewardsAreNotOpen();
 
         if (isClaimed(msg.sender, 1)) revert AlreadyReceived();
 
@@ -239,6 +245,29 @@ contract BatchBurnERC721 is
         BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
 
         return $.receiveOpen;
+    }
+
+    /**
+     * @dev Get user tokenID list
+     * @param userAddress User address
+     * @return User tokenID list
+     */
+    function getUserTokenIdList(address userAddress) public view returns (uint256[] memory) {
+        BatchBurnERC721Storage storage $ = _getBatchBurnERC721Storage();
+
+        uint256 userBalance = $.erc721Address.balanceOf(userAddress);
+
+        uint256[] memory tokenIdList = new uint256[](userBalance);
+
+        for (uint256 i; i < userBalance; ) {
+            tokenIdList[i] = (IERC721Enumerable(address($.erc721Address)).tokenOfOwnerByIndex(userAddress, i));
+
+            unchecked {
+                ++i;
+            }
+        }
+
+        return tokenIdList;
     }
 
     /**
