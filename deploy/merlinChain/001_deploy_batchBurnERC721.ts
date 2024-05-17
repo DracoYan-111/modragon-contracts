@@ -13,7 +13,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
    */
   const args = [
     "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003",
-    "0xe538E196aB19Fd7611D64f60f3b06dd31EF71DB3",
+    "0x9Da60078e7B225820D7781D942E9f222c30Ed216",
     "21000000000000000000000000"
   ];
 
