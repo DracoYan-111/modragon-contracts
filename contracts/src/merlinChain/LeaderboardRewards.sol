@@ -16,6 +16,7 @@ contract LeaderboardRewards is
     Initializable,
     PausableUpgradeable,
     Ownable2StepUpgradeable,
+    ReentrancyGuardUpgradeable,
     UUPSUpgradeable,
     EIP712Upgradeable,
     NoncesUpgradeable,
@@ -34,6 +35,7 @@ contract LeaderboardRewards is
         address signer;
         address MDBLToken;
         address eMDBLToken;
+        mapping(address => bool) blackList;
         mapping(address => uint256) userHasUsedMDBL;
         mapping(address => uint256) userHasUsedeMDBL;
     }
@@ -55,8 +57,9 @@ contract LeaderboardRewards is
         $.eMDBLToken = _eMDBLToken;
 
         __Pausable_init();
-        __Ownable_init(initialOwner);
         __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
+        __Ownable_init(initialOwner);
         __EIP712_init_unchained("LeaderboardRewards", "1");
     }
 
@@ -93,6 +96,20 @@ contract LeaderboardRewards is
         emit UpdateTokenAddress(tokenAddress, opt);
     }
 
+    function setBlackList(address[] calldata userAddress) external onlyOwner {
+        LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
+
+        for (uint256 i; i < userAddress.length; ) {
+            $.blackList[userAddress[i]] = true;
+
+            unchecked {
+                ++i;
+            }
+        }
+
+        emit UpdateBlackList(userAddress);
+    }
+
     /**
      * Get rewards by signing
      * @param tokenAddress Received token address
@@ -108,9 +125,11 @@ contract LeaderboardRewards is
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) public {
+    ) public nonReentrant whenNotPaused {
         LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
 
+        if ($.blackList[to]) revert UserInBlackList();
+        
         if (block.timestamp > deadline) revert ERC2612ExpiredSignature(deadline);
 
         bytes32 structHash = keccak256(abi.encode(PERMIT_TYPEHASH, tokenAddress, to, amount, _useNonce(to), deadline));
