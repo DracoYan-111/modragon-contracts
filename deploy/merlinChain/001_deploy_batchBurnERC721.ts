@@ -12,9 +12,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
    *IERC721 _erc721Address
    */
   const args = [
-    "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003",
-    "0x9Da60078e7B225820D7781D942E9f222c30Ed216",
-    "21000000000000000000000000"
+    "0x00b9f6353d779b0d33C108DDF4C6544e0038a911",
+    "0x7C09e01c9257A404d5CAf5C3Dfa79Bc00281734e",
+    "10500000000000000000000000"
   ];
 
   let contract = await deploy('BatchBurnERC721', {
@@ -36,7 +36,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         },
       },
     },
-    deterministicDeployment: keccak256(stringToBytes('BatchBurnERC721_PRUD')),
+    deterministicDeployment: keccak256(stringToBytes('BatchBurnERC721_PRD')),
   });
   // // TODO If you want to cancel "verification", please enable comments
   // console.log(
