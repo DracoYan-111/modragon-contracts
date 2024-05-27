@@ -7,6 +7,10 @@ interface IeMDBL {
 
 interface ILeaderboardRewardsDef {
     error UserInBlackList();
+    error ReceiveRootNotSet();
+    error UserHasNotUseMDBL();
+    error VerificationFailed();    
+    error NotEnoughMDBLToken();
     error ERC2612ExpiredSignature(uint256 deadline);
     error ERC2612InvalidSigner(address signer, address owner);
 

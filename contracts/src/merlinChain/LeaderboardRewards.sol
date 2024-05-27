@@ -2,6 +2,7 @@
 pragma solidity ^0.8.23;
 
 import {ECDSA} from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import {IERC20, SafeERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import {NoncesUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/NoncesUpgradeable.sol";
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
@@ -35,6 +36,7 @@ contract LeaderboardRewards is
         address signer;
         address MDBLToken;
         address eMDBLToken;
+        bytes32 receiveRoot;
         mapping(address => bool) blackList;
         mapping(address => uint256) userHasUsedMDBL;
         mapping(address => uint256) userHasUsedeMDBL;
@@ -97,6 +99,16 @@ contract LeaderboardRewards is
     }
 
     /**
+     * Set new receive root
+     * @param newReceiveRoot New receive root
+     */
+    function setReceiveRoot(bytes32 newReceiveRoot) external onlyOwner {
+        LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
+
+        $.receiveRoot = newReceiveRoot;
+    }
+
+    /**
      * Set black list
      * @param userAddress User address list
      */
@@ -112,6 +124,14 @@ contract LeaderboardRewards is
         }
 
         emit UpdateBlackList(userAddress);
+    }
+
+    function extractMDBLToken(address userAddress, uint256 amount) external onlyOwner {
+        LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
+
+        if (IERC20($.MDBLToken).balanceOf(address(this)) < amount) revert NotEnoughMDBLToken();
+
+        IERC20($.MDBLToken).safeTransfer(userAddress, amount);
     }
 
     /**
@@ -142,12 +162,6 @@ contract LeaderboardRewards is
         if ($.signer != recoverSigner) revert ERC2612InvalidSigner($.signer, recoverSigner);
 
         uint256 transferAmount;
-        if (tokenAddress == $.MDBLToken) {
-            transferAmount = amount - $.userHasUsedMDBL[to];
-            $.userHasUsedMDBL[to] += transferAmount;
-
-            IERC20(tokenAddress).safeTransfer(to, transferAmount);
-        }
 
         if (tokenAddress == $.eMDBLToken) {
             transferAmount = amount - $.userHasUsedeMDBL[to];
@@ -157,7 +171,46 @@ contract LeaderboardRewards is
             IeMDBL($.eMDBLToken).mint(to, transferAmount);
         }
 
+        if (tokenAddress == $.MDBLToken) {
+            transferAmount = amount - $.userHasUsedMDBL[to];
+            $.userHasUsedMDBL[to] += transferAmount;
+
+            if (IERC20($.MDBLToken).balanceOf(address(this)) < transferAmount) revert NotEnoughMDBLToken();
+
+            IERC20(tokenAddress).safeTransfer(to, transferAmount);
+        }
+
         emit PermitClaimToken(tokenAddress, to, transferAmount);
+    }
+
+    /**
+     * @dev Claim MERL
+     * @param index Index corresponding to user address
+     * @param amount  Token amount
+     * @param merkleProof Merkle proof
+     */
+    function usersReceiveMERLRewards(
+        uint256 index,
+        uint256 amount,
+        bytes32[] calldata merkleProof
+    ) external whenNotPaused {
+        LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
+
+        if ($.receiveRoot == bytes32(0)) revert ReceiveRootNotSet();
+        if (amount == $.userHasUsedMDBL[msg.sender]) revert UserHasNotUseMDBL();
+
+        // Verify the merkle proof.
+        bytes32 leaf = keccak256(bytes.concat(keccak256(abi.encode(index, msg.sender, amount))));
+        if (!MerkleProof.verify(merkleProof, $.receiveRoot, leaf)) revert VerificationFailed();
+
+        uint256 transferAmount = amount - $.userHasUsedMDBL[msg.sender];
+        $.userHasUsedMDBL[msg.sender] += transferAmount;
+
+        if (IERC20($.MDBLToken).balanceOf(address(this)) < transferAmount) revert NotEnoughMDBLToken();
+
+        IERC20($.MDBLToken).safeTransfer(msg.sender, transferAmount);
+
+        emit PermitClaimToken($.MDBLToken, msg.sender, transferAmount);
     }
 
     /**
