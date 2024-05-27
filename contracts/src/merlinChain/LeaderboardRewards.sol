@@ -96,6 +96,10 @@ contract LeaderboardRewards is
         emit UpdateTokenAddress(tokenAddress, opt);
     }
 
+    /**
+     * Set black list
+     * @param userAddress User address list
+     */
     function setBlackList(address[] calldata userAddress) external onlyOwner {
         LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
 
@@ -129,7 +133,7 @@ contract LeaderboardRewards is
         LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
 
         if ($.blackList[to]) revert UserInBlackList();
-        
+
         if (block.timestamp > deadline) revert ERC2612ExpiredSignature(deadline);
 
         bytes32 structHash = keccak256(abi.encode(PERMIT_TYPEHASH, tokenAddress, to, amount, _useNonce(to), deadline));
@@ -154,6 +158,17 @@ contract LeaderboardRewards is
         }
 
         emit PermitClaimToken(tokenAddress, to, transferAmount);
+    }
+
+    /**
+     * Get user rewards
+     * @param userAddress User address
+     * @return User rewards
+     */
+    function getUserRewardsReceived(address userAddress) public view returns (uint256, uint256) {
+        LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
+
+        return ($.userHasUsedMDBL[userAddress], $.userHasUsedeMDBL[userAddress]);
     }
 
     function _getLeaderboardRewardsStorage() private pure returns (LeaderboardRewardsStorage storage $) {
