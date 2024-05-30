@@ -193,7 +193,7 @@ contract LeaderboardRewards is
         uint256 index,
         uint256 amount,
         bytes32[] calldata merkleProof
-    ) external whenNotPaused {
+    ) external nonReentrant whenNotPaused {
         LeaderboardRewardsStorage storage $ = _getLeaderboardRewardsStorage();
 
         if ($.receiveRoot == bytes32(0)) revert ReceiveRootNotSet();
