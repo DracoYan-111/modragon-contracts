@@ -15,9 +15,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
    */
   const args = [
     deployer,
-    deployer,
-    deployer,
-    deployer
+    0x84439355541fBC7dA8f465D60Ae5ce3606A81caF,
+    0x8Aed42735027aa6d97023D8196B084eCFbA701af,
+    0x1F644a6BD4b47b10d60b6E3c7134AEC9023B23B5
   ];
 
   let contract = await deploy('LeaderboardRewards', {
