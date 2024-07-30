@@ -1,0 +1,257 @@
+{
+  "address": "0x98aE12B19d7c195237eAd37e21B8cb6d211Fc87D",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            }
+          ],
+          "internalType": "struct BatchQuery.Call[]",
+          "name": "calls",
+          "type": "tuple[]"
+        }
+      ],
+      "name": "aggregateView",
+      "outputs": [
+        {
+          "internalType": "bytes[]",
+          "name": "returnData",
+          "type": "bytes[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBasefee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "basefee",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "blockNumber",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBlockHash",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "blockHash",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getBlockNumber",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "blockNumber",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getChainId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "chainid",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCurrentBlockCoinbase",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "coinbase",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCurrentBlockDifficulty",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "difficulty",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCurrentBlockGasLimit",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "gaslimit",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getCurrentBlockTimestamp",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "addr",
+          "type": "address"
+        }
+      ],
+      "name": "getEthBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "balance",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getLastBlockHash",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "blockHash",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0x1d23d8f7002d664ceb594724959bd6ae05635a1441764aab4d15f97f814053f5",
+  "receipt": {
+    "to": null,
+    "from": "0x3e8B6e286f78B13C35E11d567935c3aFEECb9003",
+    "contractAddress": "0x98aE12B19d7c195237eAd37e21B8cb6d211Fc87D",
+    "transactionIndex": 0,
+    "gasUsed": "389429",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x4fb8444574b526efdb5dadf4354f05f26edfc4188c61b89580b02722cc46c5ab",
+    "transactionHash": "0x1d23d8f7002d664ceb594724959bd6ae05635a1441764aab4d15f97f814053f5",
+    "logs": [],
+    "blockNumber": 10140066,
+    "cumulativeGasUsed": "389429",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "3e787d1a423e7bf6e1379ab907c84d65",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.23+commit.f704f362\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"target\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"callData\",\"type\":\"bytes\"}],\"internalType\":\"struct BatchQuery.Call[]\",\"name\":\"calls\",\"type\":\"tuple[]\"}],\"name\":\"aggregateView\",\"outputs\":[{\"internalType\":\"bytes[]\",\"name\":\"returnData\",\"type\":\"bytes[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBasefee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"basefee\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"name\":\"getBlockHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBlockNumber\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getChainId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"chainid\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockCoinbase\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"coinbase\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockDifficulty\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"difficulty\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockGasLimit\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"gaslimit\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCurrentBlockTimestamp\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"addr\",\"type\":\"address\"}],\"name\":\"getEthBalance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLastBlockHash\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"blockHash\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"aggregateView((address,bytes)[])\":{\"details\":\"Returns the block hash for the given block number\",\"params\":{\"calls\":\"An array of Call structs\"},\"returns\":{\"returnData\":\"An array of bytes containing the responses\"}},\"getBasefee()\":{\"details\":\"Gets the base fee of the given blockCan revert if the BASEFEE opcode is not implemented by the given chain\"},\"getBlockHash(uint256)\":{\"details\":\"Returns the block hash for the given block number\",\"params\":{\"blockNumber\":\"The block number\"}},\"getBlockNumber()\":{\"details\":\"Returns the block number\"},\"getChainId()\":{\"details\":\"Returns the chain id\"},\"getCurrentBlockCoinbase()\":{\"details\":\"Returns the block coinbase\"},\"getCurrentBlockDifficulty()\":{\"details\":\"Returns the block difficulty\"},\"getCurrentBlockGasLimit()\":{\"details\":\"Returns the block gas limit\"},\"getCurrentBlockTimestamp()\":{\"details\":\"Returns the block timestamp\"},\"getEthBalance(address)\":{\"details\":\"Returns the (ETH) balance of a given address\"},\"getLastBlockHash()\":{\"details\":\"Returns the block hash of the last block\"}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/src/merlinChain/BatchQuery.sol\":\"BatchQuery\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":999999},\"remappings\":[]},\"sources\":{\"contracts/src/merlinChain/BatchQuery.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity 0.8.23;\\n\\ncontract BatchQuery {\\n    struct Call {\\n        address target;\\n        bytes callData;\\n    }\\n\\n    struct Result {\\n        bool success;\\n        bytes returnData;\\n    }\\n\\n    /**\\n     * @dev Returns the block hash for the given block number\\n     * @param calls An array of Call structs\\n     * @return returnData An array of bytes containing the responses\\n     */\\n    function aggregateView(Call[] calldata calls) external view returns (bytes[] memory returnData) {\\n        uint256 length = calls.length;\\n        returnData = new bytes[](length);\\n        Call calldata call;\\n        for (uint256 i = 0; i < length; ) {\\n            bool success;\\n            call = calls[i];\\n            (success, returnData[i]) = call.target.staticcall(call.callData);\\n            require(success, \\\"BatchQuery: call failed\\\");\\n            unchecked {\\n                ++i;\\n            }\\n        }\\n    }\\n\\n    /**\\n     * @dev Returns the block hash for the given block number\\n     * @param blockNumber The block number\\n     */\\n    function getBlockHash(uint256 blockNumber) public view returns (bytes32 blockHash) {\\n        blockHash = blockhash(blockNumber);\\n    }\\n\\n    /// @dev Returns the block number\\n    function getBlockNumber() public view returns (uint256 blockNumber) {\\n        blockNumber = block.number;\\n    }\\n\\n    /// @dev Returns the block coinbase\\n    function getCurrentBlockCoinbase() public view returns (address coinbase) {\\n        coinbase = block.coinbase;\\n    }\\n\\n    /// @dev Returns the block difficulty\\n    function getCurrentBlockDifficulty() public view returns (uint256 difficulty) {\\n        difficulty = block.prevrandao;\\n    }\\n\\n    /// @dev Returns the block gas limit\\n    function getCurrentBlockGasLimit() public view returns (uint256 gaslimit) {\\n        gaslimit = block.gaslimit;\\n    }\\n\\n    /// @dev Returns the block timestamp\\n    function getCurrentBlockTimestamp() public view returns (uint256 timestamp) {\\n        timestamp = block.timestamp;\\n    }\\n\\n    /// @dev Returns the (ETH) balance of a given address\\n    function getEthBalance(address addr) public view returns (uint256 balance) {\\n        balance = addr.balance;\\n    }\\n\\n    /// @dev Returns the block hash of the last block\\n    function getLastBlockHash() public view returns (bytes32 blockHash) {\\n        unchecked {\\n            blockHash = blockhash(block.number - 1);\\n        }\\n    }\\n\\n    /**\\n     * @dev Gets the base fee of the given block\\n     * @dev Can revert if the BASEFEE opcode is not implemented by the given chain\\n     */\\n    function getBasefee() public view returns (uint256 basefee) {\\n        basefee = block.basefee;\\n    }\\n\\n    /// @dev Returns the chain id\\n    function getChainId() public view returns (uint256 chainid) {\\n        chainid = block.chainid;\\n    }\\n}\\n\",\"keccak256\":\"0x56a28d5339584205c14b85aee41cd7ae69a6d1a7af72ac2d13fc18e858ecf68c\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5061061a806100206000396000f3fe608060405234801561001057600080fd5b50600436106100c95760003560e01c80634d2301cc11610081578063a8b0574e1161005b578063a8b0574e14610152578063ad732b3414610160578063ee82ac5e1461018057600080fd5b80634d2301cc1461011e57806372425d9d1461014657806386d516e81461014c57600080fd5b80633408e470116100b25780633408e4701461010c5780633e64a6961461011257806342cbb15c1461011857600080fd5b80630f28c97d146100ce57806327e86d6e146100e3575b600080fd5b425b6040519081526020015b60405180910390f35b437fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01406100d0565b466100d0565b486100d0565b436100d0565b6100d061012c366004610333565b73ffffffffffffffffffffffffffffffffffffffff163190565b446100d0565b456100d0565b6040514181526020016100da565b61017361016e366004610370565b610192565b6040516100da91906103e5565b6100d061018e3660046104b3565b4090565b6060818067ffffffffffffffff8111156101ae576101ae6104cc565b6040519080825280602002602001820160405280156101e157816020015b60608152602001906001900390816101cc5790505b5091503660005b8281101561032a576000868683818110610204576102046104fb565b9050602002810190610216919061052a565b92506102256020840184610333565b73ffffffffffffffffffffffffffffffffffffffff166102486020850185610568565b6040516102569291906105d4565b600060405180830381855afa9150503d8060008114610291576040519150601f19603f3d011682016040523d82523d6000602084013e610296565b606091505b508684815181106102a9576102a96104fb565b6020908102919091010152905080610321576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601760248201527f426174636851756572793a2063616c6c206661696c6564000000000000000000604482015260640160405180910390fd5b506001016101e8565b50505092915050565b60006020828403121561034557600080fd5b813573ffffffffffffffffffffffffffffffffffffffff8116811461036957600080fd5b9392505050565b6000806020838503121561038357600080fd5b823567ffffffffffffffff8082111561039b57600080fd5b818501915085601f8301126103af57600080fd5b8135818111156103be57600080fd5b8660208260051b85010111156103d357600080fd5b60209290920196919550909350505050565b6000602080830181845280855180835260408601915060408160051b87010192508387016000805b838110156104a5577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc089870301855282518051808852835b81811015610460578281018a01518982018b01528901610445565b508781018901849052601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe01690960187019550938601939186019160010161040d565b509398975050505050505050565b6000602082840312156104c557600080fd5b5035919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b600082357fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc183360301811261055e57600080fd5b9190910192915050565b60008083357fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe184360301811261059d57600080fd5b83018035915067ffffffffffffffff8211156105b857600080fd5b6020019150368190038213156105cd57600080fd5b9250929050565b818382376000910190815291905056fea264697066735822122001d425605a3e5faf7df2f92d15f8fa09887da3299d3033b134412b5f0969e9c464736f6c63430008170033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100c95760003560e01c80634d2301cc11610081578063a8b0574e1161005b578063a8b0574e14610152578063ad732b3414610160578063ee82ac5e1461018057600080fd5b80634d2301cc1461011e57806372425d9d1461014657806386d516e81461014c57600080fd5b80633408e470116100b25780633408e4701461010c5780633e64a6961461011257806342cbb15c1461011857600080fd5b80630f28c97d146100ce57806327e86d6e146100e3575b600080fd5b425b6040519081526020015b60405180910390f35b437fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff01406100d0565b466100d0565b486100d0565b436100d0565b6100d061012c366004610333565b73ffffffffffffffffffffffffffffffffffffffff163190565b446100d0565b456100d0565b6040514181526020016100da565b61017361016e366004610370565b610192565b6040516100da91906103e5565b6100d061018e3660046104b3565b4090565b6060818067ffffffffffffffff8111156101ae576101ae6104cc565b6040519080825280602002602001820160405280156101e157816020015b60608152602001906001900390816101cc5790505b5091503660005b8281101561032a576000868683818110610204576102046104fb565b9050602002810190610216919061052a565b92506102256020840184610333565b73ffffffffffffffffffffffffffffffffffffffff166102486020850185610568565b6040516102569291906105d4565b600060405180830381855afa9150503d8060008114610291576040519150601f19603f3d011682016040523d82523d6000602084013e610296565b606091505b508684815181106102a9576102a96104fb565b6020908102919091010152905080610321576040517f08c379a000000000000000000000000000000000000000000000000000000000815260206004820152601760248201527f426174636851756572793a2063616c6c206661696c6564000000000000000000604482015260640160405180910390fd5b506001016101e8565b50505092915050565b60006020828403121561034557600080fd5b813573ffffffffffffffffffffffffffffffffffffffff8116811461036957600080fd5b9392505050565b6000806020838503121561038357600080fd5b823567ffffffffffffffff8082111561039b57600080fd5b818501915085601f8301126103af57600080fd5b8135818111156103be57600080fd5b8660208260051b85010111156103d357600080fd5b60209290920196919550909350505050565b6000602080830181845280855180835260408601915060408160051b87010192508387016000805b838110156104a5577fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc089870301855282518051808852835b81811015610460578281018a01518982018b01528901610445565b508781018901849052601f017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe01690960187019550938601939186019160010161040d565b509398975050505050505050565b6000602082840312156104c557600080fd5b5035919050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b600082357fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffc183360301811261055e57600080fd5b9190910192915050565b60008083357fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe184360301811261059d57600080fd5b83018035915067ffffffffffffffff8211156105b857600080fd5b6020019150368190038213156105cd57600080fd5b9250929050565b818382376000910190815291905056fea264697066735822122001d425605a3e5faf7df2f92d15f8fa09887da3299d3033b134412b5f0969e9c464736f6c63430008170033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {
+      "aggregateView((address,bytes)[])": {
+        "details": "Returns the block hash for the given block number",
+        "params": {
+          "calls": "An array of Call structs"
+        },
+        "returns": {
+          "returnData": "An array of bytes containing the responses"
+        }
+      },
+      "getBasefee()": {
+        "details": "Gets the base fee of the given blockCan revert if the BASEFEE opcode is not implemented by the given chain"
+      },
+      "getBlockHash(uint256)": {
+        "details": "Returns the block hash for the given block number",
+        "params": {
+          "blockNumber": "The block number"
+        }
+      },
+      "getBlockNumber()": {
+        "details": "Returns the block number"
+      },
+      "getChainId()": {
+        "details": "Returns the chain id"
+      },
+      "getCurrentBlockCoinbase()": {
+        "details": "Returns the block coinbase"
+      },
+      "getCurrentBlockDifficulty()": {
+        "details": "Returns the block difficulty"
+      },
+      "getCurrentBlockGasLimit()": {
+        "details": "Returns the block gas limit"
+      },
+      "getCurrentBlockTimestamp()": {
+        "details": "Returns the block timestamp"
+      },
+      "getEthBalance(address)": {
+        "details": "Returns the (ETH) balance of a given address"
+      },
+      "getLastBlockHash()": {
+        "details": "Returns the block hash of the last block"
+      }
+    },
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}
