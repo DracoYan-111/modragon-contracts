@@ -17,7 +17,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     '0xefE657b8c66b7132BAbdE0D101473c424471EDb2'
   ];
 
-  let contract = await deploy('ToeknRewardDistribution', {
+  let contract = await deploy('TokenRewardDistribution', {
     from: deployer,
     log: true,
     autoMine: true, // speed up deployment on local network (ganache, hardhat), no effect on live networks
@@ -36,7 +36,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
         },
       },
     },
-    deterministicDeployment: keccak256(stringToBytes('MERLRewardDistribution_PRD')),
+    deterministicDeployment: keccak256(stringToBytes('TokenRewardDistribution_PRD')),
   });
   // // TODO If you want to cancel "verification", please enable comments
   // console.log(

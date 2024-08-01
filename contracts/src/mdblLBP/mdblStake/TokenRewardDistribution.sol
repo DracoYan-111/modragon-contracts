@@ -7,7 +7,7 @@ import {AccessControlUpgradeable} from "@openzeppelin/contracts-upgradeable/acce
 import {PausableUpgradeable, Initializable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import {ERC20PermitUpgradeable, ECDSA} from "@openzeppelin/contracts-upgradeable/token/ERC20/extensions/ERC20PermitUpgradeable.sol";
 
-contract ToeknRewardDistribution is
+contract TokenRewardDistribution is
     Initializable,
     PausableUpgradeable,
     AccessControlUpgradeable,
@@ -21,15 +21,15 @@ contract ToeknRewardDistribution is
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
     bytes32 public constant EMDBL_ROLE = keccak256("EMDBL_ROLE");
 
-    // keccak256(abi.encode(uint256(keccak256("ToeknRewardDistributionStorage")) - 1)) & ~bytes32(uint256(0xff));
-    bytes32 private constant ToeknRewardDistributionStorageLocation =
+    // keccak256(abi.encode(uint256(keccak256("TokenRewardDistributionStorage")) - 1)) & ~bytes32(uint256(0xff));
+    bytes32 private constant TokenRewardDistributionStorageLocation =
         0x35d836399424e465e95ce0b4bc99fe364a4955e1066b31bc62740f5d5cd98600;
 
     bytes32 private constant PERMIT_TRANSFERHASH =
         keccak256("PermitTransfer(address tokenAddress,address to,uint256 value,uint256 nonce,uint256 deadline)");
     // 0x3c73f60eb5427d2ad7bf6bde65f1067a6f1311fa0add9ba4171bf344253cccba
 
-    struct ToeknRewardDistributionStorage {
+    struct TokenRewardDistributionStorage {
         address signer;
         mapping(IERC20 => mapping(address => uint256)) userHasUsedTokenPermitQuota;
     }
@@ -40,13 +40,13 @@ contract ToeknRewardDistribution is
     }
 
     function initialize(address defaultAdmin, address signer) public initializer {
-        ToeknRewardDistributionStorage storage $ = _getTokenRewardDistributionStorage();
+        TokenRewardDistributionStorage storage $ = _getTokenRewardDistributionStorage();
 
         $.signer = signer;
 
         __AccessControl_init();
         __UUPSUpgradeable_init();
-        __ERC20Permit_init("ToeknRewardDistribution");
+        __ERC20Permit_init("TokenRewardDistribution");
 
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
         _grantRole(PAUSER_ROLE, defaultAdmin);
@@ -62,7 +62,7 @@ contract ToeknRewardDistribution is
     }
 
     function setSigner(address newSigner) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        ToeknRewardDistributionStorage storage $ = _getTokenRewardDistributionStorage();
+        TokenRewardDistributionStorage storage $ = _getTokenRewardDistributionStorage();
 
         $.signer = newSigner;
     }
@@ -80,7 +80,7 @@ contract ToeknRewardDistribution is
         bytes32 r,
         bytes32 s
     ) external {
-        ToeknRewardDistributionStorage storage $ = _getTokenRewardDistributionStorage();
+        TokenRewardDistributionStorage storage $ = _getTokenRewardDistributionStorage();
 
         if (block.timestamp > deadline) revert ERC2612ExpiredSignature(deadline);
 
@@ -104,16 +104,16 @@ contract ToeknRewardDistribution is
     }
 
     function getUserTokenRewardsReceived(IERC20 tokenAddress, address account) external view returns (uint256) {
-        ToeknRewardDistributionStorage storage $ = _getTokenRewardDistributionStorage();
+        TokenRewardDistributionStorage storage $ = _getTokenRewardDistributionStorage();
 
         return $.userHasUsedTokenPermitQuota[tokenAddress][account];
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyRole(UPGRADER_ROLE) {}
 
-    function _getTokenRewardDistributionStorage() private pure returns (ToeknRewardDistributionStorage storage $) {
+    function _getTokenRewardDistributionStorage() private pure returns (TokenRewardDistributionStorage storage $) {
         assembly {
-            $.slot := ToeknRewardDistributionStorageLocation
+            $.slot := TokenRewardDistributionStorageLocation
         }
     }
 }

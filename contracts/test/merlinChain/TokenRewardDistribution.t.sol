@@ -11,7 +11,7 @@ import {MessageHashUtils} from "@openzeppelin/contracts/utils/cryptography/Messa
 
 import {IERC20, TestToken} from "../../src/testToken/TestToken.sol";
 
-import {ToeknRewardDistribution} from "../../src/mdblLBP/mdblStake/ToeknRewardDistribution.sol";
+import {TokenRewardDistribution} from "../../src/mdblLBP/mdblStake/TokenRewardDistribution.sol";
 
 contract MERLRewardDistributionTest is Test {
 bytes32 private constant PERMIT_TRANSFERHASH =
@@ -26,7 +26,7 @@ bytes32 private constant PERMIT_TRANSFERHASH =
     address public initialOwner;
     address public signerAddress;
 
-    ToeknRewardDistribution public mERLRewardDistributionTest;
+    TokenRewardDistribution public mERLRewardDistributionTest;
 
     /**
      * @dev Sets up the test.
@@ -37,13 +37,13 @@ bytes32 private constant PERMIT_TRANSFERHASH =
 
         testMDBL = new TestToken(initialOwner, "TestToken");
 
-        address mERLRewardDistribution = address(new ToeknRewardDistribution());
+        address mERLRewardDistribution = address(new TokenRewardDistribution());
         bytes memory data = abi.encodeCall(
-            ToeknRewardDistribution.initialize,
+            TokenRewardDistribution.initialize,
             (initialOwner, vm.addr(SIGNERPRIVATEKEY))
         );
         address proxyLeaderboardReward = address(new ERC1967Proxy(mERLRewardDistribution, data));
-        mERLRewardDistributionTest = ToeknRewardDistribution(proxyLeaderboardReward);
+        mERLRewardDistributionTest = TokenRewardDistribution(proxyLeaderboardReward);
     }
 
     function testPermitTransfer() external {
@@ -76,4 +76,4 @@ bytes32 private constant PERMIT_TRANSFERHASH =
         typedDataHash = MessageHashUtils.toTypedDataHash(mERLRewardDistributionTest.DOMAIN_SEPARATOR(), structHash);
     }
 }
-//forge test -vvv --match-path contracts/test/merlinChain/ToeknRewardDistribution.t.sol  --out forge-artifacts
+//forge test -vvv --match-path contracts/test/merlinChain/TokenRewardDistribution.t.sol  --out forge-artifacts
