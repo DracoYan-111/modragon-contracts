@@ -9,12 +9,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   /**
         address initialOwner,
-        address _MERLToken,
         address _signer,
    */
   const args = [
     deployer,
-    '0xefE657b8c66b7132BAbdE0D101473c424471EDb2'
+    '0x84439355541fBC7dA8f465D60Ae5ce3606A81caF'
   ];
 
   let contract = await deploy('TokenRewardDistribution', {
