@@ -22,7 +22,7 @@ contract RankTokenDistribution is
 
     // keccak256(abi.encode(uint256(keccak256("RankTokenDistributionStorage")) - 1)) & ~bytes32(uint256(0xff))
     bytes32 private constant RankTokenDistributionStorageLocation =
-        0x12eccda39a912e3db87acc3ba69815bb09f308eb3f31f6e92e1723d50cf67800;
+        0x4d7f11b799e3dbef474818f27c48732d46e87a22e1fef8619f9e069c61475900;
 
     struct RankTokenDistributionStorage {
         uint256 season;

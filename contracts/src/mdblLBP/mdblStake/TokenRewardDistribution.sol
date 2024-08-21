@@ -23,7 +23,7 @@ contract TokenRewardDistribution is
 
     // keccak256(abi.encode(uint256(keccak256("TokenRewardDistributionStorage")) - 1)) & ~bytes32(uint256(0xff));
     bytes32 private constant TokenRewardDistributionStorageLocation =
-        0x35d836399424e465e95ce0b4bc99fe364a4955e1066b31bc62740f5d5cd98600;
+        0xc6f997b159f4a39e7e0f269065ccda231d6783f3ede403587a1fcc1181842400;
 
     bytes32 private constant PERMIT_TRANSFERHASH =
         keccak256("PermitTransfer(address tokenAddress,address to,uint256 value,uint256 nonce,uint256 deadline)");
